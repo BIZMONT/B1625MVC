@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace B1625DbModel.EntitiesConfigs
 {
-    public class PublicationConfig : EntityTypeConfiguration<Publication>
+    internal class PublicationConfig : EntityTypeConfiguration<Publication>
     {
         public PublicationConfig()
         {

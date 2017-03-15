@@ -22,7 +22,7 @@ namespace B1625DbModel.Entities
 
         public long AuthorId { get; set; }
         public virtual UserAccount Author { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public virtual ICollection<UserAccount> LikedBy { get; set; } = new List<UserAccount>();
         public virtual ICollection<UserAccount> DislikedBy { get; set; } = new List<UserAccount>();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace B1625DbModel.EntitiesConfigs
 {
-    public class CommentConfig : EntityTypeConfiguration<Comment>
+    internal class CommentConfig : EntityTypeConfiguration<Comment>
     {
         public CommentConfig()
         {

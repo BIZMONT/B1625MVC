@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace B1625DbModel.EntitiesConfigs
 {
-    public class UserDetailsConfig : EntityTypeConfiguration<UserDetails>
+    internal class UserDetailsConfig : EntityTypeConfiguration<UserDetails>
     {
         public UserDetailsConfig()
         {
