@@ -13,7 +13,10 @@ namespace B1625DbModel.EntitiesConfigs
         public CommentConfig()
         {
             HasKey(c => c.CommentId);
+
             Property(c => c.Content).IsRequired();
+
+            Ignore(c => c.Rating);
         }
     }
 }
