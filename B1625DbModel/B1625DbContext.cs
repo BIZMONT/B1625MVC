@@ -16,7 +16,7 @@ namespace B1625DbModel
         }
 
         public DbSet<UserAccount> Accounts { get; set; }
-        public DbSet<UserDetails> UsersDEtails { get; set; }
+        public DbSet<UserDetails> UsersDetails { get; set; }
         public DbSet<Publication> Publications { get; set; }
         public DbSet<Comment> Comments { get; set; }
 

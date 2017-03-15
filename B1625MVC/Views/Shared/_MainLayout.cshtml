@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/MenuStyle.css" />
+    @RenderSection("Styles", false)
+</head>
+<body style="font-family:Arial, Helvetica, sans-serif; margin:0px">
+    <div>
+        <div class="menu">
+            <ul>
+                <li>
+                    @Html.RouteLink("Hot", new { controller = "Home", action = "Hot" })
+                </li>
+                <li>
+                    @Html.RouteLink("Best", new { controller = "Home", action = "Best" })
+                </li>
+                <li>
+                    @Html.RouteLink("Fresh", new { controller = "Home", action = "Fresh" })
+                </li>
+            </ul>
+        </div>
+        <div style="display: table;margin-left:auto;margin-right:auto;margin-top:48px; padding-top:10px;padding-left:10px;padding-right:10px; ">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

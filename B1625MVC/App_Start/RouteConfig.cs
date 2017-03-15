@@ -14,9 +14,14 @@ namespace B1625MVC
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                name: null,
+                url: "{action}",
+                defaults: new { controller = "Home", action = "Hot" }
+            );
+            routes.MapRoute(
+                name: null,
+                url: "post/{id}",
+                defaults: new { controller = "Publication", action = "Index" }
             );
         }
     }

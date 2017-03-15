@@ -1,0 +1,22 @@
+﻿@model B1625DbModel.Entities.Publication
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/CommentStyle.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/PublicationStyle.css" />
+}
+
+<div>
+    <div>
+        @Html.Partial("_Publication", Model)
+    </div>
+    <div style="margin-top:30px">
+        @foreach (var comment in Model.Comments)
+        {
+            @Html.Partial("_CommentPartial", comment)
+        }
+    </div>
+</div>

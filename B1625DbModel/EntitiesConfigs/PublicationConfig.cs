@@ -17,6 +17,7 @@ namespace B1625DbModel.EntitiesConfigs
             Property(p => p.Title).IsRequired().HasMaxLength(64);
             Property(p => p.Content).IsRequired();
             Property(p => p.ContentType).IsRequired();
+            Property(p => p.PublicationDate).IsRequired();
 
             Ignore(p => p.Rating);
         }

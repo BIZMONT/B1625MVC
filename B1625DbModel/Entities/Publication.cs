@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace B1625DbModel.Entities
 {
@@ -11,6 +12,7 @@ namespace B1625DbModel.Entities
         public string Title { get; set; }
         public byte[] Content { get; set; }
         public ContentType ContentType { get; set; }
+        public DateTime? PublicationDate { get; set; }
 
         public int Rating
         {

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="B1625DbContext.cs" />
+    <Compile Include="B1625DbRepository.cs" />
     <Compile Include="EntitiesConfigs\CommentConfig.cs" />
     <Compile Include="EntitiesConfigs\PublicationConfig.cs" />
     <Compile Include="EntitiesConfigs\UserAccountConfig.cs" />

@@ -1,0 +1,16 @@
+﻿.publication-container {
+    width: 600px;
+    border-style: solid;
+    border-width:1px;
+    margin: 10px 0px;
+    padding: 15px
+}
+.publication-title{
+    font-size:24px;
+}
+.publication-content{
+    border-style:solid;
+    border-color:grey;
+    border-width:1px;
+    margin: 15px 0px;
+}
