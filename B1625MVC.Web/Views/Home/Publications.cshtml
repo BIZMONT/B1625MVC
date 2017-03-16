@@ -1,0 +1,19 @@
+﻿@using B1625MVC.Model.Entities
+@model IEnumerable<Publication>
+
+@{ 
+    ViewBag.Title = this.ViewContext.RouteData.GetRequiredString("action");
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/Content/PublicationStyle.css" type="text/css" />
+}
+
+<div>
+    @foreach (var publication in Model)
+    {
+        @Html.Partial("_Publication", publication)
+    }
+</div>
+
+
