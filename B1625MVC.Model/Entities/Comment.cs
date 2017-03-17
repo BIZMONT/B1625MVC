@@ -11,6 +11,7 @@ namespace B1625MVC.Model.Entities
         public long CommentId { get; set; }
         public string Content { get; set; }
         public DateTime? PublicationDate { get; set; }
+
         public int Rating
         {
             get

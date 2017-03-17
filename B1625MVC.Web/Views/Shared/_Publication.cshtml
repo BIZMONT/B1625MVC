@@ -8,7 +8,8 @@
         <b> @Model.Title</b>
     </div>
     <div>
-        by @Model.Author.Username
+        <span>by @Model.Author.Username</span>
+        <span style="float:right">@Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")</span>
     </div>
     <div class="publication-content">
         @if (Model.ContentType == ContentType.Image)

@@ -30,7 +30,7 @@ namespace B1625MVC.Web.Controllers
 
         public ActionResult Best(int page = 1)
         {
-            var publications = _dataRepository.Publications.Skip(20 * (page - 1)).Take(20);
+            var publications = _dataRepository.Publications.OrderByDescending(p=>p.Rating).Skip(20 * (page - 1)).Take(20);
 
             return View("Publications", publications);
         }

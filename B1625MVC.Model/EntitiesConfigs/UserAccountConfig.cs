@@ -30,6 +30,9 @@ namespace B1625MVC.Model.EntitiesConfigs
                         {
                             IsUnique = true
                         }));
+            Property(ua => ua.RegistrationDate).IsRequired();
+
+            Ignore(ua => ua.Rating);
         }
     }
 }

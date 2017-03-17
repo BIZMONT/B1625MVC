@@ -4,6 +4,7 @@
 <div class="comment">
     <div class="comment-author">
         <b>@Model.Author.Username</b>
+        <span style="float:right; font-size:14px;">@Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")</span>
     </div>
     <div class="comment-content">
         @Model.Content

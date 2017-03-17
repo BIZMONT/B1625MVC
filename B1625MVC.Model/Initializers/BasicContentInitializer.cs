@@ -18,10 +18,10 @@ namespace B1625MVC.Model.Initializers
             MemoryStream memStream = new MemoryStream();
 
             Resources.AdminAvatar.Save(memStream, ImageFormat.Jpeg);
-            var admin = new UserAccount() { Username = "admin", Email = "admin@example.com", Details = new UserDetails() { Gender = Gender.Male, Avatar = memStream.ToArray() } };
-            var someUser1 = new UserAccount() { Username = "somebody", Email = "somebody@example.com", Details = new UserDetails() };
-            var someUser2 = new UserAccount() { Username = "nobody", Email = "nobody@example.com", Details = new UserDetails() };
-            var someUser3 = new UserAccount() { Username = "anybody", Email = "anybody@example.com", Details = new UserDetails() };
+            var admin = new UserAccount() { Username = "admin", Email = "admin@example.com", Details = new UserDetails() { Gender = Gender.Male, Avatar = memStream.ToArray() }, RegistrationDate = DateTime.Now };
+            var someUser1 = new UserAccount() { Username = "somebody", Email = "somebody@example.com", Details = new UserDetails(), RegistrationDate = DateTime.Now };
+            var someUser2 = new UserAccount() { Username = "nobody", Email = "nobody@example.com", Details = new UserDetails(), RegistrationDate = DateTime.Now };
+            var someUser3 = new UserAccount() { Username = "anybody", Email = "anybody@example.com", Details = new UserDetails(), RegistrationDate = DateTime.Now };
 
             memStream = new MemoryStream();
             Resources.Beacon.Save(memStream, ImageFormat.Jpeg);
