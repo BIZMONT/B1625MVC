@@ -5,16 +5,22 @@
 
 <div class="publication-container">
     <div class="publication-title">
-        <b> @Model.Title</b>
+        @Html.RouteLink(Model.Title, new { controller = "Publication", action = "Index", id = Model.PublicationId })
     </div>
-    <div>
-        <span>by @Model.Author.Username</span>
+    <div style="margin: 10px">
+        @if (Model.Author.Details.Avatar != null)
+        {
+            <img style="width:24px; height:24px; vertical-align:middle" src="data:image;base64,@System.Convert.ToBase64String(Model.Author.Details.Avatar)" />
+        }
+        @Html.RouteLink(@Model.Author.Username, new { controller = "Account", action = "UserProfile", username = Model.Author.Username })
         <span style="float:right">@Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")</span>
     </div>
     <div class="publication-content">
         @if (Model.ContentType == ContentType.Image)
         {
-            <img style="max-width:100%; display:block" src="data:image;base64,@System.Convert.ToBase64String(Model.Content)" />
+            <a href="@Url.Action("Index","Publication")">
+                <img style="max-width:100%; display:block" src="data:image;base64,@System.Convert.ToBase64String(Model.Content)" />
+            </a>
         }
         else if (Model.ContentType == ContentType.Text)
         {
@@ -28,7 +34,7 @@
     <div>
         @Html.ActionLink("Up", "RateUp", new { id = Model.PublicationId })
         @Model.Rating
-        @Html.ActionLink("Down","RateDown", new { id = Model.PublicationId })
+        @Html.ActionLink("Down", "RateDown", new { id = Model.PublicationId })
         @Html.RouteLink("Comments", new { controller = "Publication", action = "Index", id = Model.PublicationId })
     </div>
 </div>

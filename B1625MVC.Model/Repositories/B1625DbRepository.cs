@@ -26,5 +26,13 @@ namespace B1625MVC.Model.Repositories
                 return _dbContext.Publications.ToList();
             }
         }
+
+        public IEnumerable<UserAccount> Accounts
+        {
+            get
+            {
+                return _dbContext.Accounts.ToList();
+            }
+        }
     }
 }

@@ -1,0 +1,16 @@
+﻿@model B1625MVC.Model.Entities.UserAccount
+
+@{
+    ViewBag.Title = Model.Username;
+}
+
+<h2>@Model.Username</h2>
+@if (Model.Details.Avatar != null)
+{
+    <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Details.Avatar)" />
+}
+<br />
+Registration date: @Model.RegistrationDate.Value.Date.ToString("dd MMM yyyy")
+<br/>
+Rating: @Model.Rating
+

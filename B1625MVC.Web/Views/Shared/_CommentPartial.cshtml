@@ -3,7 +3,10 @@
 
 <div class="comment">
     <div class="comment-author">
-        <b>@Model.Author.Username</b>
+        @Html.RouteLink(@Model.Author.Username, new { controller = "Account", action = "UserProfile", username = Model.Author.Username })
+        @Html.ActionLink("Up","RateUp")
+        <span>@Model.Rating</span>
+        @Html.ActionLink("Down", "RateDown")
         <span style="float:right; font-size:14px;">@Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")</span>
     </div>
     <div class="comment-content">

@@ -23,6 +23,17 @@ namespace B1625MVC.Web
                 url: "post/{id}",
                 defaults: new { controller = "Publication", action = "Index" }
             );
+
+            routes.MapRoute(
+                name: null,
+                url: "Account/{username}",
+                defaults: new { controller = "Account", action = "UserProfile" }
+            );
+            routes.MapRoute(
+                name: null,
+                url: "Account/{id}",
+                defaults: new { controller = "Account", action = "UserProfile" }
+            );
         }
     }
 }
