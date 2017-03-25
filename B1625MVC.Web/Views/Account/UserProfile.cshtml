@@ -1,16 +1,16 @@
-﻿@model B1625MVC.Model.Entities.UserAccount
+﻿@model B1625MVC.Model.Entities.User
 
 @{
-    ViewBag.Title = Model.Username;
+    ViewBag.Title = Model.UserName;
 }
 
-<h2>@Model.Username</h2>
-@if (Model.Details.Avatar != null)
+<h2>@Model.UserName</h2>
+@if (Model.Profile.Avatar != null)
 {
-    <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Details.Avatar)" />
+    <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Profile.Avatar)" />
 }
 <br />
-Registration date: @Model.RegistrationDate.Value.Date.ToString("dd MMM yyyy")
+Registration date: @Model.Profile.RegistrationDate.Value.Date.ToString("dd MMM yyyy")
 <br/>
-Rating: @Model.Rating
+Rating: @Model.Profile.Rating
 

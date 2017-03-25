@@ -1,0 +1,28 @@
+﻿@model B1625MVC.Web.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+@Html.ValidationSummary(false)
+@using (Html.BeginForm())
+{
+    <div>
+        @Html.LabelFor(lvm => lvm.EmailOrUserName)
+        @Html.TextBoxFor(lvm => lvm.EmailOrUserName)
+        @Html.ValidationMessageFor(lvm => lvm.EmailOrUserName)
+    </div>
+    <div>
+        @Html.LabelFor(lvm => lvm.Password)
+        @Html.PasswordFor(lvm => lvm.Password)
+        @Html.ValidationMessageFor(lvm => lvm.Password)
+    </div>
+    <div>
+        @Html.LabelFor(lvm => lvm.RememberMe)
+        @Html.CheckBoxFor(lvm => lvm.RememberMe)
+    </div>
+
+    <input type="submit" value="Login" />
+}
+

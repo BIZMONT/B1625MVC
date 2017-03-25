@@ -2,22 +2,26 @@
 
 using B1625MVC.Model.Entities;
 using B1625MVC.Model.EntitiesConfigs;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace B1625MVC.Model
 {
-    public class B1625DbContext : DbContext
+    public class B1625DbContext : IdentityDbContext
     {
         public B1625DbContext() : this("B1625Db")
         {
-
         }
+
         public B1625DbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
-
         }
 
-        public DbSet<UserAccount> Accounts { get; set; }
-        public DbSet<UserDetails> UsersDetails { get; set; }
+        public static B1625DbContext Create()
+        {
+            return new B1625DbContext();
+        }
+
+        public DbSet<UserProfile> UsersProfiles { get; set; }
         public DbSet<Publication> Publications { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
@@ -25,36 +29,36 @@ namespace B1625MVC.Model
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Configurations.Add(new UserAccountConfig());
-            modelBuilder.Configurations.Add(new UserDetailsConfig());
+            modelBuilder.Configurations.Add(new UserProfileConfig());
             modelBuilder.Configurations.Add(new PublicationConfig());
             modelBuilder.Configurations.Add(new CommentConfig());
 
-            modelBuilder.Entity<UserAccount>().HasMany(ua => ua.Publications).WithRequired(p => p.Author).HasForeignKey(p => p.AuthorId).WillCascadeOnDelete(false);
-            modelBuilder.Entity<UserAccount>().HasMany(ua => ua.Comments).WithRequired(c => c.Author).HasForeignKey(c => c.AuthorId).WillCascadeOnDelete(false);
-            modelBuilder.Entity<UserAccount>().HasOptional(ua => ua.Details).WithRequired(ud => ud.User).WillCascadeOnDelete(true);
+            modelBuilder.Entity<UserAccount>().HasRequired(ua => ua.Profile).WithRequiredPrincipal(ud => ud.User).WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<UserAccount>().HasMany(ua => ua.LikedPublications).WithMany(p => p.LikedBy).Map(lp =>
+            modelBuilder.Entity<UserProfile>().HasMany(up => up.Publications).WithRequired(p => p.Author).HasForeignKey(p=>p.AuthorId).WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserProfile>().HasMany(up => up.Comments).WithRequired(c => c.Author).HasForeignKey(p => p.AuthorId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UserProfile>().HasMany(ua => ua.LikedPublications).WithMany(p => p.LikedBy).Map(lp =>
             {
-                lp.MapLeftKey("UserId");
+                lp.MapLeftKey("ProfileId");
                 lp.MapRightKey("PublicationId");
-                lp.ToTable("PostsLikes");
+                lp.ToTable("PublicationsLikes");
             });
-            modelBuilder.Entity<UserAccount>().HasMany(ua => ua.DislikedPublications).WithMany(p => p.DislikedBy).Map(lp =>
+            modelBuilder.Entity<UserProfile>().HasMany(ua => ua.DislikedPublications).WithMany(p => p.DislikedBy).Map(lp =>
             {
-                lp.MapLeftKey("UserId");
+                lp.MapLeftKey("ProfileId");
                 lp.MapRightKey("PublicationId");
-                lp.ToTable("PostsDislikes");
+                lp.ToTable("PublicationsDislikes");
             });
-            modelBuilder.Entity<UserAccount>().HasMany(ua => ua.LikedComments).WithMany(p => p.LikedBy).Map(lp =>
+            modelBuilder.Entity<UserProfile>().HasMany(ua => ua.LikedComments).WithMany(p => p.LikedBy).Map(lp =>
             {
-                lp.MapLeftKey("UserId");
+                lp.MapLeftKey("ProfileId");
                 lp.MapRightKey("CommentId");
                 lp.ToTable("CommentsLikes");
             });
-            modelBuilder.Entity<UserAccount>().HasMany(ua => ua.DislikedComments).WithMany(p => p.DislikedBy).Map(lp =>
+            modelBuilder.Entity<UserProfile>().HasMany(ua => ua.DislikedComments).WithMany(p => p.DislikedBy).Map(lp =>
             {
-                lp.MapLeftKey("UserId");
+                lp.MapLeftKey("ProfileId");
                 lp.MapRightKey("CommentId");
                 lp.ToTable("CommentsDislikes");
             });

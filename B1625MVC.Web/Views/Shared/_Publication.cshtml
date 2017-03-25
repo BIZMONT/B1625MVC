@@ -1,18 +1,25 @@
 ﻿@using B1625MVC.Model.Entities
-@using B1625MVC.Model.Infrastructure
+@using B1625MVC.Model.Enums
 @using System.Text
 @model Publication
+
+@{
+    var ajaxOptions = new AjaxOptions()
+    {
+        UpdateTargetId = "ratingValue"
+    };
+}
 
 <div class="publication-container">
     <div class="publication-title">
         @Html.RouteLink(Model.Title, new { controller = "Publication", action = "Index", id = Model.PublicationId })
     </div>
     <div style="margin: 10px">
-        @if (Model.Author.Details.Avatar != null)
+        @if (Model.Author.Avatar != null)
         {
-            <img style="width:24px; height:24px; vertical-align:middle" src="data:image;base64,@System.Convert.ToBase64String(Model.Author.Details.Avatar)" />
+            <img style="width:24px; height:24px; vertical-align:middle" src="data:image;base64,@System.Convert.ToBase64String(Model.Author.Avatar)" />
         }
-        @Html.RouteLink(@Model.Author.Username, new { controller = "Account", action = "UserProfile", username = Model.Author.Username })
+        @Html.RouteLink(@Model.Author.UserName, new { controller = "Account", action = "UserProfile", username = Model.Author.UserName })
         <span style="float:right">@Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")</span>
     </div>
     <div class="publication-content">
@@ -32,9 +39,9 @@
         }
     </div>
     <div>
-        @Html.ActionLink("Up", "RateUp", new { id = Model.PublicationId })
-        @Model.Rating
-        @Html.ActionLink("Down", "RateDown", new { id = Model.PublicationId })
+        @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.PublicationId}, ajaxOptions)
+        <span id="ratingValue">@Model.Rating</span>
+        @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateUp", publicationId = Model.PublicationId }, ajaxOptions)
         @Html.RouteLink("Comments", new { controller = "Publication", action = "Index", id = Model.PublicationId })
     </div>
 </div>

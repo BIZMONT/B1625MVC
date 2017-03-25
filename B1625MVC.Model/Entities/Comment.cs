@@ -8,6 +8,11 @@ namespace B1625MVC.Model.Entities
     /// </summary>
     public class Comment
     {
+        public Comment()
+        {
+            PublicationDate = DateTime.Now;
+        }
+
         public long CommentId { get; set; }
         public string Content { get; set; }
         public DateTime? PublicationDate { get; set; }
@@ -20,12 +25,12 @@ namespace B1625MVC.Model.Entities
             }
         }
 
-        public long AuthorId { get; set; }
-        public virtual UserAccount Author { get; set; }
+        public string AuthorId { get; set; }
+        public virtual UserProfile Author { get; set; }
         public long PublicationId { get; set; }
         public virtual Publication Publication { get; set; }
 
-        public virtual ICollection<UserAccount> LikedBy { get; set; } = new List<UserAccount>();
-        public virtual ICollection<UserAccount> DislikedBy { get; set; } = new List<UserAccount>();
+        public virtual ICollection<UserProfile> LikedBy { get; set; } = new List<UserProfile>();
+        public virtual ICollection<UserProfile> DislikedBy { get; set; } = new List<UserProfile>();
     }
 }

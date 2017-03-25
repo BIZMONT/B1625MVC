@@ -3,7 +3,7 @@
 
 <div class="comment">
     <div class="comment-author">
-        @Html.RouteLink(@Model.Author.Username, new { controller = "Account", action = "UserProfile", username = Model.Author.Username })
+        @Html.RouteLink(@Model.Author.UserName, new { controller = "Account", action = "UserProfile", username = Model.Author.UserName })
         @Html.ActionLink("Up","RateUp")
         <span>@Model.Rating</span>
         @Html.ActionLink("Down", "RateDown")

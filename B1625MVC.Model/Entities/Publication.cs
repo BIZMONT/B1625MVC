@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using B1625MVC.Model.Infrastructure;
+using B1625MVC.Model.Enums;
 
 namespace B1625MVC.Model.Entities
 {
@@ -10,6 +10,11 @@ namespace B1625MVC.Model.Entities
     /// </summary>
     public class Publication
     {
+        public Publication()
+        {
+            PublicationDate = DateTime.Now;
+        }
+
         public long PublicationId { get; set; }
         public string Title { get; set; }
         public byte[] Content { get; set; }
@@ -24,11 +29,11 @@ namespace B1625MVC.Model.Entities
             }
         }
 
-        public long AuthorId { get; set; }
-        public virtual UserAccount Author { get; set; }
+        public string AuthorId { get; set; }
+        public virtual UserProfile Author { get; set; }
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-        public virtual ICollection<UserAccount> LikedBy { get; set; } = new List<UserAccount>();
-        public virtual ICollection<UserAccount> DislikedBy { get; set; } = new List<UserAccount>();
+        public virtual ICollection<UserProfile> LikedBy { get; set; } = new List<UserProfile>();
+        public virtual ICollection<UserProfile> DislikedBy { get; set; } = new List<UserProfile>();
     }
 }

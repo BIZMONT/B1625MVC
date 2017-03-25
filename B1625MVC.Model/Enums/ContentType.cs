@@ -1,4 +1,4 @@
-﻿namespace B1625MVC.Model.Infrastructure
+﻿namespace B1625MVC.Model.Enums
 {
     public enum ContentType
     {

@@ -15,9 +15,25 @@ namespace B1625MVC.Web
 
             routes.MapRoute(
                 name: null,
-                url: "{action}",
-                defaults: new { controller = "Home", action = "Hot" }
+                url: "login",
+                defaults: new { controller = "Account", action = "Login" },
+                namespaces: new string[] { "B1625MVC.Web.Controllers" }
             );
+
+            routes.MapRoute(
+                name: null,
+                url: "logout",
+                defaults: new { controller = "Account", action = "Logout" },
+                namespaces: new string[] { "B1625MVC.Web.Controllers" }
+            );
+
+            routes.MapRoute(
+                name: null,
+                url: "registration",
+                defaults: new { controller = "Account", action = "Registration" },
+                namespaces: new string[] { "B1625MVC.Web.Controllers" }
+            );
+
             routes.MapRoute(
                 name: null,
                 url: "post/{id}",
@@ -26,13 +42,16 @@ namespace B1625MVC.Web
 
             routes.MapRoute(
                 name: null,
-                url: "Account/{username}",
-                defaults: new { controller = "Account", action = "UserProfile" }
+                url: "account/{username}",
+                defaults: new { controller = "Account", action = "UserProfile" },
+                 namespaces: new string[] { "B1625MVC.Web.Controllers" }
             );
+
             routes.MapRoute(
                 name: null,
-                url: "Account/{id}",
-                defaults: new { controller = "Account", action = "UserProfile" }
+                url: "{action}",
+                defaults: new { controller = "Home", action = "Hot" },
+                namespaces: new string[] { "B1625MVC.Web.Controllers" }
             );
         }
     }

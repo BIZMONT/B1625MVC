@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Ninject;
 
-using B1625MVC.Model.Abstract;
-using B1625MVC.Model.Repositories;
-
 namespace B1625MVC.Web.Infrastructure
 {
     public class NinjectDependencyResolver : IDependencyResolver
@@ -20,7 +17,7 @@ namespace B1625MVC.Web.Infrastructure
 
         private void BindAll()
         {
-            _kernel.Bind<IB1625Repository>().To<B1625DbRepository>();
+            //TODO: Here you can add DI binds
         }
 
         public object GetService(Type serviceType)

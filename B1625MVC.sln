@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B1625MVC.Model", "B1625MVC.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B1625MVC.Web", "B1625MVC.Web\B1625MVC.Web.csproj", "{DBCC61A1-16E2-46F2-A8E5-4C7DFBFA5038}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B1625MVC.BLL", "B1625MVC.BLL\B1625MVC.BLL.csproj", "{B4E81E99-C1E3-4C28-A3FB-D5F0EBE483EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DBCC61A1-16E2-46F2-A8E5-4C7DFBFA5038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBCC61A1-16E2-46F2-A8E5-4C7DFBFA5038}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBCC61A1-16E2-46F2-A8E5-4C7DFBFA5038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E81E99-C1E3-4C28-A3FB-D5F0EBE483EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E81E99-C1E3-4C28-A3FB-D5F0EBE483EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E81E99-C1E3-4C28-A3FB-D5F0EBE483EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E81E99-C1E3-4C28-A3FB-D5F0EBE483EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

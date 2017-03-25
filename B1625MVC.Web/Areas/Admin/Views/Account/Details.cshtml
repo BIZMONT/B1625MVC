@@ -1,0 +1,15 @@
+﻿@model B1625MVC.BLL.DTO.UserDataDto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.UserName</h2>
+@if (Model.Avatar != null)
+{
+    <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" />
+}
+<br />
+Email: @Model.Email
+<br />
+Rating: @Model.Rating

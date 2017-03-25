@@ -20,6 +20,24 @@
                 <li>
                     @Html.RouteLink("Fresh", new { controller = "Home", action = "Fresh" })
                 </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li style="float:right">
+                        @Html.RouteLink("Log out", new { area = "", controller = "Account", action = "Logout" })
+                    </li>
+                    <li style="float:right">
+                        @Html.RouteLink(User.Identity.Name, new { area = "", controller = "Account", action = "UserProfile", username = User.Identity.Name })
+                    </li>
+                }
+                else
+                {
+                    <li style="float:right">
+                        @Html.RouteLink("Log in", new { area = "", controller = "Account", action = "Login" })
+                    </li>
+                    <li style="float:right">
+                        @Html.RouteLink("Register", new { area = "", controller = "Account", action = "Registration" })
+                    </li>
+                }
             </ul>
         </div>
         <div style="display: table;margin-left:auto;margin-right:auto;margin-top:48px; padding-top:10px;padding-left:10px;padding-right:10px; ">
