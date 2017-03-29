@@ -43,7 +43,8 @@ namespace B1625MVC.Model.Initializers
                 {
                     AccountId = admin.Id,
                     Avatar = memStream.ToArray(),
-                    Gender = Gender.Male
+                    Gender = Gender.Male,
+                    RegistrationDate = DateTime.Now
                 };
                 context.UsersProfiles.Add(profile);
                 context.SaveChanges();

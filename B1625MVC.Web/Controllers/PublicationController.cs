@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using B1625MVC.Web.Models;
 using B1625MVC.BLL.Abstract;
 using System;
+using B1625MVC.BLL;
+using B1625MVC.BLL.DTO;
 
 namespace B1625MVC.Web.Controllers
 {
     public class PublicationController : Controller
     {
-        public IContentService DataRepository
+        public IContentService ContentService
         {
             get
             {
@@ -20,29 +22,37 @@ namespace B1625MVC.Web.Controllers
 
         public ActionResult Index(long id)
         {
-            /*Publication publication = DataRepository.Publications.Get(id);
-
+            var publication = ContentService.GetPublication(id);
             if (publication == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                return View(publication);
-            }*/
-            throw new NotImplementedException();
+                var comments = ContentService.GetPublicationComments(publication.Id);
+                var publicationModel = new PublicationViewModel(publication, comments);
+                return View(publicationModel);
+            }
         }
 
         [Authorize]
         public async Task<string> RateUp(long publicationId)
         {
-            throw new NotImplementedException();
+            OperationDetails result = await ContentService.RatePublication(publicationId, User.Identity.Name, RateAction.Up);
+            if (result.Succedeed)
+            {
+            }
+            return ContentService.GetPublication(publicationId).Rating.ToString();
         }
 
         [Authorize]
-        public async Task <string> RateDown(long publicationId)
+        public async Task<string> RateDown(long publicationId)
         {
-            throw new NotImplementedException();
+            OperationDetails result = await ContentService.RatePublication(publicationId, User.Identity.Name, RateAction.Down);
+            if (result.Succedeed)
+            {
+            }
+            return ContentService.GetPublication(publicationId).Rating.ToString();
         }
 
         [Authorize]

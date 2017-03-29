@@ -1,5 +1,4 @@
-﻿using System.Data.Entity.Infrastructure.Annotations;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
 
 using B1625MVC.Model.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +16,6 @@ namespace B1625MVC.Model.EntitiesConfigs
             Property(up => up.RegistrationDate).IsRequired();
 
             Property(up => up.Rating).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
-            Ignore(up => up.UserName);
         }
     }
 }

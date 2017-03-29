@@ -12,6 +12,8 @@ namespace B1625MVC.Model.Abstract
     public interface IRepository : IDisposable
     {
         IEntityRepository<UserProfile, string> Profiles { get; }
+        IEntityRepository<Publication, long> Publications { get; }
+        IEntityRepository<Comment, long> Comments { get; }
         UserAccountManager AccountManager { get; }
         UserRoleManager RoleManager { get; }
 

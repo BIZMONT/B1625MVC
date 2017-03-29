@@ -9,7 +9,7 @@ namespace B1625MVC.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private IContentService DataRepository
+        private IContentService ContentService
         {
             get
             {
@@ -19,9 +19,8 @@ namespace B1625MVC.Web.Controllers
 
         public ActionResult Hot(int page = 1)
         {
-            /*var publications = DataRepository.Publications.Skip(20 * (page - 1)).Take(20);
-            */
-            return View("Publications");
+            var publications = ContentService.GetAllPublications();
+            return View("Publications", publications);
         }
 
         public ActionResult Fresh(int page = 1)

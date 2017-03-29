@@ -32,17 +32,17 @@ namespace B1625MVC.Model.Repositories
 
         public IEnumerable<UserProfile> Find(Func<UserProfile, bool> predicate)
         {
-            return _dbContext.UsersProfiles.Where(predicate);
+            return _dbContext.UsersProfiles.Include(up => up.User).Where(predicate).ToList();
         }
 
         public UserProfile Get(string id)
         {
-            return _dbContext.UsersProfiles.Find(id);
+            return _dbContext.UsersProfiles.Include(up=>up.User).Where(up=>up.AccountId == id).FirstOrDefault();
         }
 
         public IEnumerable<UserProfile> GetAll()
         {
-            return _dbContext.UsersProfiles;
+            return _dbContext.UsersProfiles.Include(up=>up.User).ToList();
         }
 
         public void Update(UserProfile entity)

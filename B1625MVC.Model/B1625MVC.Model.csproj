@@ -91,14 +91,16 @@
     <Compile Include="Entities\UserAccount.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Initializers\BasicContentInitializer.cs" />
-    <Compile Include="Migrations\201703271820105_Initial.cs" />
-    <Compile Include="Migrations\201703271820105_Initial.Designer.cs">
-      <DependentUpon>201703271820105_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201703291727376_DefaultMigration.cs" />
+    <Compile Include="Migrations\201703291727376_DefaultMigration.Designer.cs">
+      <DependentUpon>201703291727376_DefaultMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\B1625DbRepository.cs" />
+    <Compile Include="Repositories\CommentsRepository.cs" />
     <Compile Include="Repositories\ProfileRepository.cs" />
+    <Compile Include="Repositories\PublicationsRepository.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,8 +112,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703271820105_Initial.resx">
-      <DependentUpon>201703271820105_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703291727376_DefaultMigration.resx">
+      <DependentUpon>201703291727376_DefaultMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

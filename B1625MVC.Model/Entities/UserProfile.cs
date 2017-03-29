@@ -30,13 +30,6 @@ namespace B1625MVC.Model.Entities
             }
             private set { }
         }
-        public string UserName
-        {
-            get
-            {
-                return User.UserName;
-            }
-        }
 
         public virtual ICollection<Publication> Publications { get; set; } = new List<Publication>();
         public virtual ICollection<Publication> LikedPublications { get; set; } = new List<Publication>();

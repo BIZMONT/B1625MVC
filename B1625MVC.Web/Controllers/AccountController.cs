@@ -43,7 +43,6 @@ namespace B1625MVC.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)

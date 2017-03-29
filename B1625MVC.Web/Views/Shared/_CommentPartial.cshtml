@@ -1,9 +1,9 @@
-﻿@using B1625MVC.Model.Entities
-@model Comment
+﻿@using B1625MVC.BLL.DTO
+@model CommentInfo
 
 <div class="comment">
     <div class="comment-author">
-        @Html.RouteLink(@Model.Author.UserName, new { controller = "Account", action = "UserProfile", username = Model.Author.UserName })
+        @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
         @Html.ActionLink("Up","RateUp")
         <span>@Model.Rating</span>
         @Html.ActionLink("Down", "RateDown")

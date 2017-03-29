@@ -49,7 +49,7 @@ namespace B1625MVC.Web
 
             routes.MapRoute(
                 name: null,
-                url: "{action}",
+                url: "{controller}/{action}",
                 defaults: new { controller = "Home", action = "Hot" },
                 namespaces: new string[] { "B1625MVC.Web.Controllers" }
             );

@@ -14,7 +14,9 @@ namespace B1625MVC.Model.Repositories
         private B1625DbContext _dbContext;
         private UserAccountManager _accountManager;
         private UserRoleManager _roleManager;
-        private ProfileRepository _profileRepo;
+        private ProfileRepository _profilesRepo;
+        private PublicationsRepository _publicationsRepo;
+        private CommentsRepository _commentsRepo;
 
         public B1625DbRepository(string connectionString)
         {
@@ -24,14 +26,30 @@ namespace B1625MVC.Model.Repositories
             _accountManager = UserAccountManager.Create(_dbContext);
             _roleManager = new UserRoleManager(new RoleStore<UserRole>(_dbContext));
 
-            _profileRepo = new ProfileRepository(_dbContext);
+            _profilesRepo = new ProfileRepository(_dbContext);
+            _publicationsRepo = new PublicationsRepository(_dbContext);
+            _commentsRepo = new CommentsRepository(_dbContext);
         }
 
         public IEntityRepository<UserProfile, string> Profiles
         {
             get
             {
-                return _profileRepo;
+                return _profilesRepo;
+            }
+        }
+        public IEntityRepository<Publication, long> Publications
+        {
+            get
+            {
+                return _publicationsRepo;
+            }
+        }
+        public IEntityRepository<Comment, long> Comments
+        {
+            get
+            {
+                return _commentsRepo;
             }
         }
 

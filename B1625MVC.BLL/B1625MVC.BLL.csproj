@@ -56,13 +56,21 @@
   <ItemGroup>
     <Compile Include="Abstract\IContentService.cs" />
     <Compile Include="DTO\BaseUserData.cs" />
+    <Compile Include="DTO\CommentInfo.cs" />
+    <Compile Include="DTO\ContentInfo.cs" />
+    <Compile Include="DTO\ContentType.cs" />
+    <Compile Include="DTO\CreatePublicationData.cs" />
     <Compile Include="DTO\CreateUserData.cs" />
     <Compile Include="DTO\EditUserData.cs" />
+    <Compile Include="DTO\PublicationInfo.cs" />
+    <Compile Include="DTO\RateAction.cs" />
+    <Compile Include="DTO\RateState.cs" />
     <Compile Include="DTO\UserInfo.cs" />
     <Compile Include="OperationDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Abstract\IUserService.cs" />
+    <Compile Include="Services\ContentService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
