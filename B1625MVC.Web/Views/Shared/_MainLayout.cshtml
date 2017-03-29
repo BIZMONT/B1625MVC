@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using B1625MVC.Web.Helpers
+@{ 
+    IEnumerable<RouteLink> links = new List<RouteLink>()
+    {
+        new RouteLink("Hot", new { controller = "Home", action = "Hot" }),
+        new RouteLink("Best", new { controller = "Home", action = "Best" }),
+        new RouteLink("Fresh", new { controller = "Home", action = "Fresh" })
+    };
+    var loginLink = new RouteLink("Log in", new { area = "", controller = "Account", action = "Login" });
+    var logoutLink = new RouteLink("Log out", new { area = "", controller = "Account", action = "Logout" });
+    var userLink = new RouteLink(User.Identity.Name, new { area = "", controller = "Account", action = "UserProfile", username = User.Identity.Name });
+    var registrationLink = new RouteLink("Register", new { area = "", controller = "Account", action = "Registration" });
+}
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -7,38 +20,10 @@
     <link rel="stylesheet" type="text/css" href="~/Content/MenuStyle.css" />
     @RenderSection("Styles", false)
 </head>
-<body style="font-family:Arial, Helvetica, sans-serif; margin:0px">
+<body style="font-family:Arial, Helvetica, sans-serif; margin:0px; height:100vh;">
     <div>
         <div class="menu">
-            <ul>
-                <li>
-                    @Html.RouteLink("Hot", new { controller = "Home", action = "Hot" })
-                </li>
-                <li>
-                    @Html.RouteLink("Best", new { controller = "Home", action = "Best" })
-                </li>
-                <li>
-                    @Html.RouteLink("Fresh", new { controller = "Home", action = "Fresh" })
-                </li>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <li style="float:right">
-                        @Html.RouteLink("Log out", new { area = "", controller = "Account", action = "Logout" })
-                    </li>
-                    <li style="float:right">
-                        @Html.RouteLink(User.Identity.Name, new { area = "", controller = "Account", action = "UserProfile", username = User.Identity.Name })
-                    </li>
-                }
-                else
-                {
-                    <li style="float:right">
-                        @Html.RouteLink("Log in", new { area = "", controller = "Account", action = "Login" })
-                    </li>
-                    <li style="float:right">
-                        @Html.RouteLink("Register", new { area = "", controller = "Account", action = "Registration" })
-                    </li>
-                }
-            </ul>
+           @Html.NavigationBar(links, loginLink, logoutLink, userLink, registrationLink);
         </div>
         <div style="display: table;margin-left:auto;margin-right:auto;margin-top:48px; padding-top:10px;padding-left:10px;padding-right:10px; ">
             @RenderBody()

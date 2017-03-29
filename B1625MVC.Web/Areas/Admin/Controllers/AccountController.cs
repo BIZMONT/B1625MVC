@@ -5,6 +5,7 @@ using B1625MVC.Web.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -25,33 +26,66 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
 
         public ActionResult List()
         {
-            var users = UserService.GetAll();
-            return View(users);
+            return View();
         }
 
         [HttpGet]
-        public async Task<ActionResult> Edit(string accountId)
+        public ActionResult Edit(string username)
         {
             EditUserViewModel viewData = null;
-            var userData = await UserService.GetAsync(accountId);
-            if(userData != null)
+            var userData = UserService.Find(ua => ua.UserName == username).FirstOrDefault();
+            if (userData != null)
             {
-                //TODO: Edit user
+                viewData = new EditUserViewModel()
+                {
+                    Id = userData.Id,
+                    UserName = userData.UserName,
+                    Email = userData.Email,
+                    Avatar = userData.Avatar,
+                    Roles = userData.Roles
+                };
+                return View(viewData);
             }
-            return View(viewData);
+            return HttpNotFound();
         }
 
-        public async Task<ActionResult> Edit(EditUserViewModel userData)
+        [HttpPost]
+        public async Task<ActionResult> Edit(HttpPostedFileBase avatarFile, EditUserViewModel userData)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                UserDataDto userDto = new UserDataDto()
+                byte[] avatar = null;
+                if (avatarFile != null && avatarFile.ContentLength > 0)
                 {
-                    //TODO: Add data
+                    byte[] buffer = new byte[avatarFile.ContentLength];
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        int read;
+                        while ((read = avatarFile.InputStream.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            ms.Write(buffer, 0, read);
+                        }
+                        avatar = ms.ToArray();
+                    }
+                }
+                var old = await UserService.GetAsync(userData.Id);
+                EditUserData userDto = new EditUserData()
+                {
+                    Id = userData.Id,
+                    UserName = userData.UserName,
+                    Email = userData.Email,
+                    Roles = userData.Roles,
+                    Avatar = avatar,
+                    NewPassword = userData.NewPassword
                 };
+
                 var result = await UserService.UpdateAsync(userDto);
-                if(result.Succedeed)
+                if (result.Succedeed)
                 {
+                    if(!string.IsNullOrEmpty(userData.NewPassword) && User.Identity.Name == old.UserName)
+                    {
+                        return RedirectToRoute(new { area = "", controller = "Account", action = "Logout" });
+                    }
                     return RedirectToRoute(new { area = "Admin", controller = "Account", action = "List" });
                 }
                 ModelState.AddModelError("", result.Message);
@@ -59,10 +93,14 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
             return View(userData);
         }
 
-        public async Task<ActionResult> Details(string accountId)
+        public ActionResult Details(string username)
         {
-            UserDataDto user = await UserService.GetAsync(accountId);
-            return View(user);
+            UserInfo user = UserService.Find(ui => ui.UserName == username).FirstOrDefault();
+            if (user != null)
+            {
+                return View(user);
+            }
+            return HttpNotFound();
         }
 
         [HttpGet]
@@ -76,12 +114,14 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserDataDto userDto = new UserDataDto()
+                CreateUserData userDto = new CreateUserData()
                 {
                     UserName = userData.UserName,
-                    Email = userData.Email
+                    Email = userData.Email,
+                    NewPassword = userData.Password,
+                    Roles = roles ?? new string[] { "Users" }
                 };
-                var result = await UserService.CreateAsync(userDto, userData.Password, roles);
+                var result = await UserService.CreateAsync(userDto);
                 if (result.Succedeed)
                 {
                     return RedirectToRoute(new { area = "Admin", controller = "Account", action = "List" });
@@ -99,6 +139,21 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
                 ModelState.AddModelError("", result.Message);
             }
             return RedirectToRoute(new { area = "Admin", controller = "Account", action = "List" });
+        }
+
+        public ActionResult UsersTable(string usernameFilter)
+        {
+            IEnumerable<UserInfo> users;
+            if (usernameFilter == null)
+            {
+                users = UserService.GetAll();
+            }
+            else
+            {
+                users = UserService.Find(ud => ud.UserName == usernameFilter);
+            }
+            ViewBag.UsernameFilter = usernameFilter;
+            return PartialView("_UsersTable", users);
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿@using B1625MVC.Model.Entities
-@model IEnumerable<Publication>
+﻿@*using B1625MVC.Model.Entities*@
+@*model IEnumerable<Publication>*@
 
 @{ 
     ViewBag.Title = this.ViewContext.RouteData.GetRequiredString("action");
@@ -10,10 +10,11 @@
 }
 
 <div>
-    @foreach (var publication in Model)
+    Hello
+    @*foreach (var publication in Model)
     {
         @Html.Partial("_Publication", publication)
-    }
+    }*@
 </div>
 
 

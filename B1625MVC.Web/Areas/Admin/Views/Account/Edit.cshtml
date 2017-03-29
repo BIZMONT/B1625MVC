@@ -1,8 +1,44 @@
-﻿@model B1625MVC.BLL.DTO.UserDataDto
+﻿@model B1625MVC.Web.Areas.Admin.Models.EditUserViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>@Model.UserName</h2>
 
+@if (Model.Avatar != null)
+{
+    <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" />
+}
+
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        <input type="file" name="avatarFile" />
+    </div>
+    @Html.HiddenFor(m => m.Id)
+    <div>
+        @Html.LabelFor(m => m.UserName)
+        <br />
+        @Html.EditorFor(m => m.UserName)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Email)
+        <br />
+        @Html.EditorFor(m => m.Email)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.NewPassword)
+        <br />
+        @Html.PasswordFor(m => m.NewPassword)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.NewPasswordConfirm)
+        <br />
+        @Html.PasswordFor(m => m.NewPasswordConfirm)
+    </div>
+    <div>
+        <input type="submit" value="Confirm" />
+    </div>
+}
+@Html.ValidationSummary(true)

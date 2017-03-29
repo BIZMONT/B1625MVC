@@ -21,7 +21,7 @@ namespace B1625MVC.Model.Repositories
             Database.SetInitializer(new BasicContentInitializer());
             _dbContext = new B1625DbContext(connectionString);
 
-            _accountManager = new UserAccountManager(new UserStore<UserAccount>(_dbContext));
+            _accountManager = UserAccountManager.Create(_dbContext);
             _roleManager = new UserRoleManager(new RoleStore<UserRole>(_dbContext));
 
             _profileRepo = new ProfileRepository(_dbContext);

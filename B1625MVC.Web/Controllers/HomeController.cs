@@ -20,10 +20,8 @@ namespace B1625MVC.Web.Controllers
         public ActionResult Hot(int page = 1)
         {
             /*var publications = DataRepository.Publications.Skip(20 * (page - 1)).Take(20);
-
-            return View("Publications", publications);
             */
-            return HttpNotFound();
+            return View("Publications");
         }
 
         public ActionResult Fresh(int page = 1)

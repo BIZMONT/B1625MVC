@@ -6,11 +6,6 @@ namespace B1625MVC.Model.Entities
 {
     public class UserProfile
     {
-        public UserProfile()
-        {
-            RegistrationDate = DateTime.Now;
-        }
-
         public string AccountId { get; set; }
 
         public byte[] Avatar { get; set; }
@@ -33,6 +28,7 @@ namespace B1625MVC.Model.Entities
                 }
                 return rating;
             }
+            private set { }
         }
         public string UserName
         {

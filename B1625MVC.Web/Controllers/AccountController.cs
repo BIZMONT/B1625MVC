@@ -1,4 +1,5 @@
 ﻿using B1625MVC.BLL.Abstract;
+using B1625MVC.BLL.DTO;
 using B1625MVC.Web.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -42,58 +43,81 @@ namespace B1625MVC.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                var claim = await UserService.AuthenticateAsync(model.EmailOrUserName, model.Password);
-                if (claim == null)
+                if (await LoginAsync(model.EmailOrUserName, model.Password, model.RememberMe))
                 {
-                    ModelState.AddModelError("", "Wrong email or password");
-                }
-                else
-                {
-                    AuthenticationManager.SignOut();
-                    AuthenticationManager.SignIn(new AuthenticationProperties()
+                    if (returnUrl == null)
                     {
-                        IsPersistent = model.RememberMe
-                    }, claim);
-                    if(returnUrl == null)
-                    {
-                        return RedirectToRoute(new { controller = "Home" });
+                        return RedirectToRoute(new { controller = "Home", action = "Hot" });
                     }
                     else
                     {
                         return Redirect(returnUrl);
                     }
                 }
+                ModelState.AddModelError("", "Wrong username or password");
             }
             return View(model);
         }
-        
+
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
-            return RedirectToRoute(new { controller = "Home" });
+            return RedirectToRoute(new { controller = "Home", action = "Hot" });
 
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public ActionResult Registration()
         {
             return View();
         }
 
         [AllowAnonymous]
+        [HttpPost]
         public async Task<ActionResult> Registration(RegistrationViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return Redirect("homepage");
+                var userData = new CreateUserData()
+                {
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    NewPassword = model.Password,
+                    Roles = new string[] { "Users" }
+                };
+
+                var result = await UserService.CreateAsync(userData);
+                if (result.Succedeed)
+                {
+                    await LoginAsync(model.Email, model.Password, false);
+                    return RedirectToRoute(new { controller = "Home", action = "Hot" });
+                }
+                ModelState.AddModelError("", result.Message);
+            }
+            return View(model);
+        }
+
+        private async Task<bool> LoginAsync(string emailOrUsername, string password, bool rememberMe)
+        {
+            var claim = await UserService.AuthenticateAsync(emailOrUsername, password);
+            if (claim == null)
+            {
+                return false;
             }
             else
             {
-                return View(model);
+                AuthenticationManager.SignOut();
+                AuthenticationManager.SignIn(new AuthenticationProperties()
+                {
+                    IsPersistent = rememberMe
+                }, claim);
+                return true;
             }
         }
     }

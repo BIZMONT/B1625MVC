@@ -2,6 +2,7 @@
 using System.Data.Entity.ModelConfiguration;
 
 using B1625MVC.Model.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace B1625MVC.Model.EntitiesConfigs
 {
@@ -15,7 +16,7 @@ namespace B1625MVC.Model.EntitiesConfigs
             Property(up => up.Gender).IsOptional();
             Property(up => up.RegistrationDate).IsRequired();
 
-            Ignore(up => up.Rating);
+            Property(up => up.Rating).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             Ignore(up => up.UserName);
         }
     }

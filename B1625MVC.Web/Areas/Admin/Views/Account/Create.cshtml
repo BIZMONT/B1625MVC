@@ -5,7 +5,7 @@
 }
 
 <h2>Create</h2>
-@Html.ValidationSummary(false)
+
 @using (Html.BeginForm())
 {
     <div>
@@ -20,13 +20,14 @@
     </div>
     <div>
         @Html.LabelFor(rm => rm.Password)
-        @Html.EditorFor(rm => rm.Password)
+        @Html.PasswordFor(rm => rm.Password)
     </div>
     <div>
         @Html.LabelFor(rm => rm.PasswordConfirm)
-        @Html.EditorFor(rm => rm.PasswordConfirm)
+        @Html.PasswordFor(rm => rm.PasswordConfirm)
         @Html.ValidationMessageFor(rm => rm.UserName)
     </div>
     <input type="submit" value="Submit" />
 }
+@Html.ValidationSummary(true)
 

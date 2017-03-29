@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,8 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IContentService.cs" />
-    <Compile Include="DTO\PublicationDataDto.cs" />
-    <Compile Include="DTO\UserDataDto.cs" />
+    <Compile Include="DTO\BaseUserData.cs" />
+    <Compile Include="DTO\CreateUserData.cs" />
+    <Compile Include="DTO\EditUserData.cs" />
+    <Compile Include="DTO\UserInfo.cs" />
     <Compile Include="OperationDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceProvider.cs" />

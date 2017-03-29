@@ -15,7 +15,12 @@ namespace B1625MVC.Web.Areas.Admin
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                name: "Admin_default",
+                name: null,
+                url: "Admin/Users/Details/{username}",
+                defaults: new { controller = "Account", action = "Details" }
+            );
+            context.MapRoute(
+                name: null,
                 url: "Admin/Users/{action}",
                 defaults: new { controller = "Account", action = "List" }
             );

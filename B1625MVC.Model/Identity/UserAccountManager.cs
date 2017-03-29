@@ -1,8 +1,8 @@
 ﻿using B1625MVC.Model.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
+using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace B1625MVC.Model.Identity
 {
@@ -12,10 +12,9 @@ namespace B1625MVC.Model.Identity
         {
         }
 
-        public static UserAccountManager Create(IdentityFactoryOptions<UserAccountManager> options, IOwinContext context)
+        public static UserAccountManager Create(DbContext dbContext)
         {
-            var dbContext = context.Get<B1625DbContext>();
-            var manager = new UserAccountManager(new UserStore<UserAccount>());
+            var manager = new UserAccountManager(new UserStore<UserAccount>(dbContext));
 
             manager.UserValidator = new UserValidator<UserAccount>(manager)
             {
@@ -33,6 +32,13 @@ namespace B1625MVC.Model.Identity
             };
 
             return manager;
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(UserAccount account, string newPassword)
+        {
+            var newPasswordHash = PasswordHasher.HashPassword(newPassword);
+            account.PasswordHash = newPasswordHash;
+            return await Task.FromResult(IdentityResult.Success);
         }
     }
 }

@@ -4,25 +4,25 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
-@Html.ValidationSummary(false)
+<h2 style="text-align:center">Login</h2>
 @using (Html.BeginForm())
 {
     <div>
-        @Html.LabelFor(lvm => lvm.EmailOrUserName)
-        @Html.TextBoxFor(lvm => lvm.EmailOrUserName)
         @Html.ValidationMessageFor(lvm => lvm.EmailOrUserName)
+        @Html.TextBoxFor(lvm => lvm.EmailOrUserName, new { placeholder ="Username or email", style = "margin: 5px 0;font-size:16px;padding:5px" })
     </div>
     <div>
-        @Html.LabelFor(lvm => lvm.Password)
-        @Html.PasswordFor(lvm => lvm.Password)
         @Html.ValidationMessageFor(lvm => lvm.Password)
+        @Html.PasswordFor(lvm => lvm.Password, new { placeholder = "Password", style = "margin: 5px 0;font-size:16px;padding:5px" })
     </div>
     <div>
-        @Html.LabelFor(lvm => lvm.RememberMe)
         @Html.CheckBoxFor(lvm => lvm.RememberMe)
+        @Html.LabelFor(lvm => lvm.RememberMe)
     </div>
-
-    <input type="submit" value="Login" />
+    <div>
+        <input type="submit" value="Login" style="width: 100%;padding: 4px;margin: 5px 0;display: inline-block;box-sizing: border-box;font-size:16px;" />
+    </div>
 }
+
+@Html.ValidationSummary(true)
 

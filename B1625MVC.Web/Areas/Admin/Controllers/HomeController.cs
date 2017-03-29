@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace B1625MVC.Web.Areas.Admin.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Administrators")]
     public class HomeController : Controller
     {
         // GET: Admin/Home

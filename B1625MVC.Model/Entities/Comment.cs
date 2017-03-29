@@ -23,6 +23,7 @@ namespace B1625MVC.Model.Entities
             {
                 return LikedBy.Count - DislikedBy.Count;
             }
+            private set { }
         }
 
         public string AuthorId { get; set; }

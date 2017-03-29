@@ -22,25 +22,48 @@ namespace B1625MVC.BLL.Services
         }
 
 
-        public async Task<OperationDetails> CreateAsync(UserDataDto userDto, string password, string[] roles)
+        public async Task<OperationDetails> CreateAsync(CreateUserData userData)
         {
-            var accountByEmail = await b1625Repo.AccountManager.FindByEmailAsync(userDto.Email);
-            var accountByName = await b1625Repo.AccountManager.FindByNameAsync(userDto.UserName);
+            var accountByEmail = await b1625Repo.AccountManager.FindByEmailAsync(userData.Email);
+            var accountByName = await b1625Repo.AccountManager.FindByNameAsync(userData.UserName);
 
             if (accountByEmail == null && accountByName == null)
             {
-                var account = new UserAccount() { Email = userDto.Email, UserName = userDto.UserName, Profile = new UserProfile()
+                var account = new UserAccount()
                 {
-                    Avatar = userDto.Avatar,
-                    Gender = userDto.Gender,
-                }};
-                var result = await b1625Repo.AccountManager.CreateAsync(account, password);
+                    Email = userData.Email,
+                    UserName = userData.UserName,
+                    Profile = new UserProfile()
+                    {
+                        Avatar = userData.Avatar,
+                        Gender = userData.Gender,
+                        RegistrationDate = DateTime.Now
+                    }
+                };
+                var result = await b1625Repo.AccountManager.CreateAsync(account, userData.NewPassword);
                 if (!result.Succeeded)
                 {
-                    return new OperationDetails(false, "Can`t create new account");
+                    return new OperationDetails(false, "Can`t create new account:" + string.Concat(result.Errors));
                 }
 
-                await b1625Repo.AccountManager.AddToRolesAsync(account.Id, roles);
+                if (userData.Roles != null)
+                {
+                    foreach (string role in userData.Roles)
+                    {
+                        if (await b1625Repo.RoleManager.RoleExistsAsync(role))
+                        {
+                            result = await b1625Repo.AccountManager.AddToRoleAsync(account.Id, role);
+                            if (!result.Succeeded)
+                            {
+                                return new OperationDetails(false, $"Can`t add role \"{role}\" to {userData.UserName}");
+                            }
+                        }
+                        else
+                        {
+                            return new OperationDetails(false, $"Can`t add role \"{role}\" to {userData.UserName}, because this role doesn't exist in database");
+                        }
+                    }
+                }
                 return new OperationDetails(true, "User account added suceessfully");
             }
             else
@@ -64,32 +87,58 @@ namespace B1625MVC.BLL.Services
             return new OperationDetails(true, $"Account with id \"{id}\" successfully deleted");
         }
 
-        public async Task<OperationDetails> UpdateAsync(UserDataDto userDto)
+        public async Task<OperationDetails> UpdateAsync(EditUserData userData)
         {
-            var account = await b1625Repo.AccountManager.FindByIdAsync(userDto.Id);
-            var profile = b1625Repo.Profiles.Get(userDto.Id);
-
+            var account = await b1625Repo.AccountManager.FindByIdAsync(userData.Id);
+            var profile = b1625Repo.Profiles.Get(userData.Id);
+            IdentityResult result = null;
             if (account != null && profile != null)
             {
-                if (account.Email != userDto.Email)
+                if (account.Email != userData.Email && !string.IsNullOrEmpty(userData.Email))
                 {
-                    account.Email = userDto.Email;
+                    account.Email = userData.Email;
                     account.EmailConfirmed = false;
                 }
 
-                b1625Repo.AccountManager.RemoveFromRoles(userDto.Id, b1625Repo.RoleManager.Roles.Select(r => r.Name).ToArray());
-                var result = await b1625Repo.AccountManager.AddToRolesAsync(userDto.Id, userDto.Roles.ToArray());
-
-                if(!result.Succeeded)
+                if(!string.IsNullOrEmpty(userData.UserName))
                 {
-                    return new OperationDetails(false, "Can`t add this user to roles");
+                    account.UserName = userData.UserName;
                 }
 
-                profile.Gender = userDto.Gender;
-                profile.Avatar = userDto.Avatar;
+                if (!string.IsNullOrEmpty(userData.NewPassword))
+                {
+                    result = await b1625Repo.AccountManager.ChangePasswordAsync(account, userData.NewPassword);
+                    if (!result.Succeeded)
+                    {
+                        return new OperationDetails(false, $"Can`t change password");
+                    }
+                }
+
+                if (userData.Roles != null)
+                {
+                    b1625Repo.AccountManager.RemoveFromRoles(userData.Id, b1625Repo.RoleManager.Roles.Select(r => r.Name).ToArray());
+                    foreach (string role in userData.Roles)
+                    {
+                        if (await b1625Repo.RoleManager.RoleExistsAsync(role))
+                        {
+                            result = await b1625Repo.AccountManager.AddToRoleAsync(account.Id, role);
+                            if (!result.Succeeded)
+                            {
+                                return new OperationDetails(false, $"Can`t add role \"{role}\" to {userData.UserName}");
+                            }
+                        }
+                        else
+                        {
+                            return new OperationDetails(false, $"Can`t add role \"{role}\" to {userData.UserName}, because this role doesn't exist in database");
+                        }
+                    }
+                }
+
+                profile.Gender = userData.Gender;
+                profile.Avatar = userData.Avatar;
 
                 b1625Repo.Profiles.Update(profile);
-          
+
                 result = await b1625Repo.AccountManager.UpdateAsync(account);
                 if (!result.Succeeded)
                 {
@@ -102,9 +151,9 @@ namespace B1625MVC.BLL.Services
             return new OperationDetails(false, "Can`t find user with this id!");
         }
 
-        public IEnumerable<UserDataDto> Find(Func<UserDataDto, bool> predicate)
+        public IEnumerable<UserInfo> Find(Func<UserInfo, bool> predicate)
         {
-            var allUsers = b1625Repo.AccountManager.Users.Join(b1625Repo.Profiles.GetAll(), ua => ua.Id, up => up.AccountId, (ua, up) => new UserDataDto()
+            var allUsers = b1625Repo.AccountManager.Users.Join(b1625Repo.Profiles.GetAll(), ua => ua.Id, up => up.AccountId, (ua, up) => new UserInfo()
             {
                 Id = ua.Id,
                 Email = ua.Email,
@@ -115,17 +164,17 @@ namespace B1625MVC.BLL.Services
                 Rating = up.Rating
             });
 
-            return allUsers.Where(predicate);
+            return allUsers.Where(predicate).ToList();
         }
 
-        public async Task<UserDataDto> GetAsync(string id)
+        public async Task<UserInfo> GetAsync(string id)
         {
-            UserDataDto userData = null;
+            UserInfo userData = null;
             var account = await b1625Repo.AccountManager.FindByIdAsync(id);
             if (account != null)
             {
                 var profile = b1625Repo.Profiles.Get(account.Id);
-                userData = new UserDataDto()
+                userData = new UserInfo()
                 {
                     Id = account.Id,
                     Email = account.Email,
@@ -139,9 +188,9 @@ namespace B1625MVC.BLL.Services
             return userData;
         }
 
-        public IEnumerable<UserDataDto> GetAll()
+        public IEnumerable<UserInfo> GetAll()
         {
-            return b1625Repo.AccountManager.Users.ToList().Join(b1625Repo.Profiles.GetAll(), ua => ua.Id, up => up.AccountId, (ua, up) => new UserDataDto()
+            return b1625Repo.AccountManager.Users.ToList().Join(b1625Repo.Profiles.GetAll(), ua => ua.Id, up => up.AccountId, (ua, up) => new UserInfo()
             {
                 Id = ua.Id,
                 Email = ua.Email,
@@ -174,6 +223,12 @@ namespace B1625MVC.BLL.Services
             }
 
             return claim;
+        }
+
+        public async Task<bool> CheckPasswordAsync(string userId, string password)
+        {
+            var account = await b1625Repo.AccountManager.FindByIdAsync(userId);
+            return await b1625Repo.AccountManager.CheckPasswordAsync(account, password);
         }
 
         public void Dispose()

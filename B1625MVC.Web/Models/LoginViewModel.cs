@@ -9,6 +9,7 @@ namespace B1625MVC.Web.Models
     public class LoginViewModel
     {
         [Required]
+        [Display(Name ="Username or email")]
         public string EmailOrUserName { get; set; }
 
         [DataType(DataType.Password)]

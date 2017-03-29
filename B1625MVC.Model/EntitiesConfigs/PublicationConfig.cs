@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 
 using B1625MVC.Model.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace B1625MVC.Model.EntitiesConfigs
 {
@@ -15,7 +16,7 @@ namespace B1625MVC.Model.EntitiesConfigs
             Property(p => p.ContentType).IsRequired();
             Property(p => p.PublicationDate).IsRequired();
 
-            Ignore(p => p.Rating);
+            Property(p => p.Rating).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
         }
     }
 }

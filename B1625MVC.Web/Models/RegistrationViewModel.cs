@@ -21,6 +21,7 @@ namespace B1625MVC.Web.Models
 
         [Required]
         [DataType(DataType.Password)]
+        [Compare("Password")]
         public string PasswordConfirm { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace B1625MVC.Model.Initializers
         {
             base.Seed(context);
 
-            UserAccountManager accountManager = new UserAccountManager(new UserStore<UserAccount>(context));
+            UserAccountManager accountManager = UserAccountManager.Create(context);
             UserRoleManager roleManager = new UserRoleManager(new RoleStore<UserRole>(context));
             MemoryStream memStream = new MemoryStream();
 
@@ -30,12 +30,13 @@ namespace B1625MVC.Model.Initializers
             var admin = accountManager.FindByName("admin");
             if (admin == null)
             {
-                admin = new UserAccount() { UserName = "admin", Email = "bizmonto@gmail.com" };
+                admin = new UserAccount() { UserName = "admin", Email = "admin@example.com" };
                 var result  = accountManager.Create(admin, "adminadmin");
                 if(!result.Succeeded)
                 {
                 }
                 accountManager.AddToRole(admin.Id, "Administrators");
+                accountManager.AddToRole(admin.Id, "Users");
 
                 Resources.AdminAvatar.Save(memStream, ImageFormat.Jpeg);
                 var profile = new UserProfile()
@@ -70,6 +71,8 @@ namespace B1625MVC.Model.Initializers
                 ContentType = ContentType.Text,
                 Content = Encoding.Default.GetBytes("Welcome to site!")
             };
+
+            textPost.LikedBy.Add(admin.Profile);
 
             admin.Profile.Publications.Add(imagePost);
             admin.Profile.Publications.Add(textPost);
