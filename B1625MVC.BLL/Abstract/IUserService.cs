@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+
 using B1625MVC.BLL.DTO;
 
 namespace B1625MVC.BLL.Abstract
@@ -16,5 +17,6 @@ namespace B1625MVC.BLL.Abstract
         IEnumerable<UserInfo> GetAll();
         Task<OperationDetails> UpdateAsync(EditUserData userData);
         Task<bool> CheckPasswordAsync(string userId, string password);
+        bool IsUserExist(string username);
     }
 }

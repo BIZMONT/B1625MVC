@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using System.Data.Entity;
 using Microsoft.AspNet.Identity;
 
 using B1625MVC.BLL.DTO;
@@ -20,7 +21,6 @@ namespace B1625MVC.BLL.Services
         {
             _b1625Repo = repository;
         }
-
 
         public async Task<OperationDetails> CreateAsync(CreateUserData userData)
         {
@@ -153,18 +153,18 @@ namespace B1625MVC.BLL.Services
 
         public IEnumerable<UserInfo> Find(Func<UserInfo, bool> predicate)
         {
-            var allUsers = _b1625Repo.AccountManager.Users.Join(_b1625Repo.Profiles.GetAll(), ua => ua.Id, up => up.AccountId, (ua, up) => new UserInfo()
+            var allRoles = _b1625Repo.RoleManager.Roles.AsEnumerable();
+            var allUsers = _b1625Repo.AccountManager.Users.Include(u => u.Profile).Select(ua => new UserInfo()
             {
                 Id = ua.Id,
                 Email = ua.Email,
                 UserName = ua.UserName,
-                Gender = up.Gender,
-                Avatar = up.Avatar,
-                Roles = ua.Roles.Join(_b1625Repo.RoleManager.Roles, umr => umr.RoleId, rmr => rmr.Id, (umr, rmr) => rmr.Name),
-                Rating = up.Rating
+                Gender = ua.Profile.Gender,
+                Avatar = ua.Profile.Avatar,
+                Rating = ua.Profile.Rating,
+                Roles = ua.Roles.Join(allRoles, umr => umr.RoleId, rmr => rmr.Id, (umr, rmr) => rmr.Name)
             });
-
-            return allUsers.Where(predicate).ToList();
+            return allUsers.Where(predicate).AsEnumerable();
         }
 
         public async Task<UserInfo> GetAsync(string id)
@@ -190,16 +190,17 @@ namespace B1625MVC.BLL.Services
 
         public IEnumerable<UserInfo> GetAll()
         {
-            return _b1625Repo.AccountManager.Users.ToList().Join(_b1625Repo.Profiles.GetAll(), ua => ua.Id, up => up.AccountId, (ua, up) => new UserInfo()
+            var allRoles = _b1625Repo.RoleManager.Roles.AsEnumerable();
+            return _b1625Repo.AccountManager.Users.Include(u=> u.Profile).Select(ua => new UserInfo()
             {
                 Id = ua.Id,
                 Email = ua.Email,
                 UserName = ua.UserName,
-                Gender = up.Gender,
-                Avatar = up.Avatar,
-                Roles = ua.Roles.Join(_b1625Repo.RoleManager.Roles, umr => umr.RoleId, rmr => rmr.Id, (umr, rmr) => rmr.Name),
-                Rating = up.Rating //TODO: Problems with rating
-            });
+                Gender = ua.Profile.Gender,
+                Avatar = ua.Profile.Avatar,
+                Rating = ua.Profile.Rating,
+                Roles = ua.Roles.Join(allRoles, umr => umr.RoleId, rmr => rmr.Id, (umr, rmr) => rmr.Name)
+            }).AsEnumerable();
         }
 
         public async Task<ClaimsIdentity> AuthenticateAsync(string emailOrUserName, string password)
@@ -229,6 +230,11 @@ namespace B1625MVC.BLL.Services
         {
             var account = await _b1625Repo.AccountManager.FindByIdAsync(userId);
             return await _b1625Repo.AccountManager.CheckPasswordAsync(account, password);
+        }
+
+        public bool IsUserExist(string username)
+        {
+            return _b1625Repo.AccountManager.FindByName(username) != null;
         }
 
         public void Dispose()

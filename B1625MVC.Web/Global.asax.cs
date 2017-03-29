@@ -9,6 +9,7 @@ namespace B1625MVC.Web
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            FilterConfig.RegisterFilters(GlobalFilters.Filters);
         }
     }
 }
