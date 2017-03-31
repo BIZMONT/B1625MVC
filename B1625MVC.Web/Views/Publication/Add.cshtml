@@ -1,0 +1,32 @@
+﻿@using B1625MVC.BLL.DTO
+@model B1625MVC.Web.Models.NewPublicationViewModel
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Add</h2>
+
+@using (Html.BeginForm("Add", "Publication", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.LabelFor(p => p.Title)
+        <br />
+        @Html.TextBoxFor(p => p.Title)
+    </div>
+    <div>
+        @Html.LabelFor(p => p.ContentType)
+        <br />
+        @*Html.EditorFor(p => p.ContentType,"ContentTypeTemplate")*@
+        @Html.RadioButton("ContentType", ContentType.Image, true) Image
+        @Html.RadioButton("ContentType", ContentType.Text) Text
+    </div>
+    <div>
+        @Html.LabelFor(p => p.Text)
+        <br />
+        @Html.TextAreaFor(p => p.Text)
+    </div>
+    <div>
+        <input type="file" name="ImageFile" />
+    </div>
+    <input type="submit" value="Create" />
+}

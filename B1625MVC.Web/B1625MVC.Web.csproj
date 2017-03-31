@@ -177,6 +177,7 @@
     <Compile Include="Helpers\NavigationBarHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\NewPublicationViewModel.cs" />
     <Compile Include="Models\PublicationViewModel.cs" />
     <Compile Include="Models\RegistrationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -195,6 +196,8 @@
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Registration.cshtml" />
+    <Content Include="Views\Publication\Add.cshtml" />
+    <Content Include="Views\Shared\EditorTamplates\ContentTypeTemplate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -205,6 +208,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Comment\" />
+    <Folder Include="Views\Shared\DisplayTamplates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\B1625MVC.BLL\B1625MVC.BLL.csproj">

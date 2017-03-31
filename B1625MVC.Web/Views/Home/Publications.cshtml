@@ -1,6 +1,6 @@
 ﻿@using B1625MVC.BLL.DTO
 @model IEnumerable<PublicationInfo>
-@{ 
+@{
     ViewBag.Title = this.ViewContext.RouteData.GetRequiredString("action");
 }
 
@@ -9,6 +9,14 @@
 }
 
 <div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Html.RouteLink("Add publication", new { controller = "Publication", action = "Add" })
+    }
+</div>
+
+
+<div >
     @foreach (var publication in Model)
     {
         @Html.Partial("_Publication", publication)

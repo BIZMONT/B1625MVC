@@ -18,7 +18,8 @@ namespace B1625MVC.BLL.Services
             _b1625Repo = repository;
         }
 
-        public OperationDetails CreatePublication(CreatePublicationData publicationData)
+        #region PublicationMethods
+        public async Task<OperationDetails> CreatePublication(CreatePublicationData publicationData)
         {
             var author = _b1625Repo.Profiles.Find(p => p.User.UserName == publicationData.Author).FirstOrDefault();
 
@@ -34,6 +35,7 @@ namespace B1625MVC.BLL.Services
                 };
 
                 _b1625Repo.Publications.Create(newPublication);
+                await _b1625Repo.SaveChangesAsync();
                 return new OperationDetails(true, "New publication was created successfully");
             }
             return new OperationDetails(false, "Can`t find author in database");
@@ -41,6 +43,7 @@ namespace B1625MVC.BLL.Services
 
         public IEnumerable<PublicationInfo> FindPublications(Func<PublicationInfo, bool> predicate)
         {
+            //TODO: Publications filtering
             throw new NotImplementedException();
         }
 
@@ -58,24 +61,6 @@ namespace B1625MVC.BLL.Services
                 Title = p.Title,
                 Rating = p.Rating
             });
-        }
-
-        public IEnumerable<CommentInfo> GetPublicationComments(long publicationId)
-        {
-            return _b1625Repo.Comments.Find(c => c.PublicationId == publicationId).Select(c => new CommentInfo()
-            {
-                Id = c.CommentId,
-                Author = c.Author.User.UserName,
-                AuthorAvatar = c.Author.Avatar,
-                Content = c.Content,
-                PublicationDate = c.PublicationDate,
-                Rating = c.Rating
-            });
-        }
-
-        public void Dispose()
-        {
-            _b1625Repo.Dispose();
         }
 
         public PublicationInfo GetPublication(long publicationId)
@@ -108,11 +93,11 @@ namespace B1625MVC.BLL.Services
             {
                 if (rateAction == RateAction.Up)
                 {
-                    if(publication.DislikedBy.Contains(profile))
+                    if (publication.DislikedBy.Contains(profile))
                     {
                         publication.DislikedBy.Remove(profile);
                     }
-                    else if(!publication.LikedBy.Contains(profile))
+                    else if (!publication.LikedBy.Contains(profile))
                     {
                         publication.LikedBy.Add(profile);
                     }
@@ -135,9 +120,91 @@ namespace B1625MVC.BLL.Services
             return new OperationDetails(true, "Successfull");
         }
 
-        public async Task<OperationDetails> RateComment(long commentId, string name, RateAction up)
+        #endregion
+
+        #region Comment methods
+        public IEnumerable<CommentInfo> GetPublicationComments(long publicationId)
+        {
+            return _b1625Repo.Comments.Find(c => c.PublicationId == publicationId).Select(c => new CommentInfo()
+            {
+                Id = c.CommentId,
+                Author = c.Author.User.UserName,
+                AuthorAvatar = c.Author.Avatar,
+                Content = c.Content,
+                PublicationDate = c.PublicationDate,
+                Rating = c.Rating
+            });
+        }
+
+        public async Task<OperationDetails> RateComment(long commentId, string username, RateAction rateAction)
+        {
+            var comment = _b1625Repo.Publications.Get(commentId);
+            var profile = _b1625Repo.Profiles.Find(p => p.User.UserName == username).FirstOrDefault();
+
+            if (comment != null && profile != null)
+            {
+                if (rateAction == RateAction.Up)
+                {
+                    if (comment.DislikedBy.Contains(profile))
+                    {
+                        comment.DislikedBy.Remove(profile);
+                    }
+                    else if (!comment.LikedBy.Contains(profile))
+                    {
+                        comment.LikedBy.Add(profile);
+                    }
+                }
+                else
+                {
+                    if (comment.LikedBy.Contains(profile))
+                    {
+                        comment.LikedBy.Remove(profile);
+                    }
+                    else if (!comment.DislikedBy.Contains(profile))
+                    {
+                        comment.DislikedBy.Add(profile);
+                    }
+                }
+                _b1625Repo.Publications.Update(comment);
+                await _b1625Repo.SaveChangesAsync();
+            }
+
+            return new OperationDetails(true, "Successfull");
+        }
+
+        public CommentInfo GetComment(long commentId)
+        {
+            var comment = _b1625Repo.Comments.Get(commentId);
+            if (comment != null)
+            {
+                return new CommentInfo()
+                {
+                    Id = comment.CommentId,
+                    Author = comment.Author.User.UserName,
+                    AuthorAvatar = comment.Author.Avatar,
+                    Content = comment.Content,
+                    Rating = comment.Rating,
+                    PublicationDate = comment.PublicationDate
+                };
+            }
+            return null;
+        }
+
+        public IEnumerable<CommentInfo> FindComments(Func<CommentInfo, bool> predicate)
+        {
+            //TODO: Comments filtering
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationDetails> AddComment(CommentInfo comment, long publicationId)
         {
             throw new NotImplementedException();
+        }
+        #endregion
+
+        public void Dispose()
+        {
+            _b1625Repo.Dispose();
         }
     }
 }

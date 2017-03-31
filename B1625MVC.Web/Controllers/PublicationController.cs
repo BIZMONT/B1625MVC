@@ -4,9 +4,10 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using B1625MVC.Web.Models;
 using B1625MVC.BLL.Abstract;
-using System;
 using B1625MVC.BLL;
 using B1625MVC.BLL.DTO;
+using System.IO;
+using System.Text;
 
 namespace B1625MVC.Web.Controllers
 {
@@ -56,16 +57,53 @@ namespace B1625MVC.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public ActionResult Add()
         {
-            throw new NotImplementedException();
+            return View();
         }
 
         [Authorize]
-        public Task<ActionResult> Add(PublicationViewModel model)
+        public async Task<ActionResult> Add(NewPublicationViewModel model)
         {
-            //TODO: Add publication to database
-            throw new NotImplementedException();
+            byte[] content = null;
+            if (model.ContentType == ContentType.Image)
+            {
+                if (Request.Files.Count > 0)
+                {
+                    var file = Request.Files[0];
+                    byte[] buffer = new byte[file.ContentLength];
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        int read;
+                        while ((read = file.InputStream.Read(buffer, 0, file.ContentLength)) > 0)
+                        {
+                            ms.Write(buffer, 0, read);
+                        }
+                        content = ms.ToArray();
+                    }
+                }
+            }
+            else
+            {
+                content = Encoding.Default.GetBytes(model.Text);
+            }
+
+            var publication = new CreatePublicationData()
+            {
+                Author = User.Identity.Name,
+                Content = content,
+                ContentType = model.ContentType,
+                Title = model.Title
+            };
+            var result = await ContentService.CreatePublication(publication);
+            if (result.Succedeed)
+            {
+                return RedirectToRoute(new { controller = "Home", action = "Hot" });
+            }
+
+            ModelState.AddModelError("", "Cant`create publication: " + result.Message);
+            return View();
         }
     }
 }
