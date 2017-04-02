@@ -20,15 +20,7 @@ namespace B1625MVC.Model.Entities
         public byte[] Content { get; set; }
         public ContentType ContentType { get; set; }
         public DateTime? PublicationDate { get; set; }
-
-        public int Rating
-        {
-            get
-            {
-                return LikedBy.Count - DislikedBy.Count;
-            }
-            private set { }
-        }
+        public int Rating { get; private set; }
 
         public string AuthorId { get; set; }
         public virtual UserProfile Author { get; set; }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace B1625MVC.Model.Repositories
 {
@@ -30,9 +31,9 @@ namespace B1625MVC.Model.Repositories
             }
         }
 
-        public IEnumerable<Publication> Find(Func<Publication, bool> predicate)
+        public IQueryable<Publication> Find(Expression<Func<Publication, bool>> predicate)
         {
-            return _dbContext.Publications.Where(predicate).ToList();
+            return _dbContext.Publications.Where(predicate).AsQueryable();
         }
 
         public Publication Get(long id)
@@ -40,9 +41,9 @@ namespace B1625MVC.Model.Repositories
             return _dbContext.Publications.Find(id);
         }
 
-        public IEnumerable<Publication> GetAll()
+        public IQueryable<Publication> Get()
         {
-            return _dbContext.Publications.ToList();
+            return _dbContext.Publications.AsQueryable();
         }
 
         public void Update(Publication entity)

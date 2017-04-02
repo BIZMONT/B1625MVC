@@ -1,6 +1,7 @@
 ﻿using B1625MVC.BLL;
 using B1625MVC.BLL.Abstract;
 using B1625MVC.BLL.DTO;
+using B1625MVC.BLL.DTO.Enums;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.Web;

@@ -15,8 +15,7 @@ namespace B1625MVC.Model.EntitiesConfigs
             Property(p => p.Content).IsRequired();
             Property(p => p.ContentType).IsRequired();
             Property(p => p.PublicationDate).IsRequired();
-
-            Property(p => p.Rating).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            Property(p => p.Rating).IsOptional();
         }
     }
 }

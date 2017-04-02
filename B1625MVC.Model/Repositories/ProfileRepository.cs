@@ -1,9 +1,9 @@
 ﻿using B1625MVC.Model.Abstract;
 using B1625MVC.Model.Entities;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace B1625MVC.Model.Repositories
 {
@@ -30,9 +30,9 @@ namespace B1625MVC.Model.Repositories
             }
         }
 
-        public IEnumerable<UserProfile> Find(Func<UserProfile, bool> predicate)
+        public IQueryable<UserProfile> Find(Expression<Func<UserProfile, bool>> predicate)
         {
-            return _dbContext.UsersProfiles.Include(up => up.User).Where(predicate).ToList();
+            return _dbContext.UsersProfiles.Include(up => up.User).Where(predicate).AsQueryable();
         }
 
         public UserProfile Get(string id)
@@ -40,9 +40,9 @@ namespace B1625MVC.Model.Repositories
             return _dbContext.UsersProfiles.Include(up=>up.User).Where(up=>up.AccountId == id).FirstOrDefault();
         }
 
-        public IEnumerable<UserProfile> GetAll()
+        public IQueryable<UserProfile> Get()
         {
-            return _dbContext.UsersProfiles.Include(up=>up.User).ToList();
+            return _dbContext.UsersProfiles.Include(up=>up.User).AsQueryable(); ;
         }
 
         public void Update(UserProfile entity)

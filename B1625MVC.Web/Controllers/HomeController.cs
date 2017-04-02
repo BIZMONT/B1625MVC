@@ -4,6 +4,8 @@ using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 using B1625MVC.BLL.Abstract;
 using System;
+using B1625MVC.BLL.DTO;
+using System.Threading.Tasks;
 
 namespace B1625MVC.Web.Controllers
 {
@@ -17,28 +19,25 @@ namespace B1625MVC.Web.Controllers
             }
         }
 
-        public ActionResult Hot(int page = 1)
+        public async Task<ActionResult> Hot(int page = 1)
         {
-            var publications = ContentService.GetAllPublications();
+            PageInfo pageInfo = new PageInfo(page, 50);
+            var publications = await ContentService.GetPublicationsAsync(pageInfo);
             return View("Publications", publications);
         }
 
-        public ActionResult Fresh(int page = 1)
+        public async Task<ActionResult> Fresh(int page = 1)
         {
-            /*var publications = DataRepository.Publications.OrderBy(p => p.PublicationDate).Skip(20 * (page - 1)).Take(20);
-
+            PageInfo pageInfo = new PageInfo(page, 50);
+            var publications = await ContentService.GetPublicationsAsync(pageInfo);
             return View("Publications", publications);
-            */
-            return HttpNotFound();
         }
 
-        public ActionResult Best(int page = 1)
+        public async Task<ActionResult> Best(int page = 1)
         {
-            /*var publications = DataRepository.Publications.OrderByDescending(p => p.Rating).Skip(20 * (page - 1)).Take(20);
-
+            PageInfo pageInfo = new PageInfo(page, 50);
+            var publications = await ContentService.GetBestPublicationsAsync(pageInfo);
             return View("Publications", publications);
-            */
-            return HttpNotFound();
         }
     }
 }

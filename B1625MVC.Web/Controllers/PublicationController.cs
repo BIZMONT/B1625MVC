@@ -8,6 +8,7 @@ using B1625MVC.BLL;
 using B1625MVC.BLL.DTO;
 using System.IO;
 using System.Text;
+using B1625MVC.BLL.DTO.Enums;
 
 namespace B1625MVC.Web.Controllers
 {
@@ -37,23 +38,27 @@ namespace B1625MVC.Web.Controllers
         }
 
         [Authorize]
-        public async Task<string> RateUp(long publicationId)
+        public async Task<int> RateUp(long publicationId)
         {
+            int currentRating = ContentService.GetPublication(publicationId).Rating;
             OperationDetails result = await ContentService.RatePublication(publicationId, User.Identity.Name, RateAction.Up);
             if (result.Succedeed)
             {
+                currentRating++;
             }
-            return ContentService.GetPublication(publicationId).Rating.ToString();
+            return currentRating;
         }
 
         [Authorize]
-        public async Task<string> RateDown(long publicationId)
+        public async Task<int> RateDown(long publicationId)
         {
+            int currentRating = ContentService.GetPublication(publicationId).Rating;
             OperationDetails result = await ContentService.RatePublication(publicationId, User.Identity.Name, RateAction.Down);
             if (result.Succedeed)
             {
+                currentRating--;
             }
-            return ContentService.GetPublication(publicationId).Rating.ToString();
+            return currentRating;
         }
 
         [Authorize]

@@ -1,5 +1,6 @@
 ﻿@using System.Text
 @using B1625MVC.BLL.DTO
+@using B1625MVC.BLL.DTO.Enums
 @model  PublicationInfo
 
 @{
@@ -44,9 +45,9 @@
         }
     </div>
     <div>
-        @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxOptions)
+        @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id, oldValue = Model.Rating }, ajaxOptions)
         <span id="@ratingValue">@Model.Rating</span>
-        @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxOptions)
+        @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id, oldValue = Model.Rating }, ajaxOptions)
         @Html.RouteLink(Model.CommentsCount.ToString() +  " comments", new { controller = "Publication", action = "Index", id = Model.Id })
     </div>
 </div>

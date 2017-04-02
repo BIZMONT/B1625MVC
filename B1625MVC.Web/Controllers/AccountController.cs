@@ -3,6 +3,7 @@ using B1625MVC.BLL.DTO;
 using B1625MVC.Web.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -27,12 +28,39 @@ namespace B1625MVC.Web.Controllers
             }
         }
 
-        /*[HttpGet]
+        [AllowAnonymous]
+        [HttpGet]
         public async Task<ActionResult> UserProfile(string username)
         {
-            //TODO: Get user data from repository if exist
-            throw new NotImplementedException();
-        }*/
+            var user = await UserService.GetByNameAsync(username);
+            if(user != null)
+            {
+                return View(user);
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult Settings()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Settings(ProfileSettingsViewModel model)
+        {
+            var userData = new EditUserData()
+            {
+                Email = model.Email,
+                NewPassword = model.NewPassword, Gender = model.Gender
+            };
+            UserService.EditAsync(userData);
+            return HttpNotFound();
+        }
 
         [AllowAnonymous]
         [HttpGet]

@@ -54,23 +54,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IContentService.cs" />
-    <Compile Include="DTO\BaseUserData.cs" />
-    <Compile Include="DTO\CommentInfo.cs" />
-    <Compile Include="DTO\ContentInfo.cs" />
-    <Compile Include="DTO\ContentType.cs" />
-    <Compile Include="DTO\CreatePublicationData.cs" />
-    <Compile Include="DTO\CreateUserData.cs" />
-    <Compile Include="DTO\EditUserData.cs" />
-    <Compile Include="DTO\PublicationInfo.cs" />
-    <Compile Include="DTO\RateAction.cs" />
+    <Compile Include="DTO\ContentData\CommentData\CreateCommentData.cs" />
+    <Compile Include="DTO\ContentData\PublicationData\PublicationFilters.cs" />
+    <Compile Include="DTO\PageInfo.cs" />
+    <Compile Include="DTO\UserData\BaseUserData.cs" />
+    <Compile Include="DTO\ContentData\CommentData\CommentInfo.cs" />
+    <Compile Include="DTO\ContentData\ContentInfo.cs" />
+    <Compile Include="DTO\Enums\ContentType.cs" />
+    <Compile Include="DTO\ContentData\PublicationData\CreatePublicationData.cs" />
+    <Compile Include="DTO\UserData\CreateUserData.cs" />
+    <Compile Include="DTO\UserData\EditUserData.cs" />
+    <Compile Include="DTO\Enums\Gender.cs" />
+    <Compile Include="DTO\ContentData\PublicationData\PublicationInfo.cs" />
+    <Compile Include="DTO\Enums\RateAction.cs" />
     <Compile Include="DTO\RateState.cs" />
-    <Compile Include="DTO\UserInfo.cs" />
+    <Compile Include="DTO\UserData\UserInfo.cs" />
     <Compile Include="OperationDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Services\ContentService.cs" />
+    <Compile Include="Abstract\IContentService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,9 @@
 ﻿using B1625MVC.BLL.Abstract;
 using B1625MVC.BLL.DTO;
 using B1625MVC.Web.Areas.Admin.Models;
-using B1625MVC.Web.Models;
 using Microsoft.AspNet.Identity.Owin;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -30,10 +27,10 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(string username)
+        public async Task<ActionResult> Edit(string username)
         {
             EditUserViewModel viewData = null;
-            var userData = UserService.Find(ua => ua.UserName == username).FirstOrDefault();
+            var userData = await UserService.GetByNameAsync(username);
             if (userData != null)
             {
                 viewData = new EditUserViewModel()
@@ -68,7 +65,7 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
                         avatar = ms.ToArray();
                     }
                 }
-                var old = await UserService.GetAsync(userData.Id);
+                var old = await UserService.GetByIdAsync(userData.Id);
                 EditUserData userDto = new EditUserData()
                 {
                     Id = userData.Id,
@@ -79,7 +76,7 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
                     NewPassword = userData.NewPassword
                 };
 
-                var result = await UserService.UpdateAsync(userDto);
+                var result = await UserService.EditAsync(userDto);
                 if (result.Succedeed)
                 {
                     if(!string.IsNullOrEmpty(userData.NewPassword) && User.Identity.Name == old.UserName)
@@ -93,9 +90,9 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
             return View(userData);
         }
 
-        public ActionResult Details(string username)
+        public async Task<ActionResult> Details(string username)
         {
-            UserInfo user = UserService.Find(ui => ui.UserName == username).FirstOrDefault();
+            UserInfo user = await UserService.GetByNameAsync(username);
             if (user != null)
             {
                 return View(user);
@@ -141,16 +138,19 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
             return RedirectToRoute(new { area = "Admin", controller = "Account", action = "List" });
         }
 
-        public ActionResult UsersTable(string usernameFilter)
+        public ActionResult UsersTable(string usernameFilter, int page = 1)
         {
+            //TODO: Add pages to show more users
+            PageInfo pageInfo = new PageInfo(page, 20);
+
             IEnumerable<UserInfo> users;
-            if (usernameFilter == null)
+            if (string.IsNullOrEmpty(usernameFilter))
             {
-                users = UserService.GetAll();
+                users = UserService.GetUsers(pageInfo);
             }
             else
             {
-                users = UserService.Find(ud => ud.UserName == usernameFilter);
+                users = UserService.Find(ud => ud.UserName == usernameFilter, pageInfo);
             }
             ViewBag.UsernameFilter = usernameFilter;
             return PartialView("_UsersTable", users);

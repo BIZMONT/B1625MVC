@@ -1,6 +1,5 @@
-﻿using B1625MVC.BLL.DTO;
+﻿using B1625MVC.BLL.DTO.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Web;
 
 namespace B1625MVC.Web.Models
 {
@@ -14,8 +13,6 @@ namespace B1625MVC.Web.Models
         [UIHint("ContentTypeTemplate")]
         [Display(Name ="Publication type")]
         public ContentType ContentType { get; set; }
-
-        public HttpFileCollectionBase ImageFile { get; set; }
 
         public string Text { get; set; }
     }

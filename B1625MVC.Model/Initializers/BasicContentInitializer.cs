@@ -31,8 +31,8 @@ namespace B1625MVC.Model.Initializers
             if (admin == null)
             {
                 admin = new UserAccount() { UserName = "admin", Email = "admin@example.com" };
-                var result  = accountManager.Create(admin, "adminadmin");
-                if(!result.Succeeded)
+                var result = accountManager.Create(admin, "adminadmin");
+                if (!result.Succeeded)
                 {
                 }
                 accountManager.AddToRole(admin.Id, "Administrators");
@@ -49,36 +49,6 @@ namespace B1625MVC.Model.Initializers
                 context.UsersProfiles.Add(profile);
                 context.SaveChanges();
             }
-
-            memStream = new MemoryStream();
-            Resources.Beacon.Save(memStream, ImageFormat.Jpeg);
-            var imagePost = new Publication()
-            {
-                Author = admin.Profile,
-                Title = "First image publication",
-                ContentType = ContentType.Image,
-                Content = memStream.ToArray()
-            };
-            imagePost.Comments.Add(new Comment()
-            {
-                Author = admin.Profile,
-                Content = "TestComment"
-            });
-
-            var textPost = new Publication()
-            {
-                Author = admin.Profile,
-                Title = "First text publication",
-                ContentType = ContentType.Text,
-                Content = Encoding.Default.GetBytes("Welcome to site!")
-            };
-
-            textPost.LikedBy.Add(admin.Profile);
-
-            admin.Profile.Publications.Add(imagePost);
-            admin.Profile.Publications.Add(textPost);
-
-            context.SaveChanges();
         }
     }
 }

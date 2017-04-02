@@ -1,4 +1,6 @@
-﻿namespace B1625MVC.BLL.DTO
+﻿using B1625MVC.BLL.DTO.Enums;
+
+namespace B1625MVC.BLL.DTO
 {
     public class PublicationInfo : ContentInfo
     {

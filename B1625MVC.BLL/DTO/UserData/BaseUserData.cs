@@ -1,4 +1,4 @@
-﻿using B1625MVC.Model.Enums;
+﻿using B1625MVC.BLL.DTO.Enums;
 using System.Collections.Generic;
 
 namespace B1625MVC.BLL.DTO

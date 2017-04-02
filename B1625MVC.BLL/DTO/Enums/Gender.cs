@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B1625MVC.BLL.DTO
+namespace B1625MVC.BLL.DTO.Enums
 {
-    public enum RateAction
+    public enum Gender
     {
-        Up,
-        Down
+        Male,
+        Female
     }
 }

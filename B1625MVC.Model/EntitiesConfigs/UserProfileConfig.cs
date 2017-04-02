@@ -14,8 +14,7 @@ namespace B1625MVC.Model.EntitiesConfigs
             Property(up => up.Avatar).IsOptional();
             Property(up => up.Gender).IsOptional();
             Property(up => up.RegistrationDate).IsRequired();
-
-            Property(up => up.Rating).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+            Property(up => up.Rating).IsOptional();
         }
     }
 }

@@ -178,6 +178,7 @@
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NewPublicationViewModel.cs" />
+    <Compile Include="Models\ProfileSettingsViewModel.cs" />
     <Compile Include="Models\PublicationViewModel.cs" />
     <Compile Include="Models\RegistrationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -198,6 +199,7 @@
     <Content Include="Views\Account\Registration.cshtml" />
     <Content Include="Views\Publication\Add.cshtml" />
     <Content Include="Views\Shared\EditorTamplates\ContentTypeTemplate.cshtml" />
+    <Content Include="Views\Account\Settings.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

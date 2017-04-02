@@ -7,13 +7,13 @@ namespace B1625MVC.Model.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class DefaultMigration : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DefaultMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201703291727376_DefaultMigration"; }
+            get { return "201704021306123_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source
