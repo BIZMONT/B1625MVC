@@ -4,28 +4,38 @@
     ViewBag.Title = "Registration";
 }
 
-<h2 style="text-align:center">Registration</h2>
-@using (Html.BeginForm())
-{
-    <div>
-        @Html.ValidationMessageFor(rm => rm.UserName)
-        <br />
-        @Html.TextBoxFor(rm => rm.UserName, new { placeholder = "Username", style = "margin: 5px 0;font-size:16px;padding:5px" })
+<div class="form">
+    <div class="form-title">
+        Registration
     </div>
-    <div>
-        @Html.ValidationMessageFor(rm => rm.Email)
-        @Html.TextBoxFor(rm => rm.Email, new { placeholder = "Email", style = "margin: 5px 0;font-size:16px;padding:5px" })
+    @using (Html.BeginForm())
+    {
+        <div class="form-field">
+            @Html.ValidationMessageFor(rm => rm.UserName)
+            @Html.TextBoxFor(rm => rm.UserName, new { placeholder = "Username"})
+        </div>
+        <div class="form-field">
+            @Html.ValidationMessageFor(rm => rm.Email)
+            @Html.TextBoxFor(rm => rm.Email, new { placeholder = "Email"})
+        </div>
+        <div class="form-field">
+            @Html.ValidationMessageFor(rm => rm.Password)
+            @Html.PasswordFor(rm => rm.Password, new { placeholder = "Password"})
+        </div>
+        <div class="form-field">
+            @Html.PasswordFor(rm => rm.PasswordConfirm, new { placeholder = "Confirm password"})
+        </div>
+        <div class="form-field">
+            <input type="submit" value="Register"/>
+        </div>
+    }
+    <div class="form-message">
+        @Html.ValidationSummary(true)
     </div>
-    <div>
-        @Html.ValidationMessageFor(rm => rm.Password)
-        @Html.PasswordFor(rm => rm.Password, new { placeholder = "Password", style = "margin: 5px 0;font-size:16px;padding:5px" })
-    </div>
-    <div>
-        @Html.PasswordFor(rm => rm.PasswordConfirm, new { placeholder = "Confirm password", style = "margin: 5px 0;font-size:16px;padding:5px" })
-    </div>
-    <div>
-        <input type="submit" value="Register" style="width: 100%;padding: 4px;margin: 5px 0;display: inline-block;box-sizing: border-box;font-size:16px;" />
-    </div>
-}
+</div>
 
-@Html.ValidationSummary(true)
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

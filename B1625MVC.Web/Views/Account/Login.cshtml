@@ -4,25 +4,34 @@
     ViewBag.Title = "Login";
 }
 
-<h2 style="text-align:center">Login</h2>
-@using (Html.BeginForm())
-{
-    <div>
-        @Html.ValidationMessageFor(lvm => lvm.EmailOrUserName)
-        @Html.TextBoxFor(lvm => lvm.EmailOrUserName, new { placeholder ="Username or email", style = "margin: 5px 0;font-size:16px;padding:5px" })
+<div class="form">
+    <div class="form-title">Login</div>
+    @using (Html.BeginForm())
+    {
+        <div class="form-field">
+            @Html.ValidationMessageFor(lvm => lvm.EmailOrUserName)
+            @Html.TextBoxFor(lvm => lvm.EmailOrUserName, new { placeholder = "Username or email" })
+        </div>
+        <div class="form-field">
+            @Html.ValidationMessageFor(lvm => lvm.Password)
+            @Html.PasswordFor(lvm => lvm.Password, new { placeholder = "Password" })
+        </div>
+        <div class="form-field">
+            @Html.CheckBoxFor(lvm => lvm.RememberMe)
+            @Html.LabelFor(lvm => lvm.RememberMe)
+        </div>
+        <div class="form-field">
+            <input type="submit" value="Login" />
+        </div>
+    }
+    <div class="form-message">
+        @Html.ValidationSummary(true)
     </div>
-    <div>
-        @Html.ValidationMessageFor(lvm => lvm.Password)
-        @Html.PasswordFor(lvm => lvm.Password, new { placeholder = "Password", style = "margin: 5px 0;font-size:16px;padding:5px" })
-    </div>
-    <div>
-        @Html.CheckBoxFor(lvm => lvm.RememberMe)
-        @Html.LabelFor(lvm => lvm.RememberMe)
-    </div>
-    <div>
-        <input type="submit" value="Login" style="width: 100%;padding: 4px;margin: 5px 0;display: inline-block;box-sizing: border-box;font-size:16px;" />
-    </div>
-}
+</div>
 
-@Html.ValidationSummary(true)
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}
 

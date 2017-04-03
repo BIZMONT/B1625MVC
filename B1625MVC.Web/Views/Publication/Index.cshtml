@@ -6,29 +6,29 @@
 }
 
 @section Styles{
-    <link rel="stylesheet" type="text/css" href="~/Content/CommentStyle.css" />
     <link rel="stylesheet" type="text/css" href="~/Content/PublicationStyle.css" />
 }
 
-<div>
-    <div>
-        @Html.Partial("_Publication", Model.Publication)
-    </div>
-    <div id="comments">
-        @foreach (var comment in Model.Comments)
-        {
-            @Html.Partial("_CommentPartial", comment)
-        }
-    </div>
-    <div>
-        Add your comment
-        @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "comments", Url = Url.RouteUrl(new { controller = "comment", action = "PublicationComments", publicationId = Model.Publication.Id }) }))
-        {
-            @Html.TextArea("AddComment")
-            <input type="submit" value="Add comment" />
-        }
+<div class="content-wrapper">
+    <div class="main-wrapper">
+        <div id="publication">
+            @Html.Partial("_Publication", Model.Publication)
+        </div>
+        <div id="comments">
+            @Html.Action("PublicationComments", "Comment", new { publicationId = Model.Publication.Id })
+        </div>
+        <div>
+            Add your comment
+            @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "comments", Url = Url.RouteUrl(new { controller = "Comment", action = "Add", publicationId = Model.Publication.Id }) }))
+            {
+                @Html.TextArea("newComment", new { style = "display:block" })
+                <input type="submit" value="Add comment" />
+            }
+            @Html.ValidationSummary(true)
+        </div>
     </div>
 </div>
+
 
 @section Scripts{
     <script src="~/Scripts/jquery-3.1.1.js"></script>

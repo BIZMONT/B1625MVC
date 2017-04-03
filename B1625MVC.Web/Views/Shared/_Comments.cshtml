@@ -1,0 +1,9 @@
+﻿@using B1625MVC.BLL.DTO
+@model IEnumerable<CommentInfo>
+
+<div>
+    @foreach (var comment in Model)
+    {
+        @Html.Partial("_CommentPartial", comment)
+    }
+</div>

@@ -17,6 +17,7 @@ namespace B1625MVC.Model.Abstract
         UserAccountManager AccountManager { get; }
         UserRoleManager RoleManager { get; }
 
-        Task SaveChangesAsync();
+        Task<int> SaveChangesAsync();
+        int SaveChanges();
     }
 }

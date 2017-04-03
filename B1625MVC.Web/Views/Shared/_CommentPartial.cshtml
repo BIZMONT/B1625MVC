@@ -1,15 +1,42 @@
 ﻿@using B1625MVC.BLL.DTO
 @model CommentInfo
-
-<div class="comment">
-    <div class="comment-author">
-        @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
-        @Html.ActionLink("Up","RateUp")
-        <span>@Model.Rating</span>
-        @Html.ActionLink("Down", "RateDown")
-        <span style="float:right; font-size:14px;">@Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")</span>
+@{
+    string ratingValue = "ratingValue" + Model.Id;
+    var ajaxOptions = new AjaxOptions()
+    {
+        UpdateTargetId = ratingValue
+    };
+}
+<div class="comment-container">
+    <div class="comment-head">
+        <div class="comment-author">
+            @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
+        </div>
+        <div class="comment-date">
+            @Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")
+        </div>
     </div>
     <div class="comment-content">
         @Model.Content
+    </div>
+    <div class="comment-actions">
+        <div class="comment-rating-actions">
+            @if (User.Identity.IsAuthenticated)
+            {
+                @Ajax.RouteLink("Up", new { controller = "Comment", action = "RateUp", commentId = Model.Id }, ajaxOptions)
+            }
+            else
+            {
+                @:Up
+            }
+            <span id="@ratingValue">@Model.Rating</span>
+            @if (User.Identity.IsAuthenticated)
+            {
+                @Ajax.RouteLink("Down", new { controller = "Comment", action = "RateDown", commentId = Model.Id }, ajaxOptions)
+            }
+            else{
+                @:Down
+            }
+        </div>
     </div>
 </div>

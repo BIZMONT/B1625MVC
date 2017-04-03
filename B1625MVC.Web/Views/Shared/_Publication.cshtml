@@ -12,42 +12,60 @@
 }
 
 <div class="publication-container">
-    <div class="publication-title">
-        @Html.RouteLink(Model.Title, new
-   {
-       controller = "Publication",
-       action = "Index",
-       id = Model.Id
-   })
+    <div class="publication-head">
+        <div class="publication-title">
+            @Html.RouteLink(Model.Title, new { controller = "Publication", action = "Index", id = Model.Id })
+        </div>
+        <div class="publication-date">
+            @Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")
+        </div>
     </div>
-    <div style="margin: 10px">
+    <div class="publication-author">
         @if (Model.AuthorAvatar != null)
-            {
-            <img style="width:24px; height:24px; vertical-align:middle" src="data:image;base64,@System.Convert.ToBase64String(Model.AuthorAvatar)" />
+        {
+            <img src="data:image;base64,@System.Convert.ToBase64String(Model.AuthorAvatar)" alt="@Model.Author" />
         }
-        @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
-        <span style="float:right">@Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")</span>
+        else
+        {
+            <img src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg" alt="@Model.Author" />
+        }
+        <span>
+            @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
+        </span>
     </div>
     <div class="publication-content">
         @if (Model.ContentType == ContentType.Image)
-            {
-            <a href="@Url.Action("Index","Publication")">
-                <img style="max-width:100%; display:block" src="data:image;base64,@System.Convert.ToBase64String(Model.Content)" />
+        {
+            <a href="@Url.Action("Index", "Publication", new { id = Model.Id })">
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.Content)" />
             </a>
         }
         else if (Model.ContentType == ContentType.Text)
         {
-            <p style="padding-left:15px;padding-right:15px">@Encoding.Default.GetString(Model.Content)</p>
+            <span>@Encoding.Default.GetString(Model.Content)</span>
         }
         else
         {
             @:"Unknown!"
         }
     </div>
-    <div>
-        @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id, oldValue = Model.Rating }, ajaxOptions)
-        <span id="@ratingValue">@Model.Rating</span>
-        @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id, oldValue = Model.Rating }, ajaxOptions)
-        @Html.RouteLink(Model.CommentsCount.ToString() +  " comments", new { controller = "Publication", action = "Index", id = Model.Id })
+    <div class="publication-actions">
+        <div class="publication-rating-actions">
+            @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxOptions)
+            <span id="@ratingValue">@Model.Rating</span>
+            @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxOptions)
+        </div>
+        <div class="publication-comments-actions">
+            @Html.RouteLink(Model.CommentsCount.ToString() + " comments", new { controller = "Publication", action = "Index", id = Model.Id })
+        </div>
+
+        @if (User.IsInRole("Administrators") || User.IsInRole("Moderators"))
+        {
+            <div class="publication-admin-actions">
+                @Html.RouteLink("Remove", new { area = "Admin", controller = "Publication", action = "Delete", publicationId = Model.Id })
+                |
+                @Html.RouteLink("Edit", new { area = "Admin", controller = "Publication", action = "Edit", publicationId = Model.Id })
+            </div>
+        }
     </div>
 </div>

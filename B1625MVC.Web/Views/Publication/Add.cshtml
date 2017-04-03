@@ -3,30 +3,51 @@
 @{
     ViewBag.Title = "Add";
 }
+<div class="form" style="width:600px">
+    <div class="form-title">
+        Add new post
+    </div>
 
-<h2>Add</h2>
+    @using (Html.BeginForm("Add", "Publication", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+        <div class="form-field">
+            @Html.ValidationMessageFor(p => p.Title)
+            @Html.TextBoxFor(p => p.Title, new { placeholder = "Enter post title" })
+        </div>
+        <div class="form-field">
+            @Html.LabelFor(p => p.ContentType):
+            @Html.RadioButton("ContentType", ContentType.Image, true, new { id = "radio-image" }) Image
+            @Html.RadioButton("ContentType", ContentType.Text, new { id = "radio-text" }) Text
+        </div>
+        <div id="text-content" class="form-field" style="display:none">
+            @Html.ValidationMessageFor(p => p.Text)
+            @Html.TextAreaFor(p => p.Text, new { placeholder = "Enter you text here" })
+        </div>
+        <div id="image-content" class="form-field">
+            <input type="file" name="ImageFile" />
+        </div>
+        <div class="form-field">
+            <input type="submit" value="Add publication" />
+        </div>
+    }
+</div>
 
-@using (Html.BeginForm("Add", "Publication", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <div>
-        @Html.LabelFor(p => p.Title)
-        <br />
-        @Html.TextBoxFor(p => p.Title)
-    </div>
-    <div>
-        @Html.LabelFor(p => p.ContentType)
-        <br />
-        @*Html.EditorFor(p => p.ContentType,"ContentTypeTemplate")*@
-        @Html.RadioButton("ContentType", ContentType.Image, true) Image
-        @Html.RadioButton("ContentType", ContentType.Text) Text
-    </div>
-    <div>
-        @Html.LabelFor(p => p.Text)
-        <br />
-        @Html.TextAreaFor(p => p.Text)
-    </div>
-    <div>
-        <input type="file" name="ImageFile" />
-    </div>
-    <input type="submit" value="Create" />
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("input[name='ContentType']").click(function () {
+                if ($(this).attr('id') == 'radio-text') {
+                    $('#text-content').show();
+                    $('#image-content').hide();
+                }
+                else if ($(this).attr('id') == 'radio-image') {
+                    $('#image-content').show();
+                    $('#text-content').hide();
+                }
+            });
+        });
+    </script>
 }

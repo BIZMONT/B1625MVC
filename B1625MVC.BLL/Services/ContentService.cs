@@ -9,7 +9,6 @@ using B1625MVC.BLL.DTO.Enums;
 using B1625MVC.Model.Abstract;
 using B1625MVC.Model.Entities;
 using System.Data.Entity;
-using B1625MVC.BLL.DTO.ContentData.PublicationData;
 using System.Linq.Expressions;
 using B1625MVC.BLL.DTO.ContentData.CommentData;
 
@@ -136,6 +135,10 @@ namespace B1625MVC.BLL.Services
                     {
                         publication.LikedBy.Add(profile);
                     }
+                    else
+                    {
+                        return new OperationDetails(false, "This publication is already rated up");
+                    }
                 }
                 else
                 {
@@ -146,6 +149,10 @@ namespace B1625MVC.BLL.Services
                     else if (!publication.DislikedBy.Contains(profile))
                     {
                         publication.DislikedBy.Add(profile);
+                    }
+                    else
+                    {
+                        return new OperationDetails(false, "This publication is already rated down");
                     }
                 }
                 repo.Publications.Update(publication);
@@ -168,13 +175,13 @@ namespace B1625MVC.BLL.Services
                 Content = c.Content,
                 PublicationDate = c.PublicationDate,
                 Rating = c.Rating
-            });
+            }).ToList();
         }
 
         public async Task<OperationDetails> RateComment(long commentId, string username, RateAction rateAction)
         {
-            var comment = repo.Publications.Get(commentId);
-            var profile = repo.Profiles.Find(p => p.User.UserName == username).FirstOrDefault();
+            Comment comment = repo.Comments.Get(commentId);
+            UserProfile profile = repo.Profiles.Find(p => p.User.UserName == username).FirstOrDefault();
 
             if (comment != null && profile != null)
             {
@@ -188,6 +195,10 @@ namespace B1625MVC.BLL.Services
                     {
                         comment.LikedBy.Add(profile);
                     }
+                    else
+                    {
+                        return new OperationDetails(false, "This comment is already rated up");
+                    }
                 }
                 else
                 {
@@ -199,8 +210,12 @@ namespace B1625MVC.BLL.Services
                     {
                         comment.DislikedBy.Add(profile);
                     }
+                    else
+                    {
+                        return new OperationDetails(false, "This comment is already rated down");
+                    }
                 }
-                repo.Publications.Update(comment);
+                repo.Comments.Update(comment);
                 await repo.SaveChangesAsync();
             }
 
@@ -231,7 +246,7 @@ namespace B1625MVC.BLL.Services
             throw new NotImplementedException();
         }
 
-        public async Task<OperationDetails> AddComment(CreateCommentData comment, long publicationId)
+        public OperationDetails AddComment(CreateCommentData comment, long publicationId)
         {
             Publication publication = repo.Publications.Get(publicationId);
             UserProfile author = repo.Profiles.Find(p => p.User.UserName == comment.Author).FirstOrDefault();
@@ -244,7 +259,7 @@ namespace B1625MVC.BLL.Services
                     Content = comment.Content,
                     PublicationDate = DateTime.Now
                 });
-                await repo.SaveChangesAsync();
+                repo.SaveChanges();
                 return new OperationDetails(true, "Comment added");
             }
             return new OperationDetails(false, "Can`t find post or author");

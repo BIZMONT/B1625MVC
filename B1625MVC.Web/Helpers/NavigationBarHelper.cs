@@ -6,41 +6,40 @@ namespace B1625MVC.Web.Helpers
 {
     public static class NavigationBarHelper
     {
-        public static MvcHtmlString NavigationBar(this HtmlHelper helper, IEnumerable<RouteLink> links, 
-            RouteLink loginLink, RouteLink logoutLink, RouteLink userPageLink, RouteLink registrationLink)
+        public static MvcHtmlString NavigationBar(this HtmlHelper helper, IEnumerable<RouteLink> leftLinks, IEnumerable<RouteLink> rightLinks)
         {
             TagBuilder list = new TagBuilder("ul");
             TagBuilder li;
-            foreach (RouteLink link in links)
+            foreach (RouteLink link in leftLinks)
             {
                 li = new TagBuilder("li");
                 li.InnerHtml = helper.RouteLink(link.Title, link.RouteData).ToString();
+                li.MergeAttribute("style", "float:left");
                 list.InnerHtml += li.ToString();
             }
 
-            if(helper.ViewContext.HttpContext.User.Identity.IsAuthenticated)
+            foreach (RouteLink link in rightLinks)
             {
-                TagBuilder logoutField = new TagBuilder("li");
-                logoutField.InnerHtml = helper.RouteLink(logoutLink.Title, logoutLink.RouteData).ToString();
-                logoutField.MergeAttribute("style", "float:right");
-                list.InnerHtml += logoutField.ToString();
+                li = new TagBuilder("li");
+                li.InnerHtml += helper.RouteLink(link.Title, link.RouteData).ToString();
+                li.MergeAttribute("style", "float:right");
 
-                TagBuilder userPageField = new TagBuilder("li");
-                userPageField.InnerHtml = helper.RouteLink(userPageLink.Title, userPageLink.RouteData).ToString();
-                userPageField.MergeAttribute("style", "float:right");
-                list.InnerHtml += userPageField.ToString();
-            }
-            else
-            {
-                TagBuilder loginField = new TagBuilder("li");
-                loginField.InnerHtml = helper.RouteLink(loginLink.Title, loginLink.RouteData).ToString();
-                loginField.MergeAttribute("style", "float:right");
-                list.InnerHtml += loginField.ToString();
+                if (link.InnerLinks != null && link.InnerLinks.Count > 0)
+                {
+                    li.MergeAttribute("class", "nav-dropdown");
+                    TagBuilder innerlist = new TagBuilder("ul");
+                    TagBuilder innerLi;
+                    foreach (var innerlink in link.InnerLinks)
+                    {
+                        innerLi = new TagBuilder("li");
+                        innerLi.InnerHtml = helper.RouteLink(innerlink.Title, innerlink.RouteData).ToString();
+                        innerlist.InnerHtml += innerLi.ToString();
+                    }
+                    innerlist.MergeAttribute("class", "nav-dropdown-content");
+                    li.InnerHtml += innerlist.ToString();
+                }
 
-                TagBuilder registerField = new TagBuilder("li");
-                registerField.InnerHtml = helper.RouteLink(registrationLink.Title, registrationLink.RouteData).ToString();
-                registerField.MergeAttribute("style", "float:right");
-                list.InnerHtml += registerField.ToString();
+                list.InnerHtml += li.ToString();
             }
 
             return new MvcHtmlString(list.ToString());
@@ -53,8 +52,9 @@ namespace B1625MVC.Web.Helpers
         {
             Title = title;
             RouteData = routeData;
+            InnerLinks = new List<RouteLink>();
         }
-
+        public ICollection<RouteLink> InnerLinks { get; set; }
         public string Title { get; set; }
         public object RouteData { get; set; }
     }

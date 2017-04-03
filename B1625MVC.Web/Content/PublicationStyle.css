@@ -1,17 +1,157 @@
-﻿.publication-container {
-    width: 600px;
-    border-style: solid;
-    border-width:1px;
-    margin: 10px 0px;
-    padding: 15px
+﻿.content-wrapper {
 }
-.publication-title{
-    font-size:24px;
-    margin-bottom:5px;
+
+.main-wrapper {
+    width: 64%;
+    min-width: 640px;
 }
-.publication-content{
-    border-style:solid;
-    border-color:grey;
-    border-width:1px;
-    margin: 15px 0px;
+
+.side-wrapper {
+    display: inline-block;
 }
+
+.publication-container {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-bottom: 1px solid darkgray;
+}
+
+    .publication-container a {
+        text-decoration: none;
+        color: black;
+    }
+
+        .publication-container a:hover {
+            color: #0066ff;
+        }
+
+.publication-head {
+    padding: 0 10px;
+    margin-bottom: 10px;
+}
+
+.publication-title {
+    display: inline-block;
+    font-size: 24px;
+    line-height: 100%;
+}
+
+.publication-date {
+    display: inline-block;
+    float: right;
+}
+
+.publication-author {
+    padding: 0 25px;
+    display: table;
+}
+
+    .publication-author img {
+        width: 24px;
+        height: 24px;
+        border: 1px solid darkgray;
+    }
+
+    .publication-author span {
+        color: #0066ff;
+        vertical-align: middle;
+        display: table-cell;
+        padding: 0px 0px 1px 8px;
+    }
+
+.publication-content {
+    border: 1px solid darkgray;
+    margin: 10px 0 15px 0;
+}
+
+    .publication-content img {
+        width: 100%;
+        display: block;
+    }
+
+    .publication-content span {
+        padding: 10px 15px;
+        display: block;
+        background-color: gainsboro;
+    }
+
+.publication-actions {
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+.publication-rating-actions {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+    .publication-rating-actions a {
+        font-weight: bold;
+    }
+
+.publication-comments-actions {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.publication-admin-actions {
+    float: right;
+}
+
+
+/*#region Comment styles */
+
+#comments {
+    padding: 0px 20px 20px 20px;
+}
+
+.comment-container {
+    margin:10px;
+    border-bottom: 1px solid darkgray;
+    padding:8px;
+}
+
+    .comment-container a {
+        text-decoration: none;
+        color: black;
+    }
+
+        .comment-container a:hover {
+            color: #0066ff;
+        }
+
+.comment-head {
+    font-size:14px;
+}
+
+.comment-author {
+    display: inline-block;
+    line-height: 100%;
+    font-weight: bold;
+}
+
+.comment-date {
+    display: inline-block;
+    float: right;
+}
+
+.comment-content {
+    margin:16px 0;
+    padding: 0 10px;
+}
+
+.comment-actions {
+    font-size: 14px;
+}
+
+.comment-rating-actions {
+}
+
+    .comment-rating-actions a {
+        font-weight: bold;
+    }
+
+/*#endregion */
+

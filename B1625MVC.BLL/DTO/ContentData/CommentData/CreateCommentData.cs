@@ -8,7 +8,7 @@ namespace B1625MVC.BLL.DTO.ContentData.CommentData
 {
     public class CreateCommentData
     {
-        public string Author { get; internal set; }
-        public string Content { get; internal set; }
+        public string Author { get; set; }
+        public string Content { get; set; }
     }
 }

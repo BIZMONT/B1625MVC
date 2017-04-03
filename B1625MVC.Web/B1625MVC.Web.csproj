@@ -127,10 +127,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\CommentStyle.css" />
-    <Content Include="Content\MenuStyle.css" />
+    <Content Include="Content\AdminStyle.css" />
+    <Content Include="Content\MainStyle.css" />
     <Content Include="Content\PublicationStyle.css" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\Reset.css" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
@@ -200,6 +200,7 @@
     <Content Include="Views\Publication\Add.cshtml" />
     <Content Include="Views\Shared\EditorTamplates\ContentTypeTemplate.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
+    <Content Include="Views\Shared\_Comments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

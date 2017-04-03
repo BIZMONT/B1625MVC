@@ -55,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\ContentData\CommentData\CreateCommentData.cs" />
-    <Compile Include="DTO\ContentData\PublicationData\PublicationFilters.cs" />
     <Compile Include="DTO\PageInfo.cs" />
     <Compile Include="DTO\UserData\BaseUserData.cs" />
     <Compile Include="DTO\ContentData\CommentData\CommentInfo.cs" />
@@ -67,7 +66,6 @@
     <Compile Include="DTO\Enums\Gender.cs" />
     <Compile Include="DTO\ContentData\PublicationData\PublicationInfo.cs" />
     <Compile Include="DTO\Enums\RateAction.cs" />
-    <Compile Include="DTO\RateState.cs" />
     <Compile Include="DTO\UserData\UserInfo.cs" />
     <Compile Include="OperationDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

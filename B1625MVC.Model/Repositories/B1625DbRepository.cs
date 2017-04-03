@@ -87,9 +87,14 @@ namespace B1625MVC.Model.Repositories
             }
         }
 
-        public async Task SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
+        }
+
+        public int SaveChanges()
+        {
+            return _dbContext.SaveChanges();
         }
     }
 }

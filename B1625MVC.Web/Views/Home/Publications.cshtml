@@ -7,20 +7,19 @@
 @section Styles{
     <link rel="stylesheet" href="~/Content/PublicationStyle.css" type="text/css" />
 }
-
-<div>
-    @if (User.Identity.IsAuthenticated)
-    {
-        @Html.RouteLink("Add publication", new { controller = "Publication", action = "Add" })
-    }
-</div>
-
-
-<div >
-    @foreach (var publication in Model)
-    {
-        @Html.Partial("_Publication", publication)
-    }
+<div class="content-wrapper">
+    <div class="main-wrapper">
+        @foreach (var publication in Model)
+        {
+            @Html.Partial("_Publication", publication)
+        }
+        <div class="pager">
+            <a href="">1</a>
+            <a href="">2</a>
+            <a href="">3</a>
+            <a href="">4</a>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

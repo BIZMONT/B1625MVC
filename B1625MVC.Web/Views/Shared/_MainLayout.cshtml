@@ -1,15 +1,40 @@
 ﻿@using B1625MVC.Web.Helpers
-@{ 
-    IEnumerable<RouteLink> links = new List<RouteLink>()
+@using System.Collections.Generic
+@{
+    ICollection<RouteLink> leftLinks = new List<RouteLink>()
     {
         new RouteLink("Hot", new { controller = "Home", action = "Hot" }),
         new RouteLink("Best", new { controller = "Home", action = "Best" }),
         new RouteLink("Fresh", new { controller = "Home", action = "Fresh" })
     };
+    ICollection<RouteLink> rightLinks = new List<RouteLink>();
+
     var loginLink = new RouteLink("Log in", new { area = "", controller = "Account", action = "Login" });
-    var logoutLink = new RouteLink("Log out", new { area = "", controller = "Account", action = "Logout" });
-    var userLink = new RouteLink(User.Identity.Name, new { area = "", controller = "Account", action = "UserProfile", username = User.Identity.Name });
     var registrationLink = new RouteLink("Register", new { area = "", controller = "Account", action = "Registration" });
+
+    var logoutLink = new RouteLink("Log out", new { area = "", controller = "Account", action = "Logout" });
+    var settingsLink = new RouteLink("Settings", new { area = "", controller = "Account", action = "Settings" });
+    var userLink = new RouteLink(User.Identity.Name, new { area = "", controller = "Account", action = "UserProfile", username = User.Identity.Name });
+    if (User.Identity.IsAuthenticated)
+    {
+        userLink.InnerLinks.Add(new RouteLink("Admin panel", new { area = "Admin", controller = "Home", action = "Index" }));
+    }
+    userLink.InnerLinks.Add(settingsLink);
+    userLink.InnerLinks.Add(logoutLink);
+
+    var uploadLink = new RouteLink("Upload", new { area = "", controller = "Publication", action = "Add" });
+
+    if (User.Identity.IsAuthenticated)
+    {
+        rightLinks.Add(uploadLink);
+        rightLinks.Add(userLink);
+    }
+    else
+    {
+        rightLinks.Add(registrationLink);
+        rightLinks.Add(loginLink);
+    }
+
 }
 <!DOCTYPE html>
 
@@ -17,18 +42,19 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" type="text/css" href="~/Content/MenuStyle.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/Reset.css"/>
+    <link rel="stylesheet" type="text/css" href="~/Content/MainStyle.css" />
     @RenderSection("Styles", false)
 </head>
-<body style="font-family:Arial, Helvetica, sans-serif; margin:0px; height:100vh; background-color:silver">
-    <div>
-        <div class="menu">
-           @Html.NavigationBar(links, loginLink, logoutLink, userLink, registrationLink);
-        </div>
-        <div style="display: table;margin-left:auto;margin-right:auto;margin-top:28px; padding:20px; background-color:whitesmoke ">
+<body>
+    <nav class="nav-bar">
+        @Html.NavigationBar(leftLinks, rightLinks)
+    </nav>
+    <div class="main">
+        <div class="content">
             @RenderBody()
         </div>
     </div>
-    @RenderSection("Scripts",false)
+    @RenderSection("Scripts", false)
 </body>
 </html>

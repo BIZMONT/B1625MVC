@@ -26,12 +26,8 @@ namespace B1625MVC.BLL.Services
 
         public async Task<OperationDetails> CreateAsync(CreateUserData userData)
         {
-            var accountByEmailTask = repo.AccountManager.FindByEmailAsync(userData.Email);
-            var accountByNameTask = repo.AccountManager.FindByNameAsync(userData.UserName);
-
-            Task.WaitAll(accountByEmailTask, accountByNameTask);
-            UserAccount accountByEmail = accountByEmailTask.Result;
-            UserAccount accountByName = accountByNameTask.Result;
+            UserAccount accountByEmail = await repo.AccountManager.FindByEmailAsync(userData.Email);
+            UserAccount accountByName = await repo.AccountManager.FindByNameAsync(userData.UserName);
 
             if (accountByEmail == null && accountByName == null)
             {
