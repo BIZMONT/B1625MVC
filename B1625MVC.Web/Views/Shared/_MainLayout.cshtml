@@ -13,9 +13,9 @@
     var registrationLink = new RouteLink("Register", new { area = "", controller = "Account", action = "Registration" });
 
     var logoutLink = new RouteLink("Log out", new { area = "", controller = "Account", action = "Logout" });
-    var settingsLink = new RouteLink("Settings", new { area = "", controller = "Account", action = "Settings" });
+    var settingsLink = new RouteLink("Settings", new { area = "", controller = "Account", action = "Settings", userName = User.Identity.Name });
     var userLink = new RouteLink(User.Identity.Name, new { area = "", controller = "Account", action = "UserProfile", username = User.Identity.Name });
-    if (User.Identity.IsAuthenticated)
+    if (User.IsInRole("Administrators"))
     {
         userLink.InnerLinks.Add(new RouteLink("Admin panel", new { area = "Admin", controller = "Home", action = "Index" }));
     }
@@ -55,6 +55,25 @@
             @RenderBody()
         </div>
     </div>
+
+    <button onclick="topFunction()" id="to_top" title="Go to top">TOP</button>
+
     @RenderSection("Scripts", false)
+    <script>
+            window.onscroll = function () { scrollFunction() };
+
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("to_top").style.display = "block";
+                } else {
+                    document.getElementById("to_top").style.display = "none";
+                }
+            }
+
+            function topFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+    </script>
 </body>
 </html>

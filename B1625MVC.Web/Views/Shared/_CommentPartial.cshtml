@@ -2,12 +2,13 @@
 @model CommentInfo
 @{
     string ratingValue = "ratingValue" + Model.Id;
+    string commentId = "comment" + Model.Id;
     var ajaxOptions = new AjaxOptions()
     {
         UpdateTargetId = ratingValue
     };
 }
-<div class="comment-container">
+<div id="@commentId" class="comment-container">
     <div class="comment-head">
         <div class="comment-author">
             @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
@@ -38,5 +39,17 @@
                 @:Down
             }
         </div>
+        @if (User.IsInRole("Administrators") || User.IsInRole("Moderators"))
+        {
+            <div class="comment-admin-actions">
+                @Ajax.RouteLink("Remove", new { area = "Admin", controller = "Comment", action = "Delete", commentId = Model.Id }, new AjaxOptions()
+           {
+               UpdateTargetId = commentId,
+               Confirm = "Are you really want ot delete this comment?"
+           })
+                |
+                @Html.RouteLink("Edit", new { area = "Admin", controller = "Comment", action = "Edit", publicationId = Model.Id })
+            </div>
+        }
     </div>
 </div>

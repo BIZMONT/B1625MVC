@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@section Styles{
+    @RenderSection("Styles")
+}
+
+<div class="content-wrapper">
+    <div class="main-wrapper">
+        @RenderBody();
+    </div>
+    <div id="sidebar" class="side-wrapper">
+        @RenderSection("Sidebar")
+    </div>
+</div>
+
+@section Scripts{
+    @RenderSection("Scripts")
+    <script>
+        $(function () {
+
+            var $sidebar = $("#sidebar"),
+                $window = $(window),
+                offset = $sidebar.offset(),
+                topPadding = 64;
+
+            $window.scroll(function () {
+                if ($window.scrollTop() > offset.top) {
+                    $sidebar.stop().animate({
+                        marginTop: $window.scrollTop() - offset.top + topPadding
+                    });
+                } else {
+                    $sidebar.stop().animate({
+                        marginTop: 0
+                    });
+                }
+            });
+
+        });</script>
+}

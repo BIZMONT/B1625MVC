@@ -1,29 +1,27 @@
 ﻿@using B1625MVC.BLL.DTO
 @model IEnumerable<PublicationInfo>
 @{
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
     ViewBag.Title = this.ViewContext.RouteData.GetRequiredString("action");
+    var pageInfo = (PageInfo)ViewBag.PageInfo;
 }
 
 @section Styles{
     <link rel="stylesheet" href="~/Content/PublicationStyle.css" type="text/css" />
 }
-<div class="content-wrapper">
-    <div class="main-wrapper">
-        @foreach (var publication in Model)
-        {
-            @Html.Partial("_Publication", publication)
-        }
-        <div class="pager">
-            <a href="">1</a>
-            <a href="">2</a>
-            <a href="">3</a>
-            <a href="">4</a>
-        </div>
-    </div>
+
+<div style="background-color:aqua">
+    filters here
 </div>
+@Html.Partial("_Publications", Model)
+
+@section Sidebar{
+    @Html.Partial("_Sidebar")
+}
+
 
 @section Scripts{
-    <script src="~/Scripts/jquery-3.1.1.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 }
 

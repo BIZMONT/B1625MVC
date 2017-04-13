@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace B1625MVC.Web.Areas.Admin.Models
 {
     public class CreateUserViewModel
     {
+        public CreateUserViewModel()
+        {
+            Roles = new List<RoleCheckModel>();
+        }
+
         [Required]
         public string UserName { get; set; }
 
@@ -23,5 +25,7 @@ namespace B1625MVC.Web.Areas.Admin.Models
         [DataType(DataType.Password)]
         [Compare("Password")]
         public string PasswordConfirm { get; set; }
+
+        public List<RoleCheckModel> Roles { get; set; }
     }
 }

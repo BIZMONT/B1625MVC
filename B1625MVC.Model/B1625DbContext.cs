@@ -6,6 +6,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace B1625MVC.Model
 {
+    /// <summary>
+    /// Class represents database model context
+    /// </summary>
     public class B1625DbContext : IdentityDbContext
     {
         public B1625DbContext() : this("B1625Db")

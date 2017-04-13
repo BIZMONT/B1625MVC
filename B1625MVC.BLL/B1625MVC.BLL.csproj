@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\ContentData\CommentData\CreateCommentData.cs" />
+    <Compile Include="DTO\ContentData\PublicationData\EditPublicationData.cs" />
     <Compile Include="DTO\PageInfo.cs" />
     <Compile Include="DTO\UserData\BaseUserData.cs" />
     <Compile Include="DTO\ContentData\CommentData\CommentInfo.cs" />
@@ -67,9 +68,9 @@
     <Compile Include="DTO\ContentData\PublicationData\PublicationInfo.cs" />
     <Compile Include="DTO\Enums\RateAction.cs" />
     <Compile Include="DTO\UserData\UserInfo.cs" />
-    <Compile Include="OperationDetails.cs" />
+    <Compile Include="DTO\OperationDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceProvider.cs" />
+    <Compile Include="Services\ServiceProvider.cs" />
     <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Services\ContentService.cs" />
     <Compile Include="Abstract\IContentService.cs" />

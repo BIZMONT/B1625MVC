@@ -1,14 +1,14 @@
-﻿using B1625MVC.Model.Entities;
-using B1625MVC.Model.Identity;
-using B1625MVC.Model.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+
+using B1625MVC.Model.Entities;
+using B1625MVC.Model.Identity;
 
 namespace B1625MVC.Model.Abstract
 {
+    /// <summary>
+    /// Interface for unit of work pattern realization
+    /// </summary>
     public interface IRepository : IDisposable
     {
         IEntityRepository<UserProfile, string> Profiles { get; }

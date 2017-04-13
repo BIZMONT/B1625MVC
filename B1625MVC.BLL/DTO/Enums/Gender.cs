@@ -8,6 +8,7 @@ namespace B1625MVC.BLL.DTO.Enums
 {
     public enum Gender
     {
+        Unknown,
         Male,
         Female
     }

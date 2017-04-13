@@ -163,9 +163,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CommentController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PublicationController.cs" />
     <Compile Include="Areas\Admin\Models\CreateUserViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EditUserViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RoleCheckModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -175,6 +178,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\NavigationBarHelper.cs" />
+    <Compile Include="Infrastructure\FileUploader.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NewPublicationViewModel.cs" />
@@ -188,7 +192,7 @@
     <Content Include="packages.config" />
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\Home\Publications.cshtml" />
-    <Content Include="Views\Shared\_Publication.cshtml" />
+    <Content Include="Views\Shared\_PublicationPartial.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Publication\Index.cshtml" />
     <Content Include="Views\Shared\_CommentPartial.cshtml" />
@@ -198,9 +202,11 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Registration.cshtml" />
     <Content Include="Views\Publication\Add.cshtml" />
-    <Content Include="Views\Shared\EditorTamplates\ContentTypeTemplate.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
     <Content Include="Views\Shared\_Comments.cshtml" />
+    <Content Include="Views\Shared\_Publications.cshtml" />
+    <Content Include="Views\Shared\_ContentLayout.cshtml" />
+    <Content Include="Views\Shared\_Sidebar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -210,8 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Views\Comment\" />
+    <Folder Include="Areas\Admin\Views\Publication\" />
     <Folder Include="Views\Comment\" />
-    <Folder Include="Views\Shared\DisplayTamplates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\B1625MVC.BLL\B1625MVC.BLL.csproj">

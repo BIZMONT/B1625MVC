@@ -5,13 +5,15 @@
 
 @{
     string ratingValue = "ratingValue" + Model.Id;
-    var ajaxOptions = new AjaxOptions()
+    string publicationId = "publication" + Model.Id;
+
+    var ajaxRateOptions = new AjaxOptions()
     {
         UpdateTargetId = ratingValue
     };
 }
 
-<div class="publication-container">
+<div id="@publicationId" class="publication-container">
     <div class="publication-head">
         <div class="publication-title">
             @Html.RouteLink(Model.Title, new { controller = "Publication", action = "Index", id = Model.Id })
@@ -51,9 +53,9 @@
     </div>
     <div class="publication-actions">
         <div class="publication-rating-actions">
-            @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxOptions)
+            @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxRateOptions)
             <span id="@ratingValue">@Model.Rating</span>
-            @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxOptions)
+            @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxRateOptions)
         </div>
         <div class="publication-comments-actions">
             @Html.RouteLink(Model.CommentsCount.ToString() + " comments", new { controller = "Publication", action = "Index", id = Model.Id })
@@ -62,7 +64,11 @@
         @if (User.IsInRole("Administrators") || User.IsInRole("Moderators"))
         {
             <div class="publication-admin-actions">
-                @Html.RouteLink("Remove", new { area = "Admin", controller = "Publication", action = "Delete", publicationId = Model.Id })
+                @Ajax.RouteLink("Remove", new { area = "Admin", controller = "Publication", action = "Delete", publicationId = Model.Id }, new AjaxOptions()
+           {
+               UpdateTargetId = publicationId,
+               Confirm = "Are you really want ot delete this publication?"
+           })
                 |
                 @Html.RouteLink("Edit", new { area = "Admin", controller = "Publication", action = "Edit", publicationId = Model.Id })
             </div>

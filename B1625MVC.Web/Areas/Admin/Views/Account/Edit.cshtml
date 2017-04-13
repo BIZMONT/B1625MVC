@@ -4,41 +4,55 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>@Model.UserName</h2>
+
 
 @if (Model.Avatar != null)
 {
     <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" />
 }
 
-@using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <div>
-        <input type="file" name="avatarFile" />
-    </div>
-    @Html.HiddenFor(m => m.Id)
-    <div>
-        @Html.LabelFor(m => m.UserName)
-        <br />
-        @Html.EditorFor(m => m.UserName)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Email)
-        <br />
-        @Html.EditorFor(m => m.Email)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.NewPassword)
-        <br />
-        @Html.PasswordFor(m => m.NewPassword)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.NewPasswordConfirm)
-        <br />
-        @Html.PasswordFor(m => m.NewPasswordConfirm)
-    </div>
-    <div>
-        <input type="submit" value="Confirm" />
-    </div>
-}
-@Html.ValidationSummary(true)
+<div class="form">
+    <div class="form-title">@Model.UserName</div>
+
+    @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-field">
+            <input type="file" name="avatarFile" />
+        </div>
+        @Html.HiddenFor(m => m.Id)
+        <div  class="form-field">
+            @Html.LabelFor(m => m.UserName)
+            <br />
+            @Html.EditorFor(m => m.UserName)
+        </div>
+        <div  class="form-field">
+            @Html.LabelFor(m => m.Email)
+            <br />
+            @Html.EditorFor(m => m.Email)
+        </div>
+        <div  class="form-field">
+            @Html.LabelFor(m => m.NewPassword)
+            <br />
+            @Html.PasswordFor(m => m.NewPassword)
+        </div>
+        <div  class="form-field">
+            @Html.LabelFor(m => m.NewPasswordConfirm)
+            <br />
+            @Html.PasswordFor(m => m.NewPasswordConfirm)
+        </div>
+        <div  class="form-field">
+            @for (int i = 0; i < Model.Roles.Count; i++)
+            {
+                <div>
+                    @Html.HiddenFor(m => m.Roles[i].Name)
+                    @Html.CheckBoxFor(m => m.Roles[i].Checked)
+                    @Model.Roles[i].Name
+                </div>
+            }
+        </div>
+        <div>
+            <input type="submit" value="Confirm" />
+        </div>
+    }
+    @Html.ValidationSummary(true)
+</div>

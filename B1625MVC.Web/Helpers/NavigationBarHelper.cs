@@ -54,6 +54,7 @@ namespace B1625MVC.Web.Helpers
             RouteData = routeData;
             InnerLinks = new List<RouteLink>();
         }
+
         public ICollection<RouteLink> InnerLinks { get; set; }
         public string Title { get; set; }
         public object RouteData { get; set; }

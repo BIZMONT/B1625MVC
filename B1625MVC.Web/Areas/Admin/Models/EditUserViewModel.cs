@@ -14,9 +14,6 @@ namespace B1625MVC.Web.Areas.Admin.Models
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        public byte[] Avatar { get; set; }
-        public IEnumerable<string> Roles { get; set; }
-
         [Display(Name = "New password")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
@@ -25,5 +22,9 @@ namespace B1625MVC.Web.Areas.Admin.Models
         [DataType(DataType.Password)]
         [Compare("NewPassword")]
         public string NewPasswordConfirm { get; set; }
+
+        public byte[] Avatar { get; set; }
+
+        public List<RoleCheckModel> Roles { get; set; }
     }
 }

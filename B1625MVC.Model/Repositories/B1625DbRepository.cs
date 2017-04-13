@@ -9,9 +9,13 @@ using B1625MVC.Model.Initializers;
 
 namespace B1625MVC.Model.Repositories
 {
+    /// <summary>
+    /// Class represents repository to get access to model throuht interface
+    /// </summary>
     public class B1625DbRepository : IRepository
     {
         private B1625DbContext _dbContext;
+
         private UserAccountManager _accountManager;
         private UserRoleManager _roleManager;
         private ProfileRepository _profilesRepo;
@@ -31,6 +35,9 @@ namespace B1625MVC.Model.Repositories
             _commentsRepo = new CommentsRepository(_dbContext);
         }
 
+        /// <summary>
+        /// Property for getting access to user profiles info CRUD class
+        /// </summary>
         public IEntityRepository<UserProfile, string> Profiles
         {
             get
@@ -38,6 +45,10 @@ namespace B1625MVC.Model.Repositories
                 return _profilesRepo;
             }
         }
+
+        /// <summary>
+        /// Property for getting access to publications CRUD class
+        /// </summary>
         public IEntityRepository<Publication, long> Publications
         {
             get
@@ -45,6 +56,10 @@ namespace B1625MVC.Model.Repositories
                 return _publicationsRepo;
             }
         }
+
+        /// <summary>
+        /// Property for getting access to comments CRUD class
+        /// </summary>
         public IEntityRepository<Comment, long> Comments
         {
             get
@@ -53,6 +68,9 @@ namespace B1625MVC.Model.Repositories
             }
         }
 
+        /// <summary>
+        /// Property for getting access to user manager
+        /// </summary>
         public UserAccountManager AccountManager
         {
             get
@@ -60,6 +78,10 @@ namespace B1625MVC.Model.Repositories
                 return _accountManager;
             }
         }
+
+        /// <summary>
+        /// Property for getting access to role manager
+        /// </summary>
         public UserRoleManager RoleManager
         {
             get
@@ -68,6 +90,10 @@ namespace B1625MVC.Model.Repositories
             }
         }
 
+        /// <summary>
+        /// IDisposable realization for the safe closure of database connection
+        /// </summary>
+        #region Dispose
         public void Dispose()
         {
             Dispose(true);
@@ -76,9 +102,9 @@ namespace B1625MVC.Model.Repositories
         private bool disposed = false;
         private void Dispose(bool disposing)
         {
-            if(!disposed)
+            if (!disposed)
             {
-                if(disposing)
+                if (disposing)
                 {
                     _accountManager.Dispose();
                     _roleManager.Dispose();
@@ -86,12 +112,12 @@ namespace B1625MVC.Model.Repositories
                 }
             }
         }
+        #endregion
 
         public async Task<int> SaveChangesAsync()
         {
             return await _dbContext.SaveChangesAsync();
         }
-
         public int SaveChanges()
         {
             return _dbContext.SaveChanges();

@@ -2,22 +2,24 @@
     ViewBag.Title = "Users";
 }
 
-<h2>Users</h2>
+<div class="form-title">Users</div>
 
-<div>
-    @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "users-table", InsertionMode = InsertionMode.Replace, Url = Url.Action("UsersTable") }))
+<div class="filter-form">
+    @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "users_table", InsertionMode = InsertionMode.Replace, Url = Url.Action("UsersTable") }))
     {
-        @Html.Label("usernameFilter", "Username")
-        @Html.TextBox("usernameFilter", (string)ViewBag.UsernameFilter)
-        <input type="submit" value="Filter" />
+        <div class="filter-form-field">
+            @Html.TextBox("usernameFilter", (string)ViewBag.UsernameFilter, new { placeholder = "Username" })
+            <input type="submit" value="Filter" />
+        </div>
     }
 </div>
-
-<div id="users-table">
-    @Html.Action("UsersTable")
+<div>
+    @Html.RouteLink("Create", new { area = "Admin", controller = "Account", action = "Create" })
 </div>
 
-@Html.RouteLink("Create", new { area = "Admin", controller = "Account", action = "Create" })
+<div>
+    @Html.Action("UsersTable")
+</div>
 
 @section Scripts{
     <script src="~/Scripts/jquery-3.1.1.js"></script>

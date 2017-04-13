@@ -1,16 +1,4 @@
-﻿.content-wrapper {
-}
-
-.main-wrapper {
-    width: 64%;
-    min-width: 640px;
-}
-
-.side-wrapper {
-    display: inline-block;
-}
-
-.publication-container {
+﻿.publication-container {
     width: 100%;
     margin-bottom: 20px;
     padding: 20px;
@@ -147,11 +135,15 @@
 }
 
 .comment-rating-actions {
+    display:inline-block;
 }
 
     .comment-rating-actions a {
         font-weight: bold;
     }
+.comment-admin-actions {
+    float: right;
+}
 
 /*#endregion */
 

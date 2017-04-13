@@ -4,6 +4,9 @@ using B1625MVC.Model.Repositories;
 
 namespace B1625MVC.BLL
 {
+    /// <summary>
+    /// Class that provides services from buisness logic layer
+    /// </summary>
     public static class ServiceProvider
     {
         public static IUserService GetUserService(string connectionString)

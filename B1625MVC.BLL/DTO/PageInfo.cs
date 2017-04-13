@@ -16,5 +16,6 @@ namespace B1625MVC.BLL.DTO
 
         public int CurrentPage { get; }
         public int ElementsPerPage { get; }
+        public int TotalPages { get; set; }
     }
 }

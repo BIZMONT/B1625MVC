@@ -15,9 +15,29 @@ body {
     min-width: 1000px;
     margin-left: 100px;
     margin-right: 100px;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.25);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.25);
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.25);
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.25);
+}
+
+.content-wrapper {
+    display: inline-flex;
+}
+
+.main-wrapper {
+    width: 65%;
+    min-width: 640px;
+    margin-right: 5px;
+}
+
+.side-wrapper {
+    border:1px solid #ccc;
+    background-color:#e6e6e6;
+    flex-grow: 1;
+    height:100%;
+    display: inline-block;
+    padding: 16px;
+    margin-left:5px;
 }
 
 .content {
@@ -26,6 +46,15 @@ body {
     padding-right: 32px;
     padding-bottom: 32px;
 }
+
+    .content a {
+        text-decoration: none;
+        color: black;
+    }
+
+        .content a:hover {
+            color: #0066ff;
+        }
 
 
 
@@ -44,6 +73,37 @@ body {
         .pager a:hover {
             background-color: #0066ff;
         }
+
+    .pager span {
+        color: black;
+        padding: 5px 10px;
+        margin: 0 2px;
+        border: 1px solid black;
+        display: inline-block;
+    }
+
+        .pager span:hover {
+            background-color: #0066ff;
+        }
+
+#to_top {
+    display: none;
+    position: fixed;
+    top:0px;
+    bottom: 0px; /* Place the button at the bottom of the page */
+    left: 0px; /* Place the button 30px from the right */
+    z-index: 98; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    color: #262626; /* Set a background color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    background-color:transparent;
+}
+
+    #to_top:hover {
+        color: #0066ff; /* Add a dark-grey background on hover */
+    }
 
 footer {
     text-align: center;
@@ -67,6 +127,7 @@ footer {
     width: 100%;
     top: 0px;
     font-size: 16px;
+    z-index:99;
 }
 
     .nav-bar li {
@@ -144,10 +205,10 @@ footer {
 
 .form-field {
     width: 100%;
-    margin: 5px 0;
+    margin: 10px 0;
 }
 
-    .form-field input[type=text], input[type=password] {
+    .form-field input[type=text], input[type=password], input[type=email] {
         width: 100%;
         padding: 8px 12px;
         margin: 5px 0;
@@ -186,6 +247,15 @@ footer {
         box-sizing: border-box;
         margin: 10px 0;
         padding: 8px 12px;
+    }
+
+    .form-field img {
+        width: 100%;
+        max-width: 100%;
+        border: 1px solid #ccc;
+        display: block;
+        padding: 8px 12px;
+        box-sizing: border-box
     }
 
 .form input[type=submit]:hover {
@@ -227,5 +297,41 @@ footer {
     display: none;
 }
 
+
+/*#endregion */
+
+/*#region Table */
+
+table {
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+}
+
+    table thead {
+        text-align: center;
+        background-color: #262626;
+        color: #f1f1f1;
+        border: 1px solid #f1f1f1;
+    }
+
+table, td {
+    border: 1px solid #262626;
+}
+
+    table td {
+        padding: 5px;
+    }
+
+/*#endregion */
+
+/*#region Filter */
+
+.filter-form {
+    border: 1px solid rgba(0,0,0,0.25);
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 18px;
+}
 
 /*#endregion */

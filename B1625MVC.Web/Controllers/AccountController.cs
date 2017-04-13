@@ -1,5 +1,6 @@
 ﻿using B1625MVC.BLL.Abstract;
 using B1625MVC.BLL.DTO;
+using B1625MVC.Web.Infrastructure;
 using B1625MVC.Web.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -33,7 +34,7 @@ namespace B1625MVC.Web.Controllers
         public async Task<ActionResult> UserProfile(string username)
         {
             var user = await UserService.GetByNameAsync(username);
-            if(user != null)
+            if (user != null)
             {
                 return View(user);
             }
@@ -43,9 +44,8 @@ namespace B1625MVC.Web.Controllers
             }
         }
 
-
         [HttpGet]
-        public ActionResult Settings()
+        public ActionResult Settings(string userName)
         {
             return View();
         }
@@ -53,10 +53,23 @@ namespace B1625MVC.Web.Controllers
         [HttpPost]
         public ActionResult Settings(ProfileSettingsViewModel model)
         {
+            byte[] avatar = null;
+            if (Request.Files.Count > 0)
+            {
+                avatar = FileUploader.UploadFile(Request.Files[0]);
+            }
+
+            var task = UserService.GetByNameAsync(User.Identity.Name);
+            var user = task.Result;
+
+
             var userData = new EditUserData()
             {
+                Id = user.Id,
                 Email = model.Email,
-                NewPassword = model.NewPassword, Gender = model.Gender
+                NewPassword = model.NewPassword,
+                Gender = model.Gender,
+                Avatar = avatar
             };
             UserService.EditAsync(userData);
             return HttpNotFound();

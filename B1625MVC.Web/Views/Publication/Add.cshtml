@@ -23,8 +23,16 @@
             @Html.ValidationMessageFor(p => p.Text)
             @Html.TextAreaFor(p => p.Text, new { placeholder = "Enter you text here" })
         </div>
-        <div id="image-content" class="form-field">
-            <input type="file" name="ImageFile" />
+        <div id="image-content">
+            <div class="form-field">
+                <img style="text-align:center;" id="image_preview" src="" alt="Image preview here" />
+            </div>
+            <div class="form-field">
+                <input type="file" name="ImageFile" id="ImageFile" accept="image/*" />
+            </div>
+        </div>
+        <div class="form-message">
+            @Html.ValidationSummary(false)
         </div>
         <div class="form-field">
             <input type="submit" value="Add publication" />
@@ -48,6 +56,21 @@
                     $('#text-content').hide();
                 }
             });
+        });
+    </script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#ImageFile").change(function () {
+            readURL(this);
         });
     </script>
 }

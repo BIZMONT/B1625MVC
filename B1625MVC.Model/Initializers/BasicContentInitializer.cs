@@ -12,6 +12,9 @@ using Microsoft.AspNet.Identity;
 
 namespace B1625MVC.Model.Initializers
 {
+    /// <summary>
+    /// Class represents initializer for model database that adds to database basic data (administrator account, roles ets.)
+    /// </summary>
     public class BasicContentInitializer : DropCreateDatabaseIfModelChanges<B1625DbContext>
     {
         protected override void Seed(B1625DbContext context)
@@ -20,7 +23,6 @@ namespace B1625MVC.Model.Initializers
 
             UserAccountManager accountManager = UserAccountManager.Create(context);
             UserRoleManager roleManager = new UserRoleManager(new RoleStore<UserRole>(context));
-            MemoryStream memStream = new MemoryStream();
 
 
             roleManager.Create(new UserRole() { Name = "Administrators" });
@@ -38,11 +40,9 @@ namespace B1625MVC.Model.Initializers
                 accountManager.AddToRole(admin.Id, "Administrators");
                 accountManager.AddToRole(admin.Id, "Users");
 
-                Resources.AdminAvatar.Save(memStream, ImageFormat.Jpeg);
                 var profile = new UserProfile()
                 {
                     AccountId = admin.Id,
-                    Avatar = memStream.ToArray(),
                     Gender = Gender.Male,
                     RegistrationDate = DateTime.Now
                 };

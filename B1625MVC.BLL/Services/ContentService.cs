@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.Entity;
+using System.Linq.Expressions;
 
 using B1625MVC.BLL.Abstract;
 using B1625MVC.BLL.DTO;
 using B1625MVC.BLL.DTO.Enums;
 using B1625MVC.Model.Abstract;
 using B1625MVC.Model.Entities;
-using System.Data.Entity;
-using System.Linq.Expressions;
 using B1625MVC.BLL.DTO.ContentData.CommentData;
+using B1625MVC.BLL.DTO.ContentData.PublicationData;
 
 namespace B1625MVC.BLL.Services
 {
@@ -46,7 +47,7 @@ namespace B1625MVC.BLL.Services
             return new OperationDetails(false, "Can`t find author in database");
         }
 
-        public async Task<IEnumerable<PublicationInfo>> FindPublication(Expression<Func<PublicationInfo, bool>> predicate, PageInfo pageInfo)
+        public IEnumerable<PublicationInfo> FindPublications(Expression<Func<PublicationInfo, bool>> predicate, PageInfo pageInfo)
         {
             var allPublications = repo.Publications.Get().Select(p => new PublicationInfo()
             {
@@ -60,7 +61,9 @@ namespace B1625MVC.BLL.Services
                 Title = p.Title,
                 Rating = p.Rating
             });
-            return await allPublications.Where(predicate).OrderBy(p=>p.PublicationDate).Skip((pageInfo.CurrentPage - 1) * pageInfo.ElementsPerPage).Take(pageInfo.ElementsPerPage).ToListAsync();
+            int publicationsCount = allPublications.Count();
+            pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
+            return allPublications.Where(predicate).OrderBy(p => p.PublicationDate).Skip((pageInfo.CurrentPage - 1) * pageInfo.ElementsPerPage).Take(pageInfo.ElementsPerPage).ToList();
         }
 
         public async Task<IEnumerable<PublicationInfo>> GetPublicationsAsync(PageInfo pageInfo)
@@ -77,6 +80,9 @@ namespace B1625MVC.BLL.Services
                 Title = p.Title,
                 Rating = p.Rating
             });
+
+            int publicationsCount = allPublications.Count();
+            pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
             return await allPublications.OrderByDescending(p => p.PublicationDate).Skip((pageInfo.CurrentPage - 1) * pageInfo.ElementsPerPage).Take(pageInfo.ElementsPerPage).ToListAsync();
         }
 
@@ -94,7 +100,44 @@ namespace B1625MVC.BLL.Services
                 Title = p.Title,
                 Rating = p.Rating
             });
+
+            int publicationsCount = allPublications.Count();
+            pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
             return await allPublications.OrderByDescending(p => p.Rating).Skip((pageInfo.CurrentPage - 1) * pageInfo.ElementsPerPage).Take(pageInfo.ElementsPerPage).ToListAsync();
+        }
+
+        public async Task<IEnumerable<PublicationInfo>> GetHotPublicationsAsync(PageInfo pageInfo)
+        {
+            var hotest = repo.Publications.Get().Select(p => new
+            {
+                Id = p.PublicationId,
+                Author = p.Author.User.UserName,
+                AuthorAvatar = p.Author.Avatar,
+                CommentsCount = p.Comments.Count,
+                Content = p.Content,
+                ContentType = (ContentType)p.ContentType,
+                PublicationDate = p.PublicationDate,
+                Title = p.Title,
+                Rating = p.Rating/*,
+                HotCof = (p.Rating / (int)(DateTime.Now.Date - p.PublicationDate.Value.Date).TotalHours)
+            }).OrderByDescending(p=>p.HotCof);*/
+            });
+
+            int publicationsCount = hotest.Count();
+            pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
+
+            return await hotest.Select(h => new PublicationInfo()
+            {
+                Id = h.Id,
+                Author = h.Author,
+                AuthorAvatar = h.AuthorAvatar,
+                CommentsCount = h.CommentsCount,
+                Content = h.Content,
+                ContentType = h.ContentType,
+                PublicationDate = h.PublicationDate,
+                Title = h.Title,
+                Rating = h.Rating
+            }).OrderByDescending(p => p.CommentsCount).Skip((pageInfo.CurrentPage - 1) * pageInfo.ElementsPerPage).Take(pageInfo.ElementsPerPage).ToListAsync();
         }
 
         public PublicationInfo GetPublication(long publicationId)
@@ -269,6 +312,33 @@ namespace B1625MVC.BLL.Services
         public void Dispose()
         {
             repo.Dispose();
+        }
+
+        public OperationDetails DeletePublication(long publicationId)
+        {
+            repo.Publications.Delete(publicationId);
+            int res = repo.SaveChanges();
+            if (res > 0)
+            {
+                return new OperationDetails(true, "Publication deleted");
+            }
+            return new OperationDetails(false, "Can`t delete publicztion");
+        }
+
+        public OperationDetails EditPublication(EditPublicationData publicationData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OperationDetails DeleteComment(long commentId)
+        {
+            repo.Comments.Delete(commentId);
+            int res = repo.SaveChanges();
+            if(res > 0)
+            {
+                return new OperationDetails(true, "Comment deleted");
+            }
+            return new OperationDetails(false, "Can`t delete comment");
         }
     }
 }

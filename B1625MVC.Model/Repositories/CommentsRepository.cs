@@ -27,7 +27,7 @@ namespace B1625MVC.Model.Repositories
             var comment = _dbContext.Comments.Find(id);
             if (comment != null)
             {
-                _dbContext.Comments.Remove(comment);
+                var somthing = _dbContext.Comments.Remove(comment);
             }
         }
 

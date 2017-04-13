@@ -1,39 +1,44 @@
 ﻿@using B1625MVC.BLL.DTO
 @model IEnumerable<UserInfo>
-
-<table border="1" style="border-style:solid; border-width:1px">
-    <thead>
-        <tr>
-            <td>Id</td>
-            <td>Username</td>
-            <td>Rating</td>
-            <td>Roles</td>
-            <td>Actions</td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
+@{
+    WebGrid usersTable = new WebGrid(source: Model);
+}
+<div id="users_table">
+    <table>
+        <thead>
             <tr>
-                <td>@user.Id</td>
-                <td>@user.UserName</td>
-                <td>@user.Rating</td>
-                <td>
-                    @{
-                        var rolesString = string.Empty;
-                        foreach (var role in user.Roles)
-                        {
-                            rolesString += role + ", ";
-                        }
-                        @: @rolesString.Substring(0, rolesString.Length - 2)
-                    }
-                </td>
-                <td>
-                    @Html.RouteLink("Edit", new { area = "Admin", controller = "Account", action = "Edit", username = user.UserName })
-                    @Html.RouteLink("Details", new { area = "Admin", controller = "Account", action = "Details", username = user.UserName })
-                    @Html.RouteLink("Delete", new { area = "Admin", controller = "Account", action = "Delete", accountId = user.Id })
-                </td>
+                <td>Username</td>
+                <td>Rating</td>
+                <td>Roles</td>
+                <td>Registration date</td>
+                <td>Actions</td>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@Html.RouteLink(user.UserName, new { area = "Admin", controller = "Account", action = "Details", username = user.UserName })</td>
+                    <td>@user.Rating</td>
+                    <td>
+                        @{
+                            var rolesString = string.Empty;
+                            foreach (var role in user.Roles)
+                            {
+                                rolesString += role + ", ";
+                            }
+                            @: @rolesString.Substring(0, rolesString.Length - 2)
+                        }
+                    </td>
+                    <td>
+                        @user.RegistrationDate
+                    </td>
+                    <td>
+                        @Html.RouteLink("Edit", new { area = "Admin", controller = "Account", action = "Edit", username = user.UserName })
+                        @Html.RouteLink("Delete", new { area = "Admin", controller = "Account", action = "Delete", accountId = user.Id })
+                    </td>
+                </tr>
+                            }
+        </tbody>
+    </table>
+</div>

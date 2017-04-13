@@ -4,13 +4,38 @@
     ViewBag.Title = Model.UserName;
 }
 
-<h2>@Model.UserName</h2>
-@if (Model.Avatar != null)
-{
-    <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" />
+@section Styles{
+    <link rel="stylesheet" href="~/Content/PublicationStyle.css" type="text/css" />
 }
-<br />
-Registration date: @Model.RegistrationDate.Value.Date.ToString("dd MMM yyyy")
-<br/>
-Rating: @Model.Rating
+
+<div style="background-color:#808080;border:2px solid #808080;padding:40px">
+    @if (Model.Avatar != null)
+    {
+        <img style="display:block;margin: auto;width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" alt="No avatar" />
+    }
+
+    <div style="text-align:center;margin-top:20px">
+        <span style="font-size:20px;">@Model.UserName</span>
+        <br />
+        Registration date: @Model.RegistrationDate.Value.Date.ToString("dd MMM yyyy")
+        <br />
+        Rating: @Model.Rating
+        <br />
+        Gender: @Model.Gender
+        <br />
+        @if (User.Identity.Name == Model.UserName)
+        {
+            @Html.ActionLink("Edit", "Settings")
+        }
+    </div>
+</div>
+<div style="margin-top:40px; margin-left:60px;margin-right:60px">
+    @Html.Action("UserPublications", "Publication", new { username = Model.UserName})
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}
 

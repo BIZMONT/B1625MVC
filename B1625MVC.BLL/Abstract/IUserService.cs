@@ -20,5 +20,6 @@ namespace B1625MVC.BLL.Abstract
         Task<bool> CheckPasswordAsync(string userId, string password);
         bool IsUserExist(string username);
         Task<UserInfo> GetByNameAsync(string username);
+        IEnumerable<string> GetAllRoles();
     }
 }

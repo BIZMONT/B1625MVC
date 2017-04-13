@@ -6,3 +6,12 @@
 
 <h2>Settings</h2>
 
+<img src=""
+
+@using (Html.BeginForm("Setings","Account",FormMethod.Post,new { enctype = "multipart/form-data"}))
+{
+    <input type="file" name="Avatar"/>
+
+    @Html.EditorFor(m => m.Email)
+}
+

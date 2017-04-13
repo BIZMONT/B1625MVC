@@ -15,29 +15,16 @@ namespace B1625MVC.Web
 
             routes.MapRoute(
                 name: null,
-                url: "login",
-                defaults: new { controller = "Account", action = "Login" },
-                namespaces: new string[] { "B1625MVC.Web.Controllers" }
-            );
-
-            routes.MapRoute(
-                name: null,
-                url: "logout",
-                defaults: new { controller = "Account", action = "Logout" },
-                namespaces: new string[] { "B1625MVC.Web.Controllers" }
-            );
-
-            routes.MapRoute(
-                name: null,
-                url: "registration",
-                defaults: new { controller = "Account", action = "Registration" },
-                namespaces: new string[] { "B1625MVC.Web.Controllers" }
-            );
-
-            routes.MapRoute(
-                name: null,
                 url: "post/{id}",
-                defaults: new { controller = "Publication", action = "Index" }
+                defaults: new { controller = "Publication", action = "Index" },
+                namespaces: new string[] { "B1625MVC.Web.Controllers" }
+            );
+
+            routes.MapRoute(
+                name: null,
+                url: "publications/{action}",
+                defaults: new { controller = "Home", action = "Hot" },
+                namespaces: new string[] { "B1625MVC.Web.Controllers" }
             );
 
             routes.MapRoute(
@@ -45,6 +32,21 @@ namespace B1625MVC.Web
                 url: "account/{username}",
                 defaults: new { controller = "Account", action = "UserProfile" },
                  namespaces: new string[] { "B1625MVC.Web.Controllers" }
+            );
+
+            routes.MapRoute(
+                name: null,
+                url: "account/{username}/settings",
+                defaults: new { controller = "Account", action = "Settings" },
+                 namespaces: new string[] { "B1625MVC.Web.Controllers" }
+            );
+
+
+            routes.MapRoute(
+                name: null,
+                url: "{action}",
+                defaults: new { controller = "Account" },
+                namespaces: new string[] { "B1625MVC.Web.Controllers" }
             );
 
             routes.MapRoute(

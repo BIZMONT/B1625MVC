@@ -29,6 +29,12 @@ namespace B1625MVC.Web.Areas.Admin
                 url: "Admin",
                 defaults: new { controller = "Home", action = "Index" }
             );
+
+            context.MapRoute(
+                name: null,
+                url: "Admin/{controller}/{action}",
+                defaults: new { controller = "Account", action = "List" }
+            );
         }
     }
 }

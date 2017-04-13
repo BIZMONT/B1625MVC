@@ -2,6 +2,7 @@
 @model PublicationViewModel
 
 @{
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
     ViewBag.Title = Model.Publication.Title;
 }
 
@@ -9,28 +10,35 @@
     <link rel="stylesheet" type="text/css" href="~/Content/PublicationStyle.css" />
 }
 
-<div class="content-wrapper">
-    <div class="main-wrapper">
-        <div id="publication">
-            @Html.Partial("_Publication", Model.Publication)
-        </div>
-        <div id="comments">
-            @Html.Action("PublicationComments", "Comment", new { publicationId = Model.Publication.Id })
-        </div>
-        <div>
-            Add your comment
-            @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "comments", Url = Url.RouteUrl(new { controller = "Comment", action = "Add", publicationId = Model.Publication.Id }) }))
+<div id="publication">
+    @Html.Partial("_PublicationPartial", Model.Publication)
+</div>
+<div id="comments">
+    @Html.Action("PublicationComments", "Comment", new { publicationId = Model.Publication.Id })
+</div>
+<div class="form-field">
+    Add your comment
+    @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "comments", Url = Url.RouteUrl(new { controller = "Comment", action = "Add", publicationId = Model.Publication.Id }) }))
             {
-                @Html.TextArea("newComment", new { style = "display:block" })
-                <input type="submit" value="Add comment" />
-            }
-            @Html.ValidationSummary(true)
-        </div>
+        @Html.TextArea("newComment", new { style = "display:block;height:100px" })
+        <input type="submit" name="addCommentInput" value="Add comment" />
+    }
+    <div class="form-message">
+        @Html.ValidationSummary(true)
     </div>
 </div>
+
+@section Sidebar{
+    @Html.Partial("_Sidebar")
+}
 
 
 @section Scripts{
     <script src="~/Scripts/jquery-3.1.1.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(document).ajaxComplete(function () {
+            $('#newComment').val('');
+        });
+    </script>
 }
