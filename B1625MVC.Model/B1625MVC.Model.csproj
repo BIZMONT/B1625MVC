@@ -91,9 +91,9 @@
     <Compile Include="Entities\UserAccount.cs" />
     <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Initializers\BasicContentInitializer.cs" />
-    <Compile Include="Migrations\201704021306123_InitialCreate.cs" />
-    <Compile Include="Migrations\201704021306123_InitialCreate.Designer.cs">
-      <DependentUpon>201704021306123_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201704152258523_Init.cs" />
+    <Compile Include="Migrations\201704152258523_Init.Designer.cs">
+      <DependentUpon>201704152258523_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,10 +107,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704021306123_InitialCreate.resx">
-      <DependentUpon>201704021306123_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704152258523_Init.resx">
+      <DependentUpon>201704152258523_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

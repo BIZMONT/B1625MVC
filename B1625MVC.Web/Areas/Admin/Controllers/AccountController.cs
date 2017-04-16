@@ -90,6 +90,12 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
                 var result = await UserService.EditAsync(userDto);
                 if (result.Succedeed)
                 {
+                    UserInfo user = await UserService.GetByNameAsync(userDto.UserName);
+                    if (!user.EmailConfirmed)
+                    {
+                        UserService.SendVerificationEmailAsync(user.Id, Url.Action("ConfirmEmail", "Account", new { area = "" }));
+                    }
+
                     if (!string.IsNullOrEmpty(userData.NewPassword) && User.Identity.Name == old.UserName)
                     {
                         return RedirectToRoute(new { area = "", controller = "Account", action = "Logout" });
@@ -125,7 +131,7 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
         public ActionResult Create()
         {
             var model = new CreateUserViewModel();
-            model.Roles = UserService.GetAllRoles().Select(r=> new RoleCheckModel() { Name = r, Checked = false}).ToList(); //get all available roles from database
+            model.Roles = UserService.GetAllRoles().Select(r => new RoleCheckModel() { Name = r, Checked = false }).ToList(); //get all available roles from database
             return View(model);
         }
 

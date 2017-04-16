@@ -208,7 +208,7 @@ footer {
     margin: 10px 0;
 }
 
-    .form-field input[type=text], input[type=password], input[type=email] {
+    .form-field input[type=text], input[type=password], input[type=email], input[type=number] {
         width: 100%;
         padding: 8px 12px;
         margin: 5px 0;

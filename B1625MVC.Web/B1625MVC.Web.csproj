@@ -141,6 +141,7 @@
     <Content Include="Areas\Admin\Views\Account\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Account\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_UsersTable.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\_SmtpSettings.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -169,6 +170,7 @@
     <Compile Include="Areas\Admin\Models\CreateUserViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EditUserViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleCheckModel.cs" />
+    <Compile Include="Areas\Admin\Models\SmtpSettings.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -178,6 +180,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\NavigationBarHelper.cs" />
+    <Compile Include="Helpers\PagerHelper.cs" />
+    <Compile Include="Infrastructure\EmailServiceSettings.cs" />
     <Compile Include="Infrastructure\FileUploader.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -207,6 +211,8 @@
     <Content Include="Views\Shared\_Publications.cshtml" />
     <Content Include="Views\Shared\_ContentLayout.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\RegistrationCompleted.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

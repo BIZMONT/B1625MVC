@@ -39,6 +39,8 @@ namespace B1625MVC.Model.Identity
                 RequireUppercase = false
             };
 
+            manager.UserTokenProvider = new EmailTokenProvider<UserAccount>();
+
             return manager;
         }
 

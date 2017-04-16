@@ -36,7 +36,7 @@ namespace B1625MVC.Model
             modelBuilder.Configurations.Add(new PublicationConfig());
             modelBuilder.Configurations.Add(new CommentConfig());
 
-            modelBuilder.Entity<UserAccount>().HasRequired(ua => ua.Profile).WithRequiredPrincipal(ud => ud.User).WillCascadeOnDelete(true);
+            modelBuilder.Entity<UserAccount>().HasRequired(ua => ua.Profile).WithOptional(ud => ud.User).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UserProfile>().HasMany(up => up.Publications).WithRequired(p => p.Author).HasForeignKey(p=>p.AuthorId).WillCascadeOnDelete(false);
             modelBuilder.Entity<UserProfile>().HasMany(up => up.Comments).WithRequired(c => c.Author).HasForeignKey(p => p.AuthorId).WillCascadeOnDelete(false);

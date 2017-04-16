@@ -12,12 +12,27 @@ using B1625MVC.Model.Abstract;
 using B1625MVC.BLL.DTO;
 using B1625MVC.BLL.Abstract;
 using B1625MVC.BLL.DTO.Enums;
+using B1625MVC.Model.Identity;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace B1625MVC.BLL.Services
 {
     public class UserService : IUserService
     {
         IRepository repo;
+
+        public IIdentityMessageService EmailService
+        {
+            get
+            {
+                return repo.AccountManager.EmailService;
+            }
+            set
+            {
+                repo.AccountManager.EmailService = value;
+            }
+        }
 
         public UserService(IRepository repository)
         {
@@ -80,18 +95,34 @@ namespace B1625MVC.BLL.Services
 
             if (accountByEmail == null && accountByName == null) //if users with new user email or name is not exist
             {
+
                 var account = new UserAccount() //create new user account model object
                 {
                     Email = userData.Email,
                     UserName = userData.UserName,
-                    Profile = new UserProfile() //create new user profile model object
-                    {
-                        Avatar = userData.Avatar,
-                        Gender = (Model.Enums.Gender)userData.Gender,
-                        RegistrationDate = DateTime.Now
-                    }
+                    EmailConfirmed = false,
                 };
-                var result = await repo.AccountManager.CreateAsync(account, userData.NewPassword); //add new user account to database
+
+                var profile = new UserProfile() //create new user profile model object
+                {
+                    AccountId = account.Id,
+                    Avatar = userData.Avatar,
+                    Gender = (Model.Enums.Gender)userData.Gender,
+                    RegistrationDate = DateTime.Now
+                };
+
+                account.Profile = profile;
+
+                IdentityResult result = null;
+                try
+                {
+                    result = await repo.AccountManager.CreateAsync(account, userData.NewPassword);
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    Debug.WriteLine(ex.EntityValidationErrors);
+                }
+                //add new user account to database
                 if (!result.Succeeded) //if user was not added successfully
                 {
                     return new OperationDetails(false, "Can`t create new account:" + string.Concat(result.Errors)); //return fail result with message
@@ -321,7 +352,7 @@ namespace B1625MVC.BLL.Services
         public async Task<bool> CheckPasswordAsync(string userId, string password)
         {
             var account = await repo.AccountManager.FindByIdAsync(userId); //find user with passed id
-            if(userId != null) //if user is exists
+            if (userId != null) //if user is exists
             {
                 return await repo.AccountManager.CheckPasswordAsync(account, password); //check if passwords are the same
             }
@@ -348,11 +379,28 @@ namespace B1625MVC.BLL.Services
         }
 
         /// <summary>
+        /// Method for generating and sending email confirmation url
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="baseUrl"></param>
+        public async Task SendVerificationEmailAsync(string userId, string baseUrl)
+        {
+            var token = await repo.AccountManager.GenerateEmailConfirmationTokenAsync(userId);
+            await repo.AccountManager.SendEmailAsync(userId, "Email verification", "<a href =\"" + baseUrl + "/" + userId + "/" + token + "\">Confirm you email</a>");
+        }
+
+        /// <summary>
         /// Implementation of IDisposable interface
         /// </summary>
         public void Dispose()
         {
             repo.Dispose();
+        }
+
+        public async Task<bool> CheckEmailToken(string userId, string token)
+        {
+            var result = await repo.AccountManager.ConfirmEmailAsync(userId, token);
+            return result.Succeeded;
         }
     }
 }

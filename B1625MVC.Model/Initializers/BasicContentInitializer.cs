@@ -33,6 +33,13 @@ namespace B1625MVC.Model.Initializers
             if (admin == null)
             {
                 admin = new UserAccount() { UserName = "admin", Email = "admin@example.com" };
+                var profile = new UserProfile()
+                {
+                    AccountId = admin.Id,
+                    Gender = Gender.Male,
+                    RegistrationDate = DateTime.Now
+                };
+                admin.Profile = profile;
                 var result = accountManager.Create(admin, "adminadmin");
                 if (!result.Succeeded)
                 {
@@ -40,13 +47,6 @@ namespace B1625MVC.Model.Initializers
                 accountManager.AddToRole(admin.Id, "Administrators");
                 accountManager.AddToRole(admin.Id, "Users");
 
-                var profile = new UserProfile()
-                {
-                    AccountId = admin.Id,
-                    Gender = Gender.Male,
-                    RegistrationDate = DateTime.Now
-                };
-                context.UsersProfiles.Add(profile);
                 context.SaveChanges();
             }
         }

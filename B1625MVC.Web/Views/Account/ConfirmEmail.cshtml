@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "ConfirmEmail";
+}
+
+<h2>ConfirmEmail</h2>
+@if ((bool)ViewBag.Succeeded)
+{
+    @: Successfull
+    @Html.RouteLink("To site", new { controller = "Home", action = "Hot"})
+}
+else
+{
+    @:  Error
+}

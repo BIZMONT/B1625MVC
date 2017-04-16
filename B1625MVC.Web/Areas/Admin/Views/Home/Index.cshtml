@@ -3,5 +3,23 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div>
+
+    <div style="width:400px">
+        <div class="form-title">Email service</div>
+        @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "email_service_form", Url = Url.Action("EditSmtpService", "Home", new { area = "Admin" }) }))
+        {
+            @Html.Action("EditSmtpService")
+            <input type="submit" value="Save" />
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        //TODO: enable field
+    </script>
+}
 

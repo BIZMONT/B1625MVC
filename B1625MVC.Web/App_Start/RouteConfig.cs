@@ -29,6 +29,13 @@ namespace B1625MVC.Web
 
             routes.MapRoute(
                 name: null,
+                url: "ConfirmEmail/{userId}/{token}",
+                defaults: new { controller = "Account", action = "ConfirmEmail" },
+                 namespaces: new string[] { "B1625MVC.Web.Controllers" }
+            );
+
+            routes.MapRoute(
+                name: null,
                 url: "account/{username}",
                 defaults: new { controller = "Account", action = "UserProfile" },
                  namespaces: new string[] { "B1625MVC.Web.Controllers" }

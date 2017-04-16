@@ -1,6 +1,6 @@
 ﻿@using B1625MVC.BLL.DTO
 @model IEnumerable<PublicationInfo>
-@{ 
+@{
     var pageInfo = (PageInfo)ViewBag.PageInfo;
 }
 
@@ -9,8 +9,5 @@
     @Html.Partial("_PublicationPartial", publication)
 }
 <div class="pager">
-    @for (int i = 1; i < pageInfo.TotalPages + 1; i++)
-            {
-        @Html.RouteLink(i.ToString(), new { controller = ViewContext.RouteData.Values["controller"], action = ViewContext.RouteData.Values["action"], page = i })
-    }
+    @Html.Pager(pageInfo)
 </div>

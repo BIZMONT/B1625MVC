@@ -3,7 +3,7 @@ namespace B1625MVC.Model.Migrations
     using System;
     using System.Data.Entity.Migrations;
 
-    public partial class InitialCreate : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -34,9 +34,7 @@ namespace B1625MVC.Model.Migrations
                     RegistrationDate = c.DateTime(nullable: false),
                     Rating = c.Int(),
                 })
-                .PrimaryKey(t => t.AccountId)
-                .ForeignKey("dbo.AspNetUsers", t => t.AccountId, cascadeDelete: true)
-                .Index(t => t.AccountId);
+                .PrimaryKey(t => t.AccountId);
 
             CreateTable(
                 "dbo.Publications",
@@ -73,6 +71,8 @@ namespace B1625MVC.Model.Migrations
                     Discriminator = c.String(nullable: false, maxLength: 128),
                 })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.UserProfiles", t => t.Id)
+                .Index(t => t.Id)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
 
             CreateTable(
@@ -333,6 +333,7 @@ namespace B1625MVC.Model.Migrations
                         "WHERE [AccountId] = @ProfileId " +
                 "END");
             #endregion
+
         }
 
         public override void Down()
@@ -341,7 +342,7 @@ namespace B1625MVC.Model.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.UserProfiles", "AccountId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUsers", "Id", "dbo.UserProfiles");
             DropForeignKey("dbo.Publications", "AuthorId", "dbo.UserProfiles");
             DropForeignKey("dbo.PublicationsLikes", "PublicationId", "dbo.Publications");
             DropForeignKey("dbo.PublicationsLikes", "ProfileId", "dbo.UserProfiles");
@@ -367,8 +368,8 @@ namespace B1625MVC.Model.Migrations
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.AspNetUsers", new[] { "Id" });
             DropIndex("dbo.Publications", new[] { "AuthorId" });
-            DropIndex("dbo.UserProfiles", new[] { "AccountId" });
             DropIndex("dbo.Comments", new[] { "PublicationId" });
             DropIndex("dbo.Comments", new[] { "AuthorId" });
             DropTable("dbo.PublicationsLikes");

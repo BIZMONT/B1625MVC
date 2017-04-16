@@ -1,0 +1,26 @@
+﻿@model B1625MVC.Web.Areas.Admin.Models.SmtpSettingsViewModel
+
+<div id="email_service_form">
+    <div class="form-field">
+        @Html.CheckBoxFor(m=>m.Enabled) Use email verification
+    </div>
+    <div class="form-field">
+        @Html.ValidationMessageFor(m=>m.Host)
+        @Html.EditorFor(m => m.Host, new { placeholder = "Host" })
+    </div>
+    <div class="form-field">
+        @Html.ValidationMessageFor(m => m.Port)
+        @Html.EditorFor(m => m.Port, new { placeholder = "Port" })
+    </div>
+    <div class="form-field">
+        @Html.CheckBoxFor(m => m.Ssl) Use SSL
+    </div>
+    <div class="form-field">
+        @Html.ValidationMessageFor(m => m.Login)
+        @Html.EditorFor(m => m.Login, new { placeholder = "Login" })
+    </div>
+    <div class="form-field">
+        @Html.ValidationMessageFor(m => m.Password)
+        @Html.EditorFor(m => m.Password, new { placeholder = "Password" })
+    </div>
+</div>

@@ -24,6 +24,22 @@ namespace B1625MVC.BLL.Services
             repo = repository;
         }
 
+        private IQueryable<PublicationInfo> GetAllPublications()
+        {
+            return repo.Publications.Get().Select(p => new PublicationInfo()
+            {
+                Id = p.PublicationId,
+                Author = p.Author.User != null ? p.Author.User.UserName : "Unknown",
+                AuthorAvatar = p.Author.Avatar,
+                CommentsCount = p.Comments.Count,
+                Content = p.Content,
+                ContentType = (ContentType)p.ContentType,
+                PublicationDate = p.PublicationDate,
+                Title = p.Title,
+                Rating = p.Rating
+            });
+        }
+
         #region PublicationMethods
         public async Task<OperationDetails> CreatePublication(CreatePublicationData publicationData)
         {
@@ -49,18 +65,7 @@ namespace B1625MVC.BLL.Services
 
         public IEnumerable<PublicationInfo> FindPublications(Expression<Func<PublicationInfo, bool>> predicate, PageInfo pageInfo)
         {
-            var allPublications = repo.Publications.Get().Select(p => new PublicationInfo()
-            {
-                Id = p.PublicationId,
-                Author = p.Author.User.UserName,
-                AuthorAvatar = p.Author.Avatar,
-                CommentsCount = p.Comments.Count,
-                Content = p.Content,
-                ContentType = (ContentType)p.ContentType,
-                PublicationDate = p.PublicationDate,
-                Title = p.Title,
-                Rating = p.Rating
-            });
+            var allPublications = GetAllPublications();
             int publicationsCount = allPublications.Count();
             pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
             return allPublications.Where(predicate).OrderBy(p => p.PublicationDate).Skip((pageInfo.CurrentPage - 1) * pageInfo.ElementsPerPage).Take(pageInfo.ElementsPerPage).ToList();
@@ -68,18 +73,7 @@ namespace B1625MVC.BLL.Services
 
         public async Task<IEnumerable<PublicationInfo>> GetPublicationsAsync(PageInfo pageInfo)
         {
-            var allPublications = repo.Publications.Get().Select(p => new PublicationInfo()
-            {
-                Id = p.PublicationId,
-                Author = p.Author.User.UserName,
-                AuthorAvatar = p.Author.Avatar,
-                CommentsCount = p.Comments.Count,
-                Content = p.Content,
-                ContentType = (ContentType)p.ContentType,
-                PublicationDate = p.PublicationDate,
-                Title = p.Title,
-                Rating = p.Rating
-            });
+            var allPublications = GetAllPublications();
 
             int publicationsCount = allPublications.Count();
             pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
@@ -88,18 +82,7 @@ namespace B1625MVC.BLL.Services
 
         public async Task<IEnumerable<PublicationInfo>> GetBestPublicationsAsync(PageInfo pageInfo)
         {
-            var allPublications = repo.Publications.Get().Select(p => new PublicationInfo()
-            {
-                Id = p.PublicationId,
-                Author = p.Author.User.UserName,
-                AuthorAvatar = p.Author.Avatar,
-                CommentsCount = p.Comments.Count,
-                Content = p.Content,
-                ContentType = (ContentType)p.ContentType,
-                PublicationDate = p.PublicationDate,
-                Title = p.Title,
-                Rating = p.Rating
-            });
+            var allPublications = GetAllPublications();
 
             int publicationsCount = allPublications.Count();
             pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
@@ -108,20 +91,7 @@ namespace B1625MVC.BLL.Services
 
         public async Task<IEnumerable<PublicationInfo>> GetHotPublicationsAsync(PageInfo pageInfo)
         {
-            var hotest = repo.Publications.Get().Select(p => new
-            {
-                Id = p.PublicationId,
-                Author = p.Author.User.UserName,
-                AuthorAvatar = p.Author.Avatar,
-                CommentsCount = p.Comments.Count,
-                Content = p.Content,
-                ContentType = (ContentType)p.ContentType,
-                PublicationDate = p.PublicationDate,
-                Title = p.Title,
-                Rating = p.Rating/*,
-                HotCof = (p.Rating / (int)(DateTime.Now.Date - p.PublicationDate.Value.Date).TotalHours)
-            }).OrderByDescending(p=>p.HotCof);*/
-            });
+            var hotest = GetAllPublications();
 
             int publicationsCount = hotest.Count();
             pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
@@ -148,7 +118,7 @@ namespace B1625MVC.BLL.Services
                 return new PublicationInfo()
                 {
                     Id = publication.PublicationId,
-                    Author = publication.Author.User.UserName,
+                    Author = publication.Author.User != null ? publication.Author.User.UserName : "Unknown",
                     AuthorAvatar = publication.Author.Avatar,
                     CommentsCount = publication.Comments.Count,
                     Content = publication.Content,
@@ -200,9 +170,10 @@ namespace B1625MVC.BLL.Services
                 }
                 repo.Publications.Update(publication);
                 await repo.SaveChangesAsync();
+                return new OperationDetails(true, "Successfull");
             }
 
-            return new OperationDetails(true, "Successfull");
+            return new OperationDetails(false, "Publication not found");
         }
 
         #endregion
@@ -213,7 +184,7 @@ namespace B1625MVC.BLL.Services
             return repo.Comments.Find(c => c.PublicationId == publicationId).Select(c => new CommentInfo()
             {
                 Id = c.CommentId,
-                Author = c.Author.User.UserName,
+                Author = c.Author.User != null ? c.Author.User.UserName : "Unknown",
                 AuthorAvatar = c.Author.Avatar,
                 Content = c.Content,
                 PublicationDate = c.PublicationDate,
@@ -260,9 +231,10 @@ namespace B1625MVC.BLL.Services
                 }
                 repo.Comments.Update(comment);
                 await repo.SaveChangesAsync();
+                return new OperationDetails(true, "Successfull");
             }
 
-            return new OperationDetails(true, "Successfull");
+            return new OperationDetails(false, "Comment not found");
         }
 
         public CommentInfo GetComment(long commentId)
@@ -273,7 +245,7 @@ namespace B1625MVC.BLL.Services
                 return new CommentInfo()
                 {
                     Id = comment.CommentId,
-                    Author = comment.Author.User.UserName,
+                    Author = comment.Author.User != null ? comment.Author.User.UserName : "Unknown",
                     AuthorAvatar = comment.Author.Avatar,
                     Content = comment.Content,
                     Rating = comment.Rating,
@@ -322,7 +294,7 @@ namespace B1625MVC.BLL.Services
             {
                 return new OperationDetails(true, "Publication deleted");
             }
-            return new OperationDetails(false, "Can`t delete publicztion");
+            return new OperationDetails(false, "Can`t delete publication");
         }
 
         public OperationDetails EditPublication(EditPublicationData publicationData)
@@ -334,7 +306,7 @@ namespace B1625MVC.BLL.Services
         {
             repo.Comments.Delete(commentId);
             int res = repo.SaveChanges();
-            if(res > 0)
+            if (res > 0)
             {
                 return new OperationDetails(true, "Comment deleted");
             }
