@@ -82,7 +82,6 @@ namespace B1625MVC.BLL.Services
             });
         }
 
-
         /// <summary>
         /// Method for creating new user and store it to database
         /// </summary>
@@ -113,15 +112,7 @@ namespace B1625MVC.BLL.Services
 
                 account.Profile = profile;
 
-                IdentityResult result = null;
-                try
-                {
-                    result = await repo.AccountManager.CreateAsync(account, userData.NewPassword);
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    Debug.WriteLine(ex.EntityValidationErrors);
-                }
+                IdentityResult result = await repo.AccountManager.CreateAsync(account, userData.NewPassword);
                 //add new user account to database
                 if (!result.Succeeded) //if user was not added successfully
                 {
@@ -191,6 +182,10 @@ namespace B1625MVC.BLL.Services
             {
                 if (account.Email != userData.Email && !string.IsNullOrEmpty(userData.Email)) //if email was changed
                 {
+                    if(repo.AccountManager.FindByEmail(userData.Email) != null)
+                    {
+                        return new OperationDetails(false, "User with this email address is already exists");
+                    }
                     account.Email = userData.Email; //set new email for account
                     account.EmailConfirmed = false;
                 }
@@ -201,7 +196,11 @@ namespace B1625MVC.BLL.Services
                 }
 
                 profile.Gender = (Model.Enums.Gender)userData.Gender; //set new gender for user
-                profile.Avatar = userData.Avatar; //set new avatar
+                if(userData.Avatar != null)
+                {
+                    profile.Avatar = userData.Avatar; //set new avatar
+                }
+
                 repo.Profiles.Update(profile); //update profile information for current user
                 await repo.SaveChangesAsync(); //apply changes to profile
 

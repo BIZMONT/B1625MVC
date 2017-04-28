@@ -60,38 +60,62 @@ namespace B1625MVC.Web.Controllers
         public async Task<ActionResult> Settings()
         {
             UserInfo user = await UserService.GetByNameAsync(User.Identity.Name);
-            var settingsModel = new ProfileSettingsViewModel()
+            if(user != null)
             {
-                Username = user.UserName,
-                Email = user.Email,
-                Gender = user.Gender
-            };
-            return View(settingsModel);
+                var settingsModel = new ProfileSettingsViewModel()
+                {
+                    Username = user.UserName,
+                    Email = user.Email,
+                    Gender = user.Gender,
+                    Avatar = user.Avatar
+                };
+                return View(settingsModel);
+            }
+            return HttpNotFound("User not found");
         }
 
         [HttpPost]
-        public ActionResult Settings(ProfileSettingsViewModel model)
+        public async Task<ActionResult> Settings(ProfileSettingsViewModel model)
         {
-            byte[] avatar = null;
-            //TODO: Need image checker
-            if (Request.Files.Count > 0)//if avatar vas uploaded
+            if (ModelState.IsValid)
             {
-                avatar = FileUploader.UploadFile(Request.Files[0]); //transform image to byte array
+                UserInfo user = await UserService.GetByNameAsync(User.Identity.Name);
+                if (user == null)
+                {
+                    return HttpNotFound("User not found!");
+                }
+
+                if (await UserService.CheckPasswordAsync(user.Id, model.OldPassword))
+                {
+                    if (Request.Files.Count > 0)//if avatar was uploaded
+                    {
+                        //TODO: check if file is image type
+                        if (!Request.Files[0].ContentType.Contains("image/"))
+                        {
+                            ModelState.AddModelError("Avatar", "Wrong file type!");
+                        }
+                        else
+                        {
+                            model.Avatar = FileUploader.UploadFile(Request.Files[0]); //transform image to byte array
+                        }
+                    }
+
+                    var userData = new EditUserData()
+                    {
+                        Id = user.Id,
+                        Email = model.Email,
+                        NewPassword = model.NewPassword,
+                        Gender = model.Gender,
+                        Avatar = model.Avatar
+                    };
+                    await UserService.EditAsync(userData);
+                }
+                else
+                {
+                    ModelState.AddModelError("OldPassword", "Wrong password");
+                }
             }
-
-            var task = UserService.GetByNameAsync(User.Identity.Name);
-            var user = task.Result;
-
-            var userData = new EditUserData()
-            {
-                Id = user.Id,
-                Email = model.Email,
-                NewPassword = model.NewPassword,
-                Gender = model.Gender,
-                Avatar = avatar
-            };
-            UserService.EditAsync(userData);
-            return HttpNotFound();
+            return View(model);
         }
 
         /// <summary>
@@ -179,7 +203,7 @@ namespace B1625MVC.Web.Controllers
                 if (result.Succedeed) //if user was added successfully
                 {
                     var user = await UserService.GetByNameAsync(userData.UserName); //get new user data
-                    var url = Url.Action("ConfirmEmail", "Account",null,Request.Url.Scheme);
+                    var url = Url.Action("ConfirmEmail", "Account", null, Request.Url.Scheme);
                     await UserService.SendVerificationEmailAsync(user.Id, url); //send email confiramtion
 
                     return View("RegistrationCompleted");
@@ -204,6 +228,14 @@ namespace B1625MVC.Web.Controllers
             }
 
             return View();
+        }
+
+        public async Task<string> SendConfirmEmail(string username)
+        {
+            var user = await UserService.GetByNameAsync(username);
+            var url = Url.Action("ConfirmEmail", "Account", null, Request.Url.Scheme);
+            await UserService.SendVerificationEmailAsync(user.Id, url);
+            return "Check you email box";
         }
 
         /// <summary>

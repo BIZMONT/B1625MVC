@@ -3,15 +3,17 @@
     ViewBag.Title = "Index";
 }
 
-<div>
-
-    <div style="width:400px">
+<div style="display:flex">
+    <div style="width:400px;display:inline-block;background-color:aqua;">
         <div class="form-title">Email service</div>
         @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "email_service_form", Url = Url.Action("EditSmtpService", "Home", new { area = "Admin" }) }))
         {
             @Html.Action("EditSmtpService")
             <input type="submit" value="Save" />
         }
+    </div>
+    <div style="display:inline-block;background-color:blue;">
+        Role settings
     </div>
 </div>
 

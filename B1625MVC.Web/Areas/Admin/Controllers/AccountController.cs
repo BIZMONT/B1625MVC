@@ -1,6 +1,7 @@
 ﻿using B1625MVC.BLL.Abstract;
 using B1625MVC.BLL.DTO;
 using B1625MVC.Web.Areas.Admin.Models;
+using B1625MVC.Web.Infrastructure;
 using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Generic;
 using System.IO;
@@ -37,46 +38,42 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<ActionResult> Edit(string username)
         {
-            //TODO: Make this user edit method greate again for get requests
             EditUserViewModel viewData = null;
-            var userData = await UserService.GetByNameAsync(username);
-            if (userData != null)
+            if (username != null)
             {
-                viewData = new EditUserViewModel()
+                var userData = await UserService.GetByNameAsync(username);
+                if (userData != null)
                 {
-                    Id = userData.Id,
-                    UserName = userData.UserName,
-                    Email = userData.Email,
-                    Avatar = userData.Avatar,
-                    Roles = UserService.GetAllRoles().Select(r => new RoleCheckModel() { Name = r, Checked = userData.Roles.Contains(r) }).ToList()
-                };
-                ViewBag.Roles = UserService.GetAllRoles();
-                return View(viewData);
+                    viewData = new EditUserViewModel()
+                    {
+                        Id = userData.Id,
+                        UserName = userData.UserName,
+                        Email = userData.Email,
+                        Avatar = userData.Avatar,
+                        Gender = userData.Gender,
+                        Roles = UserService.GetAllRoles().Select(r => new RoleCheckModel() { Name = r, Checked = userData.Roles.Contains(r) }).ToList()
+                    };
+                    ViewBag.Roles = UserService.GetAllRoles();
+                    return View(viewData);
+                }
             }
             return HttpNotFound();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(HttpPostedFileBase avatarFile, EditUserViewModel userData)
+        public async Task<ActionResult> Edit(EditUserViewModel userData)
         {
-            //TODO: Make this user edit method greate again for post requests
             if (ModelState.IsValid)
             {
                 byte[] avatar = null;
-                if (avatarFile != null && avatarFile.ContentLength > 0)
+                if (Request.Files.Count > 0 &&
+                    (Request.Files[0].ContentType == System.Net.Mime.MediaTypeNames.Image.Gif ||
+                    Request.Files[0].ContentType == System.Net.Mime.MediaTypeNames.Image.Jpeg))
                 {
-                    byte[] buffer = new byte[avatarFile.ContentLength];
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        int read;
-                        while ((read = avatarFile.InputStream.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            ms.Write(buffer, 0, read);
-                        }
-                        avatar = ms.ToArray();
-                    }
+                    avatar = FileUploader.UploadFile(Request.Files[0]); //Convert uploaded file to byte array
                 }
-                var old = await UserService.GetByIdAsync(userData.Id);
+
+                UserInfo oldUserData = await UserService.GetByIdAsync(userData.Id);
                 EditUserData userDto = new EditUserData()
                 {
                     Id = userData.Id,
@@ -84,6 +81,7 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
                     Email = userData.Email,
                     Roles = userData.Roles.Where(r => r.Checked).Select(r => r.Name),
                     Avatar = avatar,
+                    Gender = userData.Gender,
                     NewPassword = userData.NewPassword
                 };
 
@@ -93,10 +91,10 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
                     UserInfo user = await UserService.GetByNameAsync(userDto.UserName);
                     if (!user.EmailConfirmed)
                     {
-                        UserService.SendVerificationEmailAsync(user.Id, Url.Action("ConfirmEmail", "Account", new { area = "" }));
+                       await  UserService.SendVerificationEmailAsync(user.Id, Url.Action("ConfirmEmail", "Account", new { area = "" }));
                     }
 
-                    if (!string.IsNullOrEmpty(userData.NewPassword) && User.Identity.Name == old.UserName)
+                    if (!string.IsNullOrEmpty(userData.NewPassword) && User.Identity.Name == oldUserData.UserName)
                     {
                         return RedirectToRoute(new { area = "", controller = "Account", action = "Logout" });
                     }
@@ -170,24 +168,24 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
         /// <summary>
         /// Action that returns partial view with ine page of user table
         /// </summary>
-        /// <param name="usernameFilter"></param>
+        /// <param name="UsernameFilter"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public ActionResult UsersTable(string usernameFilter, int page = 1)
+        public ActionResult UsersTable(string UsernameFilter, int page = 1)
         {
             //TODO: Add pages to show more users
             PageInfo pageInfo = new PageInfo(page, 20);
 
             IEnumerable<UserInfo> users;
-            if (string.IsNullOrEmpty(usernameFilter)) //check if filter was used in current request
+            if (string.IsNullOrEmpty(UsernameFilter)) //check if filter was used in current request
             {
                 users = UserService.GetUsers(pageInfo); //get one page of all users from source
             }
             else
             {
-                users = UserService.Find(ud => ud.UserName == usernameFilter, pageInfo); //get users from source with filter
+                users = UserService.Find(ud => ud.UserName == UsernameFilter, pageInfo); //get users from source with filter
             }
-            ViewBag.UsernameFilter = usernameFilter; //add filter data to view
+            ViewBag.UsernameFilter = UsernameFilter; //add filter data to view
             return PartialView("_UsersTable", users);
         }
     }

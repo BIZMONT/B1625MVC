@@ -6,4 +6,7 @@
     {
         @Html.Partial("_CommentPartial", comment)
     }
+    <div class="form-message">
+        @Html.ValidationSummary(true)
+    </div>
 </div>

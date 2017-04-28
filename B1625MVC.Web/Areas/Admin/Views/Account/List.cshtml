@@ -8,7 +8,12 @@
     @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "users_table", InsertionMode = InsertionMode.Replace, Url = Url.Action("UsersTable") }))
     {
         <div class="filter-form-field">
-            @Html.TextBox("usernameFilter", (string)ViewBag.UsernameFilter, new { placeholder = "Username" })
+            @Html.TextBox("UsernameFilter", (string)ViewBag.UsernameFilter, new { placeholder = "Username" })
+        </div>
+        <div class="filter-form-field">
+            @Html.TextBox("RoleFilter", (string)ViewBag.RoleFilter, new { placeholder = "Role" })
+        </div>
+        <div class="filter-form-field">
             <input type="submit" value="Filter" />
         </div>
     }

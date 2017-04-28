@@ -1,17 +1,89 @@
-﻿@model B1625MVC.Web.Models.ProfileSettingsViewModel
+﻿@using B1625MVC.BLL.DTO.Enums
+@model B1625MVC.Web.Models.ProfileSettingsViewModel
 
 @{
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
     ViewBag.Title = "Settings";
+    var genders = new SelectList(Enum.GetNames(typeof(Gender)), Enum.GetName(typeof(Gender), Model.Gender));
 }
 
-<h2>Settings</h2>
-
-<img src=""
-
-@using (Html.BeginForm("Setings","Account",FormMethod.Post,new { enctype = "multipart/form-data"}))
-{
-    <input type="file" name="Avatar"/>
-
-    @Html.EditorFor(m => m.Email)
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/UserStyles.css" />
 }
 
+<div>
+    @using (Html.BeginForm("Settings", "Account", FormMethod.Post, new { @class = "settings-form", enctype = "multipart/form-data" }))
+    {
+        <div class="left-fields">
+            @if (Model.Avatar != null)
+            {
+                <img id="image_preview" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" alt="No avatar" />
+            }
+            else
+            {
+                <img src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg" alt="No avatar" />
+            }
+
+            <div style="text-align:center">@Model.Username</div>
+            <div class="settings-form-field">
+                <input type="file" name="ImageFile" id="ImageFile" accept="image/*" />
+            </div>
+        </div>
+        <div class="right-fields">
+            <div style="font-weight:bold;font-size:18px;">Settings</div>
+            <div>@Html.ValidationSummary(true)</div>
+            <div style="padding:16px;">
+                <div class="settings-form-field">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.ValidationMessageFor(m => m.Email)
+                    @Html.EditorFor(m => m.Email)
+                </div>
+                <div>
+                    Gender
+                    @Html.DropDownList("Gender", (IEnumerable<SelectListItem>)genders)
+                </div>
+                <div class="settings-form-field">
+                    @Html.LabelFor(m => m.NewPassword)
+                    @Html.ValidationMessageFor(m => m.NewPassword)
+                    @Html.EditorFor(m => m.NewPassword)
+                </div>
+                <div class="settings-form-field">
+                    @Html.LabelFor(m => m.NewPasswordConfirm)
+                    @Html.ValidationMessageFor(m => m.NewPasswordConfirm)
+                    @Html.EditorFor(m => m.NewPasswordConfirm)
+                </div>
+                <div class="settings-form-field">
+                    @Html.LabelFor(m => m.OldPassword)
+                    @Html.ValidationMessageFor(m => m.OldPassword)
+                    <div id="password">
+                        @Html.EditorFor(m => m.OldPassword)
+                        <input type="submit" value="Save changes" />
+                    </div>
+                </div>
+                <div class="settings-form-field">
+                    
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#ImageFile").change(function () {
+            readURL(this);
+        });
+    </script>
+}

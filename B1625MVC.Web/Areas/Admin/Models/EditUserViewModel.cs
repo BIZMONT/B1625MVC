@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using B1625MVC.BLL.DTO.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace B1625MVC.Web.Areas.Admin.Models
@@ -24,6 +25,7 @@ namespace B1625MVC.Web.Areas.Admin.Models
         public string NewPasswordConfirm { get; set; }
 
         public byte[] Avatar { get; set; }
+        public Gender Gender { get; set; }
 
         public List<RoleCheckModel> Roles { get; set; }
     }

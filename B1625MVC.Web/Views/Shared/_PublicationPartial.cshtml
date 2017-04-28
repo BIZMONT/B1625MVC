@@ -6,6 +6,7 @@
 @{
     string ratingValue = "ratingValue" + Model.Id;
     string publicationId = "publication" + Model.Id;
+    string publicationSlider = "slider" + Model.Id;
 
     var ajaxRateOptions = new AjaxOptions()
     {
@@ -15,6 +16,7 @@
 
 <div id="@publicationId" class="publication-container">
     <div class="publication-head">
+        <button onclick="hideContent(@publicationSlider)">hide</button>
         <div class="publication-title">
             @Html.RouteLink(Model.Title, new { controller = "Publication", action = "Index", id = Model.Id })
         </div>
@@ -22,56 +24,58 @@
             @Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")
         </div>
     </div>
-    <div class="publication-author">
-        @if (Model.AuthorAvatar != null)
-        {
-            <img src="data:image;base64,@System.Convert.ToBase64String(Model.AuthorAvatar)" alt="@Model.Author" />
-        }
-        else
-        {
-            <img src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg" alt="@Model.Author" />
-        }
-        <span>
-            @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
-        </span>
-    </div>
-    <div class="publication-content">
-        @if (Model.ContentType == ContentType.Image)
-        {
+    <div id="@publicationSlider">
+        <div class="publication-author">
+            @if (Model.AuthorAvatar != null)
+            {
+                <img src="data:image;base64,@System.Convert.ToBase64String(Model.AuthorAvatar)" alt="@Model.Author" />
+            }
+            else
+            {
+                <img src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg" alt="@Model.Author" />
+            }
+            <span>
+                @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
+            </span>
+        </div>
+        <div class="publication-content">
+            @if (Model.ContentType == ContentType.Image)
+            {
             <a href="@Url.Action("Index", "Publication", new { id = Model.Id })">
                 <img src="data:image;base64,@System.Convert.ToBase64String(Model.Content)" />
             </a>
-        }
-        else if (Model.ContentType == ContentType.Text)
-        {
+            }
+            else if (Model.ContentType == ContentType.Text)
+            {
             <span>@Encoding.Default.GetString(Model.Content)</span>
-        }
-        else
-        {
+            }
+            else
+            {
             @:"Unknown!"
         }
-    </div>
-    <div class="publication-actions">
-        <div class="publication-rating-actions">
-            @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxRateOptions)
-            <span id="@ratingValue">@Model.Rating</span>
-            @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxRateOptions)
         </div>
-        <div class="publication-comments-actions">
-            @Html.RouteLink(Model.CommentsCount.ToString() + " comments", new { controller = "Publication", action = "Index", id = Model.Id })
-        </div>
-
-        @if (User.IsInRole("Administrators") || User.IsInRole("Moderators"))
-        {
-            <div class="publication-admin-actions">
-                @Ajax.RouteLink("Remove", new { area = "Admin", controller = "Publication", action = "Delete", publicationId = Model.Id }, new AjaxOptions()
-           {
-               UpdateTargetId = publicationId,
-               Confirm = "Are you really want ot delete this publication?"
-           })
-                |
-                @Html.RouteLink("Edit", new { area = "Admin", controller = "Publication", action = "Edit", publicationId = Model.Id })
+        <div class="publication-actions">
+            <div class="publication-rating-actions">
+                @Ajax.RouteLink("Up", new { controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxRateOptions)
+                <span id="@ratingValue">@Model.Rating</span>
+                @Ajax.RouteLink("Down", new { controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxRateOptions)
             </div>
-        }
+            <div class="publication-comments-actions">
+                @Html.RouteLink(Model.CommentsCount.ToString() + " comments", new { controller = "Publication", action = "Index", id = Model.Id })
+            </div>
+
+            @if (User.IsInRole("Administrators") || User.IsInRole("Moderators"))
+            {
+                <div class="publication-admin-actions">
+                    @Ajax.RouteLink("Remove", new { area = "Admin", controller = "Publication", action = "Delete", publicationId = Model.Id }, new AjaxOptions()
+               {
+                   UpdateTargetId = publicationId,
+                   Confirm = "Are you really want ot delete this publication?"
+               })
+                    @*|
+                    @Html.RouteLink("Edit", new { area = "Admin", controller = "Publication", action = "Edit", publicationId = Model.Id })*@
+                </div>
+            }
+        </div>
     </div>
 </div>

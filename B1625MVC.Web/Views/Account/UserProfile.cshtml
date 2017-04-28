@@ -6,36 +6,81 @@
 
 @section Styles{
     <link rel="stylesheet" href="~/Content/PublicationStyle.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/UserStyles.css" type="text/css" />
 }
 
-<div style="background-color:#808080;border:2px solid #808080;padding:40px">
-    @if (Model.Avatar != null)
+<div style="position:relative; background-color:#808080;border:2px solid #808080;padding:16px; margin-top:-16px;">
+    @if (User.Identity.Name == Model.UserName)
     {
-        <img style="display:block;margin: auto;width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" alt="No avatar" />
+        <div class="settings-button">
+            @Html.ActionLink("Settings", "Settings")
+        </div>
     }
-
-    <div style="text-align:center;margin-top:20px">
-        <span style="font-size:20px;">@Model.UserName</span>
-        <br />
-        Registration date: @Model.RegistrationDate.Value.Date.ToString("dd MMM yyyy")
-        <br />
-        Rating: @Model.Rating
-        <br />
-        Gender: @Model.Gender
-        <br />
-        @if (User.Identity.Name == Model.UserName)
+    <div style="text-align:center;">
+        @if (Model.Avatar != null)
         {
-            @Html.ActionLink("Edit", "Settings")
+            <div>
+                <img style="display:block;margin: auto;width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" alt="No avatar" />
+            </div>
+        }
+        else
+        {
+
+        }
+        <div style="font-size:20px;margin-top:12px;">
+            @Model.UserName
+        </div>
+    </div>
+    <div>
+        <div>
+            Registration date: @Model.RegistrationDate.Value.Date.ToString("dd MMM yyyy")
+        </div>
+        <div>
+            Rating: @Model.Rating
+        </div>
+        <div>
+            Gender: @Model.Gender
+        </div>
+    </div>
+    <div style="position:absolute;bottom: 16px;right: 16px;font-size:16px;">
+        @if (!Model.EmailConfirmed && User.Identity.Name == Model.UserName)
+        {
+            <div id="account_conf_msg" style="display:inline-block;padding:8px;color:orangered">
+                Your email not confirmed!
+            </div>
+            <div style="background-color:aqua;float:right;padding:8px;display:inline-block;">
+                @Ajax.ActionLink("Confirm", "SendConfirmEmail",new { username = Model.UserName}, new AjaxOptions() { UpdateTargetId = "account_conf_msg"})
+            </div>
         }
     </div>
+
 </div>
-<div style="margin-top:40px; margin-left:60px;margin-right:60px">
-    @Html.Action("UserPublications", "Publication", new { username = Model.UserName})
+<div class="tab-menu">
+    <div id="publicationsTab" class="tab selected">
+        @Ajax.RouteLink("Publications", new { controller = "Publication", action = "UserPublications", username = Model.UserName }, new AjaxOptions() { UpdateTargetId = "content" }, new { id = "publicationsRef" })
+    </div>
+    <div id="commentsTab" class="tab">
+        @Ajax.RouteLink("Comments", new { controller = "Comment", action = "UserComments", username = Model.UserName }, new AjaxOptions() { UpdateTargetId = "content" }, new { id = "commentsRef" })
+    </div>
+</div>
+<div id="content" style="margin-top:40px; margin-left:60px;margin-right:60px">
+    @Html.Action("UserPublications", "Publication", new { username = Model.UserName })
 </div>
 
 
 @section Scripts{
     <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        $("#commentsRef").click(function () {
+            $("#commentsTab").addClass("selected");
+            $("#publicationsTab").removeClass("selected");
+        });
+
+        $("#publicationsRef").click(function () {
+            $("#publicationsTab").addClass("selected");
+            $("#commentsTab").removeClass("selected");
+        });
+    </script>
 }
 

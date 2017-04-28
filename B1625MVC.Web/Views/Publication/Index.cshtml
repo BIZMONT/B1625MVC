@@ -17,20 +17,25 @@
     @Html.Action("PublicationComments", "Comment", new { publicationId = Model.Publication.Id })
 </div>
 <div class="form-field">
-    Add your comment
-    @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = "comments", Url = Url.RouteUrl(new { controller = "Comment", action = "Add", publicationId = Model.Publication.Id }) }))
-            {
-        @Html.TextArea("newComment", new { style = "display:block;height:100px" })
-        <input type="submit" name="addCommentInput" value="Add comment" />
+    @if (User.Identity.IsAuthenticated)
+    {
+        @: Add your comment
+        using (Ajax.BeginForm(new AjaxOptions()
+        {
+            UpdateTargetId = "comments",
+            Url = Url.RouteUrl(new { controller = "Comment", action = "Add", publicationId = Model.Publication.Id })
+        }))
+        {
+            @Html.TextArea("newComment", new { style = "display:block;height:100px" })
+            <input type = "submit" name = "addCommentInput" value = "Add comment" />
+        }
     }
-    <div class="form-message">
-        @Html.ValidationSummary(true)
-    </div>
+    else
+    {
+        @: Log in to add comments
+    }
 </div>
 
-@section Sidebar{
-    @Html.Partial("_Sidebar")
-}
 
 
 @section Scripts{

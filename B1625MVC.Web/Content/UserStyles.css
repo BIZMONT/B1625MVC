@@ -1,0 +1,86 @@
+﻿/*#region Settings */
+.settings-form {
+    display: flex;
+}
+
+.settings-form-field {
+    margin: 16px 0;
+}
+
+    .settings-form-field input[type=email], .settings-form-field input[type=text], .settings-form-field input[type=password] {
+        width: 100%;
+        display: block;
+        padding: 8px;
+        font-size: 16px;
+        margin-top: 8px;
+    }
+    #password input[type=password] {
+        display:inline-block;
+        width:auto;
+        padding: 8px;
+        font-size: 16px;
+        margin-top: 8px;
+    }
+
+.settings-form-field input[type=submit] {
+    margin-top: 8px;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.left-fields {
+    padding: 8px;
+}
+
+    .left-fields img {
+        display: block;
+        width: 240px;
+        height: 240px;
+        margin: 8px;
+    }
+
+.right-fields {
+    flex-grow: 3;
+    padding: 32px;
+}
+
+/*#endregion */
+/*#region Profile */
+.tab-menu {
+    display: flex;
+    text-align: center;
+}
+
+    .tab-menu .tab {
+        flex-grow: 1;
+    }
+
+        .tab-menu .tab a {
+            display: block;
+            padding: 12px;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+.selected {
+    -webkit-box-shadow: inset 0px -2px 0px 0px #808080;
+    -moz-box-shadow: inset 0px -2px 0px 0px #808080;
+    box-shadow: inset 0px -2px 0px 0px #808080;
+}
+
+.tab:hover {
+    -webkit-box-shadow: inset 0px -2px 0px 0px #0026ff;
+    -moz-box-shadow: inset 0px -2px 0px 0px #0026ff;
+    box-shadow: inset 0px -2px 0px 0px #0026ff;
+}
+
+.settings-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 8px;
+    font-size: 16px;
+    background-color: #0026ff;
+}
+
+/*#endregion */

@@ -1,8 +1,11 @@
 ﻿using B1625MVC.BLL;
 using B1625MVC.BLL.Abstract;
+using B1625MVC.BLL.DTO;
 using B1625MVC.BLL.DTO.ContentData.CommentData;
 using B1625MVC.BLL.DTO.Enums;
 using Microsoft.AspNet.Identity.Owin;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -71,6 +74,7 @@ namespace B1625MVC.Web.Controllers
             return Content("Can`t load comments"); //return error message
         }
 
+        [Authorize]
         /// <summary>
         /// Actiont that process post request for adding new comment to publication
         /// </summary>
@@ -93,6 +97,18 @@ namespace B1625MVC.Web.Controllers
                 }
             }
             return PublicationComments(publicationId); //return result of another action
+        }
+
+        public ActionResult UserComments(string username, int page = 1)
+        {
+            PageInfo pageInfo = new PageInfo(page, 50); //Creating object that holds informations for pager
+            IEnumerable<CommentInfo> comments = ContentService.FindComments(c => c.Author == username, pageInfo); //getting from source publications by user
+            ViewBag.PageInfo = pageInfo;
+            if(comments == null || comments.Count() == 0)
+            {
+                return Content("No content");
+            }
+            return PartialView("_Comments", comments);
         }
     }
 }

@@ -176,6 +176,32 @@ namespace B1625MVC.BLL.Services
             return new OperationDetails(false, "Publication not found");
         }
 
+        public OperationDetails DeletePublication(long publicationId)
+        {
+            repo.Publications.Delete(publicationId);
+            int res = repo.SaveChanges();
+            if (res > 0)
+            {
+                return new OperationDetails(true, "Publication deleted");
+            }
+            return new OperationDetails(false, "Can`t delete publication");
+        }
+
+        public OperationDetails EditPublication(EditPublicationData publicationData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OperationDetails DeleteComment(long commentId)
+        {
+            repo.Comments.Delete(commentId);
+            int res = repo.SaveChanges();
+            if (res > 0)
+            {
+                return new OperationDetails(true, "Comment deleted");
+            }
+            return new OperationDetails(false, "Can`t delete comment");
+        }
         #endregion
 
         #region Comment methods
@@ -255,10 +281,22 @@ namespace B1625MVC.BLL.Services
             return null;
         }
 
-        public IEnumerable<CommentInfo> FindComments(Func<CommentInfo, bool> predicate)
+        public IEnumerable<CommentInfo> FindComments(Expression<Func<CommentInfo, bool>> predicate, PageInfo pageInfo)
         {
-            //TODO: Comments filtering
-            throw new NotImplementedException();
+            var allCommets = repo.Comments.Get().Select(comment => new CommentInfo()
+            {
+                Id = comment.CommentId,
+                Author = comment.Author.User != null ? comment.Author.User.UserName : "Unknown",
+                AuthorAvatar = comment.Author.Avatar,
+                Content = comment.Content,
+                Rating = comment.Rating,
+                PublicationDate = comment.PublicationDate
+            });
+
+            int publicationsCount = allCommets.Count();
+            pageInfo.TotalPages = publicationsCount / pageInfo.ElementsPerPage + (publicationsCount % pageInfo.ElementsPerPage > 0 ? 1 : 0);
+            return allCommets.Where(predicate).OrderBy(p => p.PublicationDate).Skip((pageInfo.CurrentPage - 1) * pageInfo.ElementsPerPage).Take(pageInfo.ElementsPerPage).ToList();
+
         }
 
         public OperationDetails AddComment(CreateCommentData comment, long publicationId)
@@ -284,33 +322,6 @@ namespace B1625MVC.BLL.Services
         public void Dispose()
         {
             repo.Dispose();
-        }
-
-        public OperationDetails DeletePublication(long publicationId)
-        {
-            repo.Publications.Delete(publicationId);
-            int res = repo.SaveChanges();
-            if (res > 0)
-            {
-                return new OperationDetails(true, "Publication deleted");
-            }
-            return new OperationDetails(false, "Can`t delete publication");
-        }
-
-        public OperationDetails EditPublication(EditPublicationData publicationData)
-        {
-            throw new NotImplementedException();
-        }
-
-        public OperationDetails DeleteComment(long commentId)
-        {
-            repo.Comments.Delete(commentId);
-            int res = repo.SaveChanges();
-            if (res > 0)
-            {
-                return new OperationDetails(true, "Comment deleted");
-            }
-            return new OperationDetails(false, "Can`t delete comment");
         }
     }
 }

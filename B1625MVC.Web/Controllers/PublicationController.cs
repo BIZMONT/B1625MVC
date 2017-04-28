@@ -11,6 +11,7 @@ using B1625MVC.BLL;
 using B1625MVC.BLL.DTO;
 using B1625MVC.Web.Models;
 using B1625MVC.BLL.Abstract;
+using System.Linq;
 
 namespace B1625MVC.Web.Controllers
 {
@@ -147,6 +148,10 @@ namespace B1625MVC.Web.Controllers
             PageInfo pageInfo = new PageInfo(page, 50); //Creating object that holds informations for pager
             IEnumerable<PublicationInfo> publications = ContentService.FindPublications(p => p.Author == username, pageInfo); //getting from source publications by user
             ViewBag.PageInfo = pageInfo;
+            if (publications == null || publications.Count() == 0)
+            {
+                return Content("No content");
+            }
             return PartialView("_Publications", publications);
         }
     }

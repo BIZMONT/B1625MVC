@@ -11,7 +11,7 @@
         @RenderBody()
     </div>
     <div id="sidebar" class="side-wrapper">
-        @RenderSection("Sidebar")
+       @Html.Partial("_Sidebar")
     </div>
 </div>
 
@@ -38,4 +38,15 @@
             });
 
         });</script>
+    <script>
+        function hideContent(contentId) {
+            var content = $(contentId);
+
+            if (content.css('display') == 'none') {
+                content.slideDown();
+            } else {
+                content.slideUp();
+            }
+        }
+    </script>
 }

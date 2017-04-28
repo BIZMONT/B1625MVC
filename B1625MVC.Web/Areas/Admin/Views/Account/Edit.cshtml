@@ -1,58 +1,85 @@
 ﻿@model B1625MVC.Web.Areas.Admin.Models.EditUserViewModel
+@using B1625MVC.BLL.DTO.Enums
 
 @{
     ViewBag.Title = "Edit";
+    var genders = new SelectList(Enum.GetNames(typeof(Gender)), Enum.GetName(typeof(Gender), Model.Gender));
 }
 
-
-
-@if (Model.Avatar != null)
-{
-    <img style="width:128px; height:128px;" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" />
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/UserStyles.css" />
 }
 
-<div class="form">
-    <div class="form-title">@Model.UserName</div>
-
-    @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<div>
+    @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "settings-form", enctype = "multipart/form-data" }))
     {
-        <div class="form-field">
-            <input type="file" name="avatarFile" />
+        <div class="left-fields">
+            <img id="image_preview" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" alt="No avatar" />
+            <div style="text-align:center">@Model.UserName</div>
+            <div>Upload avatar</div>
+            <div class="settings-form-field">
+                <input type="file" name="ImageFile" id="ImageFile" value="Set new avatar" accept="image/*" />
+            </div>
+            <div>User roles:</div>
+            <div class="settings-form-field">
+                @for (int i = 0; i < Model.Roles.Count; i++)
+                {
+                    <div>
+                        @Html.HiddenFor(m => m.Roles[i].Name)
+                        @Html.CheckBoxFor(m => m.Roles[i].Checked)
+                        @Model.Roles[i].Name
+                    </div>
+                }
+            </div>
         </div>
-        @Html.HiddenFor(m => m.Id)
-        <div  class="form-field">
-            @Html.LabelFor(m => m.UserName)
-            <br />
-            @Html.EditorFor(m => m.UserName)
-        </div>
-        <div  class="form-field">
-            @Html.LabelFor(m => m.Email)
-            <br />
-            @Html.EditorFor(m => m.Email)
-        </div>
-        <div  class="form-field">
-            @Html.LabelFor(m => m.NewPassword)
-            <br />
-            @Html.PasswordFor(m => m.NewPassword)
-        </div>
-        <div  class="form-field">
-            @Html.LabelFor(m => m.NewPasswordConfirm)
-            <br />
-            @Html.PasswordFor(m => m.NewPasswordConfirm)
-        </div>
-        <div  class="form-field">
-            @for (int i = 0; i < Model.Roles.Count; i++)
-            {
-                <div>
-                    @Html.HiddenFor(m => m.Roles[i].Name)
-                    @Html.CheckBoxFor(m => m.Roles[i].Checked)
-                    @Model.Roles[i].Name
+        <div class="right-fields">
+            <div>@Html.ValidationSummary(true)</div>
+            @Html.HiddenFor(m => m.Id)
+            <div style="padding:16px;">
+                <div class="settings-form-field">
+                    Username
+                    @Html.EditorFor(m => m.UserName)
                 </div>
-            }
-        </div>
-        <div>
-            <input type="submit" value="Confirm" />
+                <div class="settings-form-field">
+                    Email
+                    @Html.EditorFor(m => m.Email)
+                </div>
+                <div>
+                    Gender
+                    @Html.DropDownList("Gender", (IEnumerable<SelectListItem>)genders)
+                </div>
+                <div class="settings-form-field">
+                    New password
+                    @Html.EditorFor(m => m.NewPassword)
+                </div>
+                <div class="settings-form-field">
+                    Confirm new password
+                    @Html.EditorFor(m => m.NewPasswordConfirm)
+                </div>
+                <div class="settings-form-field">
+                    <input type="submit" value="Save changes" />
+                </div>
+            </div>
         </div>
     }
-    @Html.ValidationSummary(true)
 </div>
+
+@section Scripts{
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#ImageFile").change(function () {
+            readURL(this);
+        });
+    </script>
+}

@@ -22,11 +22,9 @@
     userLink.InnerLinks.Add(settingsLink);
     userLink.InnerLinks.Add(logoutLink);
 
-    var uploadLink = new RouteLink("Upload", new { area = "", controller = "Publication", action = "Add" });
 
     if (User.Identity.IsAuthenticated)
     {
-        rightLinks.Add(uploadLink);
         rightLinks.Add(userLink);
     }
     else
@@ -42,7 +40,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" type="text/css" href="~/Content/Reset.css"/>
+    <link rel="stylesheet" type="text/css" href="~/Content/Reset.css" />
     <link rel="stylesheet" type="text/css" href="~/Content/MainStyle.css" />
     @RenderSection("Styles", false)
 </head>
@@ -56,24 +54,24 @@
         </div>
     </div>
 
-    <button onclick="topFunction()" id="to_top" title="Go to top">TOP</button>
+    <button onclick="topFunction()" id="to_top">Up</button>
 
     @RenderSection("Scripts", false)
     <script>
-            window.onscroll = function () { scrollFunction() };
+        window.onscroll = function () { scrollFunction() };
 
-            function scrollFunction() {
-                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                    document.getElementById("to_top").style.display = "block";
-                } else {
-                    document.getElementById("to_top").style.display = "none";
-                }
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("to_top").style.display = "block";
+            } else {
+                document.getElementById("to_top").style.display = "none";
             }
+        }
 
-            function topFunction() {
-                document.body.scrollTop = 0;
-                document.documentElement.scrollTop = 0;
-            }
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
     </script>
 </body>
 </html>
