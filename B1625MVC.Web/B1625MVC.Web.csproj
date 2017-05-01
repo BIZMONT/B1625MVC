@@ -131,6 +131,7 @@
     <Content Include="Content\MainStyle.css" />
     <Content Include="Content\PublicationStyle.css" />
     <Content Include="Content\Reset.css" />
+    <Content Include="Content\SidebarStyle.css" />
     <Content Include="Content\UserStyles.css" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\web.config" />
@@ -143,6 +144,7 @@
     <Content Include="Areas\Admin\Views\Account\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_UsersTable.cshtml" />
     <Content Include="Areas\Admin\Views\Home\_SmtpSettings.cshtml" />
+    <Content Include="Areas\Admin\Views\Publication\_EditPublicationPartial.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -169,6 +171,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\PublicationController.cs" />
     <Compile Include="Areas\Admin\Models\CreateUserViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EditPublicationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EditUserViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleCheckModel.cs" />
     <Compile Include="Areas\Admin\Models\SmtpSettings.cs" />
@@ -215,6 +218,9 @@
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\RegistrationCompleted.cshtml" />
+    <Content Include="Views\Shared\_TopUsersTable.cshtml" />
+    <Content Include="Views\Shared\_SimpleCommentPartial.cshtml" />
+    <Content Include="Views\Shared\_SimplePublicationPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -225,7 +231,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Comment\" />
-    <Folder Include="Areas\Admin\Views\Publication\" />
     <Folder Include="Views\Comment\" />
   </ItemGroup>
   <ItemGroup>

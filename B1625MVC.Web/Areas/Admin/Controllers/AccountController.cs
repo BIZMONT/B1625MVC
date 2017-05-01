@@ -171,19 +171,33 @@ namespace B1625MVC.Web.Areas.Admin.Controllers
         /// <param name="UsernameFilter"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public ActionResult UsersTable(string UsernameFilter, int page = 1)
+        public ActionResult UsersTable(string UsernameFilter, string RoleFilter, int page = 1)
         {
             //TODO: Add pages to show more users
             PageInfo pageInfo = new PageInfo(page, 20);
 
-            IEnumerable<UserInfo> users;
-            if (string.IsNullOrEmpty(UsernameFilter)) //check if filter was used in current request
+            IEnumerable<UserInfo> users = null;
+            if (string.IsNullOrEmpty(UsernameFilter) && string.IsNullOrEmpty(RoleFilter)) //check if filter was used in current request
             {
                 users = UserService.GetUsers(pageInfo); //get one page of all users from source
             }
             else
             {
-                users = UserService.Find(ud => ud.UserName == UsernameFilter, pageInfo); //get users from source with filter
+                if (!string.IsNullOrEmpty(UsernameFilter))
+                {
+                    users = UserService.Find(ud => ud.UserName == UsernameFilter, pageInfo); //get users from source with filter
+                }
+                if(!string.IsNullOrEmpty(RoleFilter))
+                {
+                    if(users == null)
+                    {
+                        users = UserService.Find(ud => ud.Roles.Contains(RoleFilter), pageInfo);
+                    }
+                    else
+                    {
+                        users = users.Where(ud => ud.Roles.Contains(RoleFilter));
+                    }
+                }
             }
             ViewBag.UsernameFilter = UsernameFilter; //add filter data to view
             return PartialView("_UsersTable", users);

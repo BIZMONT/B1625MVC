@@ -48,5 +48,11 @@ namespace B1625MVC.Web.Controllers
             ViewBag.PageInfo = pageInfo;
             return View("Publications", publications);
         }
+
+        public ActionResult TopUsers()
+        {
+            var users = ContentService.GetTopUsers(10);
+            return PartialView("_TopUsersTable", users);
+        }
     }
 }

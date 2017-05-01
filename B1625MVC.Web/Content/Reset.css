@@ -44,6 +44,10 @@ blockquote, q {
     quotes: none;
 }
 
+button::-moz-focus-inner {
+    border: 0;
+}
+
     blockquote:before, blockquote:after,
     q:before, q:after {
         content: '';

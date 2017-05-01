@@ -21,29 +21,25 @@ body {
 }
 
 .content-wrapper {
+    margin: 0 32px;
     display: flex;
 }
 
 .main-wrapper {
-    margin-right: 5px;
     flex-grow: 3;
     min-width: 600px;
-    padding: 0 32px;
+    margin-right: 32px;
 }
 
 .side-wrapper {
-    border-left: 1px solid #ccc;
     height: 100%;
-    padding: 16px;
-    margin-left: 5px;
     flex-grow: 2;
     min-width: 300px;
+    max-width: 300px;
 }
 
 .content {
     padding-top: 64px;
-    padding-left: 32px;
-    padding-right: 32px;
     padding-bottom: 32px;
 }
 
@@ -89,8 +85,8 @@ body {
 #to_top {
     display: none;
     position: fixed;
-    height:36px;
-    width:48px;
+    height: 36px;
+    width: 48px;
     bottom: 32px; /* Place the button at the bottom of the page */
     left: 8px; /* Place the button 30px from the right */
     z-index: 98; /* Make sure it does not overlap */
@@ -144,15 +140,9 @@ footer {
     }
 
         .nav-bar a:hover {
-            color: #0066ff;
-            background-color: black;
+            color: #262626;
+            background-color: #ccc;
         }
-
-.nav-item-selected a {
-    -webkit-box-shadow: 0px 0px -2px 0px #f1f1f1;
-    -moz-box-shadow: 0px 0px -2px 0px #f1f1f1;
-    box-shadow: 0px 0px -2px 0px #f1f1f1;
-}
 
 .nav-dropdown {
     position: relative;
@@ -246,7 +236,7 @@ footer {
         max-width: 100%;
         min-width: 100%;
         min-height: 128px;
-        max-height:240px;
+        max-height: 240px;
         border: 1px solid #ccc;
         box-sizing: border-box;
         margin: 10px 0;

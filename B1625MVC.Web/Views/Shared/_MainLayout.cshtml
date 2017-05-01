@@ -9,8 +9,8 @@
     };
     ICollection<RouteLink> rightLinks = new List<RouteLink>();
 
-    var loginLink = new RouteLink("Log in", new { area = "", controller = "Account", action = "Login" });
-    var registrationLink = new RouteLink("Register", new { area = "", controller = "Account", action = "Registration" });
+    var loginLink = new RouteLink("Sign in", new { area = "", controller = "Account", action = "Login" });
+    var registrationLink = new RouteLink("Sign Up", new { area = "", controller = "Account", action = "Registration" });
 
     var logoutLink = new RouteLink("Log out", new { area = "", controller = "Account", action = "Logout" });
     var settingsLink = new RouteLink("Settings", new { area = "", controller = "Account", action = "Settings", userName = User.Identity.Name });

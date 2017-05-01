@@ -1,0 +1,15 @@
+﻿@model B1625MVC.BLL.DTO.CommentInfo
+
+<div style="padding: 8px 8px;">
+    <div style="font-size:14px;">
+        <div style="padding-left:8px;display:inline-block;">
+            by @Html.RouteLink(@Model.Author, new { area = "", controller = "Account", action = "UserProfile", username = Model.Author })
+        </div>
+        <div style="float:right;display:inline-block;">
+            Rating: @Model.Rating
+        </div>
+    </div>
+    <div style="margin:8px 0;padding:4px;background-color:#ccc;font-size:12px;">
+        @Model.Content
+    </div>
+</div>

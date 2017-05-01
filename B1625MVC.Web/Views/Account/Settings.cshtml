@@ -15,6 +15,7 @@
     @using (Html.BeginForm("Settings", "Account", FormMethod.Post, new { @class = "settings-form", enctype = "multipart/form-data" }))
     {
         <div class="left-fields">
+            <div style="font-weight:bold;font-size:24px;text-align:center;margin-bottom:16px;">@Model.Username</div>
             @if (Model.Avatar != null)
             {
                 <img id="image_preview" src="data:image;base64,@System.Convert.ToBase64String(Model.Avatar)" alt="No avatar" />
@@ -24,15 +25,17 @@
                 <img src="http://donatered-asset.s3.amazonaws.com/assets/default/default_user-884fcb1a70325256218e78500533affb.jpg" alt="No avatar" />
             }
 
-            <div style="text-align:center">@Model.Username</div>
             <div class="settings-form-field">
+                <div>
+                    Upload avatar
+                </div>
                 <input type="file" name="ImageFile" id="ImageFile" accept="image/*" />
             </div>
         </div>
         <div class="right-fields">
-            <div style="font-weight:bold;font-size:18px;">Settings</div>
+            <div style="font-weight:bold;font-size:24px;text-align:center;">Settings</div>
             <div>@Html.ValidationSummary(true)</div>
-            <div style="padding:16px;">
+            <div style="padding: 8px 0px;">
                 <div class="settings-form-field">
                     @Html.LabelFor(m => m.Email)
                     @Html.ValidationMessageFor(m => m.Email)
@@ -52,16 +55,15 @@
                     @Html.ValidationMessageFor(m => m.NewPasswordConfirm)
                     @Html.EditorFor(m => m.NewPasswordConfirm)
                 </div>
-                <div class="settings-form-field">
-                    @Html.LabelFor(m => m.OldPassword)
-                    @Html.ValidationMessageFor(m => m.OldPassword)
-                    <div id="password">
-                        @Html.EditorFor(m => m.OldPassword)
-                        <input type="submit" value="Save changes" />
+                <div class="settings-password">
+                    <div class="settings-form-field">
+                        @Html.LabelFor(m => m.OldPassword)
+                        @Html.ValidationMessageFor(m => m.OldPassword)
+                        <div id="password">
+                            @Html.EditorFor(m => m.OldPassword)
+                            <input type="submit" value="Save changes" />
+                        </div>
                     </div>
-                </div>
-                <div class="settings-form-field">
-                    
                 </div>
             </div>
         </div>

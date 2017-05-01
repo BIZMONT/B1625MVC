@@ -11,3 +11,18 @@
 <div class="pager">
     @Html.Pager(pageInfo)
 </div>
+<script>
+    function hideContent(e, contentId) {
+        var content = $(contentId);
+
+        if (content.css('display') == 'none') {
+            content.slideDown();
+            e.title = "Hide publication";
+            e.innerText = '-';
+        } else {
+            content.slideUp();
+            e.title = "Show publication";
+            e.innerText = '+';
+        }
+    }
+</script>

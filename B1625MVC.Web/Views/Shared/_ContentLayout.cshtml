@@ -4,6 +4,7 @@
 
 @section Styles{
     @RenderSection("Styles")
+    <link rel="stylesheet" type="text/css" href="~/Content/SidebarStyle.css" />
 }
 
 <div class="content-wrapper">
@@ -11,7 +12,7 @@
         @RenderBody()
     </div>
     <div id="sidebar" class="side-wrapper">
-       @Html.Partial("_Sidebar")
+        @Html.Partial("_Sidebar")
     </div>
 </div>
 
@@ -37,16 +38,6 @@
                 }
             });
 
-        });</script>
-    <script>
-        function hideContent(contentId) {
-            var content = $(contentId);
-
-            if (content.css('display') == 'none') {
-                content.slideDown();
-            } else {
-                content.slideUp();
-            }
-        }
+        });
     </script>
 }

@@ -4,8 +4,6 @@
     {
         new RouteLink("Home", new { area = "Admin", controller = "Home", action = "Index" }),
         new RouteLink("Users", new { area = "Admin", controller = "Account", action = "List" }),
-        new RouteLink("Publications", new { area = "Admin", controller = "Home", action = "Index" }),
-        new RouteLink("Comments", new { area = "Admin", controller = "Home", action = "Index" }),
     };
     ICollection<RouteLink> rightLinks = new List<RouteLink>();
 
@@ -45,6 +43,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/Reset.css"/>
     <link rel="stylesheet" type="text/css" href="~/Content/MainStyle.css" />
     @RenderSection("Styles", false)
+    <link rel="stylesheet" type="text/css" href="~/Content/AdminStyle.css"/>
 </head>
 <body>
     <nav class="nav-bar">

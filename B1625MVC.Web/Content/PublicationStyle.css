@@ -1,9 +1,11 @@
-﻿.publication-container {
+﻿/*#region Publication */
+
+.publication-container {
     width: 100%;
     margin-bottom: 16px;
-    padding: 16px;
+    padding: 12px 16px;
     box-sizing: border-box;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid #ccc;
 }
 
     .publication-container a {
@@ -12,67 +14,103 @@
     }
 
         .publication-container a:hover {
-            color: #0066ff;
+            color: #0099ff;
         }
 
 .publication-head {
     padding: 0 10px;
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    height: 24px;
+    max-height: 24px;
 }
+
+.hide-btn {
+    border: 1px solid #0099ff;
+    border-radius: 1px;
+    background-color: #ffffff;
+    color: #0099ff;
+    margin: 0 8px;
+    width: 32px;
+    height: 22px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+}
+
+    .hide-btn:hover {
+        background-color: #0099ff;
+        color: #ffffff;
+    }
 
 .publication-title {
-    display: inline-block;
     font-size: 24px;
-    line-height: 100%;
 }
 
+    .publication-title input[type=text] {
+        display: inline-block;
+        font-size: 24px;
+        padding: 2px 4px;
+        border: 1px solid #ccc;
+        border-radius:1px;
+    }
+
 .publication-date {
-    display: inline-block;
-    float: right;
+    margin-left: auto;
+    font-size: 14px;
 }
 
 .publication-author {
-    padding: 0 25px;
-    display: table;
+    display: inline-block;
+    margin-left: 16px;
 }
 
-    .publication-author img {
-        width: 24px;
-        height: 24px;
-        border: 1px solid darkgray;
-    }
-
-    .publication-author span {
-        color: #0066ff;
-        vertical-align: middle;
-        display: table-cell;
-        padding: 0px 0px 1px 8px;
+    .publication-author a {
+        text-decoration: underline;
     }
 
 .publication-content {
-    border: 1px solid darkgray;
-    margin: 10px 0 15px 0;
+    margin: 16px 0;
 }
 
     .publication-content img {
         width: 100%;
         display: block;
+        border: 1px solid #ccc;
     }
 
     .publication-content span {
-        padding: 10px 15px;
+        padding: 12px 16px;
         display: block;
         background-color: gainsboro;
+        border: 1px solid #ccc;
+    }
+
+    .publication-content textarea {
+        border: 1px solid #ccc;
+        width: 100%;
+        max-width: 100%;
+        resize: vertical;
+        min-height: 32px;
+        height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 12px 16px;
+        margin: 0 0;
+        box-sizing: border-box;
+        border-radius: 1px;
+        background-color: #f2f2f2;
     }
 
 .publication-actions {
-    padding: 0 10px;
+    padding: 0 12px;
     font-size: 16px;
+    display: flex;
+    align-items: center;
 }
 
 .publication-rating-actions {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 16px;
 }
 
     .publication-rating-actions a {
@@ -81,12 +119,49 @@
 
 .publication-comments-actions {
     display: inline-block;
-    margin-left: 10px;
+    margin: 0 16px;
 }
 
 .publication-admin-actions {
+    line-height: 100%;
+    display: inline-block;
     float: right;
+    margin-left: auto;
 }
+
+    .publication-admin-actions a {
+        border-radius: 1px;
+        background-color: #ccc;
+        color: #262626;
+        margin: 0 8px;
+        padding: 4px 8px;
+        text-align: center;
+    }
+
+        .publication-admin-actions a:hover {
+            background-color: #0099ff;
+            color: #ffffff;
+        }
+
+    .publication-admin-actions button {
+        border: 0px solid transparent;
+        border-radius: 1px;
+        background-color: #ccc;
+        color: #262626;
+        margin: 0px 8px 0 8px;
+        padding: 4px 8px;
+        text-align: center;
+        font-size:16px;
+        line-height:19px;
+        box-sizing:border-box;
+    }
+
+        .publication-admin-actions button:hover {
+            background-color: #0099ff;
+            color: #ffffff;
+        }
+
+/*#endregion */
 
 
 /*#region Comment styles */
@@ -96,9 +171,9 @@
 }
 
 .comment-container {
-    margin:10px;
+    margin: 10px;
     border-bottom: 1px solid darkgray;
-    padding:8px;
+    padding: 8px;
 }
 
     .comment-container a {
@@ -111,7 +186,7 @@
         }
 
 .comment-head {
-    font-size:14px;
+    font-size: 14px;
 }
 
 .comment-author {
@@ -126,7 +201,7 @@
 }
 
 .comment-content {
-    margin:16px 0;
+    margin: 16px 0;
     padding: 0 10px;
 }
 
@@ -135,12 +210,13 @@
 }
 
 .comment-rating-actions {
-    display:inline-block;
+    display: inline-block;
 }
 
     .comment-rating-actions a {
         font-weight: bold;
     }
+
 .comment-admin-actions {
     float: right;
 }

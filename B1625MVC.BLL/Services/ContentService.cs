@@ -131,6 +131,22 @@ namespace B1625MVC.BLL.Services
             return null;
         }
 
+        public PublicationInfo GetBestPublication()
+        {
+            return repo.Publications.Get().OrderByDescending(p => p.Rating).Select(publication => new PublicationInfo()
+            {
+                Id = publication.PublicationId,
+                Author = publication.Author.User != null ? publication.Author.User.UserName : "Unknown",
+                AuthorAvatar = publication.Author.Avatar,
+                CommentsCount = publication.Comments.Count,
+                Content = publication.Content,
+                ContentType = (ContentType)publication.ContentType,
+                PublicationDate = publication.PublicationDate,
+                Title = publication.Title,
+                Rating = publication.Rating
+            }).First();
+        }
+
         public async Task<OperationDetails> RatePublication(long publicationId, string username, RateAction rateAction)
         {
             var publication = repo.Publications.Get(publicationId);
@@ -138,6 +154,11 @@ namespace B1625MVC.BLL.Services
 
             if (publication != null && profile != null)
             {
+                if (publication.Author.AccountId == profile.AccountId)
+                {
+                    return new OperationDetails(false, "Can`t rate own publication");
+                }
+
                 if (rateAction == RateAction.Up)
                 {
                     if (publication.DislikedBy.Contains(profile))
@@ -189,7 +210,16 @@ namespace B1625MVC.BLL.Services
 
         public OperationDetails EditPublication(EditPublicationData publicationData)
         {
-            throw new NotImplementedException();
+            var publication = repo.Publications.Find(p => p.PublicationId == publicationData.Id).FirstOrDefault();
+            if(publication != null)
+            {
+                publication.Title = publicationData.Title;
+                publication.Content = publicationData.Content;
+                repo.Publications.Update(publication);
+                repo.SaveChanges();
+                return new OperationDetails(true, "Publication updated");
+            }
+            return new OperationDetails(false, "Publication not found");
         }
 
         public OperationDetails DeleteComment(long commentId)
@@ -223,8 +253,14 @@ namespace B1625MVC.BLL.Services
             Comment comment = repo.Comments.Get(commentId);
             UserProfile profile = repo.Profiles.Find(p => p.User.UserName == username).FirstOrDefault();
 
+
             if (comment != null && profile != null)
             {
+                if (comment.Author.AccountId == profile.AccountId)
+                {
+                    return new OperationDetails(false, "Can`t rate own comment");
+                }
+
                 if (rateAction == RateAction.Up)
                 {
                     if (comment.DislikedBy.Contains(profile))
@@ -317,11 +353,35 @@ namespace B1625MVC.BLL.Services
             }
             return new OperationDetails(false, "Can`t find post or author");
         }
+
+        public CommentInfo GetBestComment()
+        {
+            return repo.Comments.Get().OrderByDescending(c => c.Rating).Select(comment => new CommentInfo()
+            {
+                Id = comment.CommentId,
+                Author = comment.Author.User != null ? comment.Author.User.UserName : "Unknown",
+                AuthorAvatar = comment.Author.Avatar,
+                Content = comment.Content,
+                Rating = comment.Rating,
+                PublicationDate = comment.PublicationDate
+            }).FirstOrDefault();
+        }
         #endregion
+
+        public IEnumerable<UserInfo> GetTopUsers(int count)
+        {
+            return repo.Profiles.Get().OrderByDescending(u => u.Rating).Take(count).Select(u => new UserInfo()
+            {
+                UserName = u.User.UserName,
+                Rating = u.Rating
+            }).ToList();
+        }
 
         public void Dispose()
         {
             repo.Dispose();
         }
+
+
     }
 }

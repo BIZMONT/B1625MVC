@@ -7,7 +7,7 @@
     string ratingValue = "ratingValue" + Model.Id;
     string publicationId = "publication" + Model.Id;
     string publicationSlider = "slider" + Model.Id;
-    string publicationLoading = "loading" + Model.Id;
+    string publicationLoading = "loadin" + Model.Id;
 
     var ajaxRateOptions = new AjaxOptions()
     {
@@ -15,14 +15,15 @@
     };
 }
 
-<div id="@publicationId">
-    <div class="publication-container">
+<div id="@publicationId" class="publication-container">
+    @using (Ajax.BeginForm(new AjaxOptions() { UpdateTargetId = publicationId, Url = Url.Action("Edit", "Publication", new { area = "Admin" }), Confirm = "Save changes?", LoadingElementId = publicationLoading }))
+    {
+        @Html.HiddenFor(model => model.Id);
         <div class="publication-head">
             <button title="Hide publication" class="hide-btn" onclick="hideContent(this, @publicationSlider)">-</button>
             <div class="publication-title">
-                @Html.RouteLink(Model.Title, new { area = "", controller = "Publication", action = "Index", id = Model.Id })
+                @Html.EditorFor(model => model.Title)
             </div>
-
             <div class="publication-date">
                 @Model.PublicationDate.Value.Date.ToString("dd MMM yyyy")
             </div>
@@ -30,14 +31,14 @@
         <div id="@publicationSlider">
             <div class="publication-content">
                 @if (Model.ContentType == ContentType.Image)
-            {
-                    <a href="@Url.Action("Index", "Publication", new { area = "", id = Model.Id })">
+                {
+                    <a href="@Url.Action("Index", "Publication", new { id = Model.Id })">
                         <img src="data:image;base64,@System.Convert.ToBase64String(Model.Content)" />
                     </a>
                 }
                 else if (Model.ContentType == ContentType.Text)
                 {
-                    <span>@Encoding.Default.GetString(Model.Content)</span>
+                    @Html.TextArea("Content", Encoding.Default.GetString(Model.Content))
                 }
                 else
                 {
@@ -46,19 +47,19 @@
             </div>
             <div class="publication-actions">
                 <div class="publication-rating-actions">
-                    @Ajax.RouteLink("▲", new { area = "", controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxRateOptions, new { style = "font-size:24px;", title = "Upvote" })
-                    <span id="@ratingValue" style="display:inline-block">@Model.Rating</span>
-                    @Ajax.RouteLink("▼", new { area = "", controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxRateOptions, new { style = "font-size:24px;", title = "Downvote" })
+                    @Ajax.RouteLink("▲", new { controller = "Publication", action = "RateUp", publicationId = Model.Id }, ajaxRateOptions, new { style = "font-size:24px;", title = "Upvote" })
+                    <span id="@ratingValue">@Model.Rating</span>
+                    @Ajax.RouteLink("▼", new { controller = "Publication", action = "RateDown", publicationId = Model.Id }, ajaxRateOptions, new { style = "font-size:24px;", title = "Downvote" })
                 </div>
                 <div class="publication-comments-actions">
-                    @Html.RouteLink(Model.CommentsCount.ToString() + " comments", new { area = "", controller = "Publication", action = "Index", id = Model.Id })
+                    @Html.RouteLink(Model.CommentsCount.ToString() + " comments", new { controller = "Publication", action = "Index", id = Model.Id })
                 </div>
                 <div class="publication-author">
-                    by @Html.RouteLink(@Model.Author, new { area = "", controller = "Account", action = "UserProfile", username = Model.Author })
+                    by @Html.RouteLink(@Model.Author, new { controller = "Account", action = "UserProfile", username = Model.Author })
                 </div>
 
                 @if (User.IsInRole("Administrators") || User.IsInRole("Moderators"))
-            {
+                {
                     <div class="publication-admin-actions">
                         <div id="@publicationLoading" style="display:inline-block; display:none">Loading...</div>
                         @Ajax.RouteLink("Remove", new { area = "Admin", controller = "Publication", action = "Delete", publicationId = Model.Id }, new AjaxOptions()
@@ -67,14 +68,10 @@
                        Confirm = "Are you really want ot delete this publication?",
                        LoadingElementId = publicationLoading
                    })
-                        @Ajax.RouteLink("Edit", new { area = "Admin", controller = "Publication", action = "Edit", publicationId = Model.Id }, new AjaxOptions()
-                   {
-                       UpdateTargetId = publicationId,
-                       LoadingElementId = publicationLoading
-                   })
+                        <button type="submit">Confirm</button>
                     </div>
                 }
             </div>
         </div>
-    </div>
+    }
 </div>

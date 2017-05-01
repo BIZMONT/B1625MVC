@@ -27,5 +27,9 @@ namespace B1625MVC.BLL.Abstract
         Task<OperationDetails> RateComment(long commentId, string username, RateAction rateAction);
         OperationDetails DeleteComment(long commentId);
         IEnumerable<CommentInfo> FindComments(Expression<Func<CommentInfo, bool>> predicate, PageInfo pageInfo);
+        CommentInfo GetBestComment();
+
+        IEnumerable<UserInfo> GetTopUsers(int count);
+        PublicationInfo GetBestPublication();
     }
 }

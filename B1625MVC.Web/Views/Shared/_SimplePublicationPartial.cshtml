@@ -1,0 +1,33 @@
+﻿@using System.Text
+@using B1625MVC.BLL.DTO.Enums
+@model B1625MVC.BLL.DTO.PublicationInfo
+
+<div style="padding: 8px 8px;">
+    <div style="font-size:14px;">
+        <div style="padding-left:8px;display:inline-block;">
+            by @Html.RouteLink(@Model.Author, new { area = "", controller = "Account", action = "UserProfile", username = Model.Author })
+        </div>
+        <div style="float:right;display:inline-block;">
+            Rating: @Model.Rating
+        </div>
+    </div>
+    <div style="margin:8px 0; font-size:18px;text-align:center">
+        @Html.RouteLink(Model.Title, new { controller = "Publication", action = "Index", id = Model.Id })
+    </div>
+    <div>
+        @if (Model.ContentType == ContentType.Image)
+            {
+            <a href="@Url.Action("Index", "Publication", new { area = "", id = Model.Id })">
+                <img style="width:100%;" src="data:image;base64,@System.Convert.ToBase64String(Model.Content)" />
+            </a>
+        }
+        else if (Model.ContentType == ContentType.Text)
+        {
+            <span>@Encoding.Default.GetString(Model.Content)</span>
+        }
+        else
+        {
+            @:"Unknown!"
+        }
+    </div>
+</div>

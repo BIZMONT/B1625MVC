@@ -1,0 +1,27 @@
+﻿@using B1625MVC.BLL.DTO
+@model IEnumerable<UserInfo>
+<table>
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Rating
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.RouteLink(user.UserName,new { controller = "Account", action = "UserProfile", username = user.UserName})
+                </td>
+                <td>
+                    @user.Rating
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

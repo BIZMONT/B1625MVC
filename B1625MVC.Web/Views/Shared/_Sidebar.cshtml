@@ -1,3 +1,30 @@
-﻿<div style="text-align:center;background-color:#0094ff;padding:12px;margin: 0 8px;">
-    @Html.RouteLink("Upload", new { controller = "Publication", action = "Add"})
+﻿<div class="sidebar">
+    <div class="sidebar-block">
+        <div class="upload-btn">
+            @Html.RouteLink("Upload post", new { controller = "Publication", action = "Add" })
+        </div>
+    </div>
+    <div class="sidebar-block" style="border-bottom:1px solid #ccc;">
+        <div class="sidebar-title">
+            Publication of the day
+        </div>
+        <div>
+            @Html.Action("BestPublication", "Publication")
+        </div>
+    </div>
+    <div class="sidebar-block" style="border-bottom:1px solid #ccc;">
+        <div class="sidebar-title">
+            Comment of the day
+        </div>
+        @Html.Action("BestComment", "Comment")
+    </div>
+    <div class="sidebar-block">
+        <div class="sidebar-title">
+            Top users
+        </div>
+        <div class="sidebar-table">
+            @Html.Action("TopUsers", "Home")
+        </div>
+    </div>
 </div>
+

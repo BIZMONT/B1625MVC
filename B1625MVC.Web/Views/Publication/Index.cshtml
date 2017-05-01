@@ -10,31 +10,34 @@
     <link rel="stylesheet" type="text/css" href="~/Content/PublicationStyle.css" />
 }
 
-<div id="publication">
-    @Html.Partial("_PublicationPartial", Model.Publication)
-</div>
-<div id="comments">
-    @Html.Action("PublicationComments", "Comment", new { publicationId = Model.Publication.Id })
-</div>
-<div class="form-field">
-    @if (User.Identity.IsAuthenticated)
-    {
-        @: Add your comment
+<div style="margin:0 32px;">
+    <div id="publication">
+        @Html.Partial("_PublicationPartial", Model.Publication)
+    </div>
+    <div id="comments">
+        @Html.Action("PublicationComments", "Comment", new { publicationId = Model.Publication.Id })
+    </div>
+    <div class="form-field">
+        @if (User.Identity.IsAuthenticated)
+        {
+            @: Add your comment
         using (Ajax.BeginForm(new AjaxOptions()
-        {
-            UpdateTargetId = "comments",
-            Url = Url.RouteUrl(new { controller = "Comment", action = "Add", publicationId = Model.Publication.Id })
-        }))
-        {
-            @Html.TextArea("newComment", new { style = "display:block;height:100px" })
-            <input type = "submit" name = "addCommentInput" value = "Add comment" />
+            {
+                UpdateTargetId = "comments",
+                Url = Url.RouteUrl(new { controller = "Comment", action = "Add", publicationId = Model.Publication.Id })
+            }))
+            {
+                @Html.TextArea("newComment", new { style = "display:block;height:100px" })
+                <input type="submit" name="addCommentInput" value="Add comment" />
+            }
         }
+        else
+        {
+            @: Log in to add comments
     }
-    else
-    {
-        @: Log in to add comments
-    }
+    </div>
 </div>
+
 
 
 

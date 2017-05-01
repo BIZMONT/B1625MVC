@@ -30,7 +30,6 @@ namespace B1625MVC.Web.Controllers
         /// </summary>
         /// <param name="commentId"></param>
         /// <returns></returns>
-        [Authorize]
         public async Task<int> RateUp(long commentId)
         {
             int currentRating = ContentService.GetComment(commentId).Rating; //get current rating of comment with commentId
@@ -47,7 +46,6 @@ namespace B1625MVC.Web.Controllers
         /// </summary>
         /// <param name="commentId"></param>
         /// <returns></returns>
-        [Authorize]
         public async Task<int> RateDown(long commentId)
         {
             int currentRating = ContentService.GetComment(commentId).Rating; //get current rating of comment with commentId
@@ -109,6 +107,17 @@ namespace B1625MVC.Web.Controllers
                 return Content("No content");
             }
             return PartialView("_Comments", comments);
+        }
+
+        [HttpGet]
+        public ActionResult BestComment()
+        {
+            CommentInfo comment = ContentService.GetBestComment();
+            if(comment !=null)
+            {
+                return PartialView("_SimpleCommentPartial", comment);
+            }
+            return Content("Not found");
         }
     }
 }

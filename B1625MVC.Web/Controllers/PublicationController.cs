@@ -53,7 +53,6 @@ namespace B1625MVC.Web.Controllers
         /// </summary>
         /// <param name="publicationId">Publication id that was rated</param>
         /// <returns>Returns current publlication rating after this action</returns>
-        [Authorize]
         public async Task<int> RateUp(long publicationId)
         {
             int currentRating = ContentService.GetPublication(publicationId).Rating; //getting current rating of publication
@@ -70,7 +69,6 @@ namespace B1625MVC.Web.Controllers
         /// </summary>
         /// <param name="publicationId">Publication id that was rated</param>
         /// <returns>Returns current publlication rating after this action</returns>
-        [Authorize]
         public async Task<int> RateDown(long publicationId)
         {
             int currentRating = ContentService.GetPublication(publicationId).Rating; //getting current rating of publication
@@ -153,6 +151,16 @@ namespace B1625MVC.Web.Controllers
                 return Content("No content");
             }
             return PartialView("_Publications", publications);
+        }
+
+        public ActionResult BestPublication()
+        {
+            PublicationInfo publication = ContentService.GetBestPublication();
+            if(publication != null)
+            {
+                return PartialView("_SimplePublicationPartial", publication);
+            }
+            return Content("NotFound");
         }
     }
 }

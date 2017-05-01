@@ -1,2 +1,14 @@
-﻿body {
+﻿.create-user-btn {
+    margin: 16px 0 8px 0;
 }
+
+    .create-user-btn a {
+        padding: 4px 8px;
+        background: #262626;
+        color: #ccc;
+        font-size: 18px;
+    }
+
+        .create-user-btn a:hover {
+            color: #ffffff;
+        }
